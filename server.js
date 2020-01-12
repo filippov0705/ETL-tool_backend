@@ -1,14 +1,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const usersFile = "mockData.json";
-const app = express();
 const procedureRouter = require("./routers/procedureRouter");
 const registrationRouter = require("./routers/registrationRouter");
+
+const app = express();
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(morgan('common'));
+
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');

@@ -1,3 +1,6 @@
+const path = require('path')
+const env = require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
+
 class RegistratinController {
     registration() {
         const data = req.body;
@@ -7,8 +10,8 @@ class RegistratinController {
             method: 'POST',
             headers: {'Content-Type': 'application/json;charset=utf-8'},
             body: JSON.stringify({
-                client_id: 'e8b244bda58bacfbcc88',
-                client_secret: '7941c3ce2718ec554fa12ed4adceb48ea23e96c7',
+                client_id: env.parsed.client_id,
+                client_secret: env.parsed.client_secret,
                 code: (data.code)
             })
         })
