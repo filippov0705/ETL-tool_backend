@@ -1,0 +1,85 @@
+[{
+    "name": "procedure 1",
+    "id": "1234124",
+    "schedule": [{"value": [2019, 12, "Mon", 15, 30], "id": "1597538"}],
+    "tasks": [{
+        "name": "task_1",
+        "id": "1"
+    },
+    {
+        "name": "task_2",
+        "id": "2"
+    },
+    {
+        "name": "task_3",
+        "id": "3"
+    },
+    {
+        "name": "task_4",
+        "id": "4"
+    }]
+},
+{
+    "name": "procedure 2",
+    "id": "1245674",
+    "schedule": [],
+    "tasks": [{
+        "name": "task_4",
+        "id": "4"
+    },
+    {
+        "name": "task_3",
+        "id": "3"
+    },
+    {
+        "name": "task_1",
+        "id": "1"
+    },
+    {
+        "name": "task_2",
+        "id": "2"
+    }]
+},
+{
+    "name": "procedure 3",
+    "id": "9683764",
+    "schedule": [],
+    "tasks": [{
+        "name": "task_4",
+        "id": "4"
+    },
+    {
+        "name": "task_3",
+        "id": "3"
+    },
+    {
+        "name": "task_1",
+        "id": "1"
+    },
+    {
+        "name": "task_2",
+        "id": "2"
+    }]
+},
+{
+    "name": "procedure 4",
+    "id": "5890340",
+    "schedule": [],
+    "tasks": [{
+        "name": "task_3",
+        "id": "3"
+    },
+    {
+        "name": "task_4",
+        "id": "4"
+    },
+    {
+        "name": "task_5",
+        "id": "5"
+    },
+    {
+        "name": "task_6",
+        "id": "6"
+    }]
+}
+]

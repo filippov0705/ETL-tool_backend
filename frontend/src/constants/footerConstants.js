@@ -1,0 +1,10 @@
+export const COPYRIGHT = " 2019 :iTechArt All Rights Reserved.";
+export const TELEPHONE_VELCOM = "+375 33 38 76 163";
+export const TELEPHONE_MTS = "+375 29 15 71 703";
+export const E_MAIL = "E-mail: ";
+export const MAIL_TO_CAREERS = "careers@itechart-group.com";
+export const MAIL_TO_CAREERS_HREF = "mailto:careers@itechart-group.com";
+export const MAIL_TO_LAB = "st.lab@itechart-group.com";
+export const MAIL_TO_LAB_HREF = "mailto:st.lab@itechart-group.com";
+export const MAIL_TO_COOPERATION = "pr@itechart-group.com";
+export const MAIL_TO_COOPERATION_HREF = "mailto:pr@itechart-group.com";
