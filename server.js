@@ -1,8 +1,11 @@
+require('module-alias/register');
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const procedureRouter = require("./routers/procedureRouter");
-const registrationRouter = require("./routers/registrationRouter");
+const procedureRouter = require("@routers/procedureRouter");
+const registrationRouter = require("@routers/registrationRouter");
+const tasksRouter = require("@routers/tasksRouter")
 
 const app = express();
 
@@ -19,5 +22,6 @@ app.use((req, res, next) => {
 
 app.use("/api/procedures/", procedureRouter);
 app.use("/api/registration", registrationRouter);
+app.use("/api/tasks", tasksRouter);
 
 app.listen(3001, () => console.log('Server has been started...'));

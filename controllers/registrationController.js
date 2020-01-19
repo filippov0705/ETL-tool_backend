@@ -1,5 +1,5 @@
-const path = require('path')
-const env = require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
+const path = require('path');
+const env = require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
 class RegistratinController {
     registration() {
@@ -14,7 +14,7 @@ class RegistratinController {
                 client_secret: env.parsed.client_secret,
                 code: (data.code)
             })
-        })
+        });
         const content = await rawResponse.text();
         res.send(content);
         })();

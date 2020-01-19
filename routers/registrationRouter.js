@@ -1,5 +1,7 @@
+require('module-alias/register');
+
 const express = require("express");
-const RegistratinController = require("../controllers/registrationController.js");
+const RegistratinController = require("@controllers/registrationController.js");
 
 const router = express.Router();
  
