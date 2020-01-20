@@ -1,12 +1,13 @@
 const procedureService = require("@services/procedureService");
-const usersFile = "./mockData/mockData.json";
-
 const {ERROR} = require("@constants/constants");
+
+const usersFile = "./mockData/mockData.json";
 
 class ProcedureController {
     getAllProcedures(req, res) {
         try {
-            const user = procedureService.getFileFromDB(usersFile).find(item => item.userId === Number(req.params.id));
+            const { id } = req.params;
+            const user = procedureService.getFileFromDB(usersFile).find(item => item.userId === Number(id));
             procedureService.readUsersFromDB();
             if (user) {
                 const data = user.data.map(item => {
@@ -23,11 +24,12 @@ class ProcedureController {
 
     deleteProcedure(req, res) {
         try {
+            const { id, procedureId } = req.params;
             const data = procedureService.getFileFromDB(usersFile);
-            const user = data.find(item => item.userId === Number(req.params.id));
-            const newData = user.data.filter(item => item.id !== Number(req.params.procedureId));
+            const user = data.find(item => item.userId === Number(id));
+            const newData = user.data.filter(item => item.id !== Number(procedureId));
             const newUserFile = data.map(item => {
-                if (item.userId === Number(req.params.id)) {
+                if (item.userId === Number(id)) {
                     item.data = newData;
                 }
                 return item;

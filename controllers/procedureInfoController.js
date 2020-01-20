@@ -6,13 +6,14 @@ const usersFile = "./mockData/mockData.json";
 class ProcedureInfoController {
     editTaskSettings(req, res) {
         try {
+            const { userId, procedureId, taskId, newSettings } = req.body;
             const newUserFile = procedureService.getFileFromDB(usersFile).map(item => {
-                if (item.userId === Number(req.body.userId)) {
+                if (item.userId === Number(userId)) {
                     item.data.map(procedure => {
-                        if (procedure.id === Number(req.body.procedureId)) {
+                        if (procedure.id === Number(procedureId)) {
                             procedure.tasks = procedure.tasks.map(task => {
-                                if (task.id === Number(req.body.taskId)) {
-                                    task.settings[req.body.newSettings.parameter] = req.body.newSettings.newValue;
+                                if (task.id === Number(taskId)) {
+                                    task.settings[newSettings.parameter] = newSettings.newValue;
                                 }
                                 return task;
                             });
@@ -25,8 +26,8 @@ class ProcedureInfoController {
 
             procedureService.setFileToDB(usersFile, newUserFile);
             const newProcedure = newUserFile
-                .find(item => item.userId === Number(req.body.userId))
-                .data.find(item => item.id === Number(req.body.procedureId));
+                .find(item => item.userId === Number(userId))
+                .data.find(item => item.id === Number(procedureId));
             res.send(JSON.stringify(newProcedure));
         } catch (e) {
             res.send(JSON.stringify({status: ERROR}));

@@ -1,15 +1,16 @@
 const procedureService = require("@services/procedureService");
-const usersFile = "./mockData/mockData.json";
-
 const {ERROR} = require("@constants/constants");
+
+const usersFile = "./mockData/mockData.json";
 
 class ProcedureSchedulesController {
     getProcedureSchedules(req, res) {
         try {
+            const { userId, procedureId } = req.params;
             const user = procedureService
                 .getFileFromDB(usersFile)
-                .find(item => item.userId === Number(req.params.userId));
-            const procedure = user.data.find(item => item.id === Number(req.params.procedureId));
+                .find(item => item.userId === Number(userId));
+            const procedure = user.data.find(item => item.id === Number(procedureId));
             res.send(JSON.stringify(procedure));
         } catch (e) {
             res.send(JSON.stringify({status: ERROR}));
@@ -18,11 +19,13 @@ class ProcedureSchedulesController {
 
     deleteSchedule(req, res) {
         try {
+            const { userId, procedureId } = req.params;
+            const { id } = req.body;
             const newUserFile = procedureService.getFileFromDB(usersFile).map(item => {
-                if (item.userId === Number(req.params.userId)) {
+                if (item.userId === Number(userId)) {
                     item.data.map(procedure => {
-                        if (procedure.id === Number(req.params.procedureId)) {
-                            procedure.schedule = procedure.schedule.filter(schedule => schedule.id !== req.body.id);
+                        if (procedure.id === Number(procedureId)) {
+                            procedure.schedule = procedure.schedule.filter(schedule => schedule.id !== id);
                         }
                         return procedure;
                     });
@@ -32,8 +35,8 @@ class ProcedureSchedulesController {
 
             procedureService.setFileToDB(usersFile, newUserFile);
             const newProcedure = newUserFile
-                .find(item => item.userId === Number(req.params.userId))
-                .data.find(item => item.id === Number(req.params.procedureId));
+                .find(item => item.userId === Number(userId))
+                .data.find(item => item.id === Number(procedureId));
             res.send(JSON.stringify(newProcedure));
         } catch (e) {
             res.send(JSON.stringify({status: ERROR}));
@@ -42,11 +45,13 @@ class ProcedureSchedulesController {
 
     postNewSchedule(req, res) {
         try {
+            const { userId, procedureId } = req.params;
+            const newSchedule = req.body;
             const newUserFile = procedureService.getFileFromDB(usersFile).map(item => {
-                if (item.userId === Number(req.params.userId)) {
+                if (item.userId === Number(userId)) {
                     item.data.map(procedure => {
-                        if (procedure.id === Number(req.params.procedureId)) {
-                            procedure.schedule = [...procedure.schedule, req.body];
+                        if (procedure.id === Number(procedureId)) {
+                            procedure.schedule = [...procedure.schedule, newSchedule];
                         }
                         return procedure;
                     });
@@ -56,8 +61,8 @@ class ProcedureSchedulesController {
 
             procedureService.setFileToDB(usersFile, newUserFile);
             const newProcedure = newUserFile
-                .find(item => item.userId === Number(req.params.userId))
-                .data.find(item => item.id === Number(req.params.procedureId));
+                .find(item => item.userId === Number(userId))
+                .data.find(item => item.id === Number(procedureId));
             res.send(JSON.stringify(newProcedure));
         } catch (e) {
             res.send(JSON.stringify({status: ERROR}));
@@ -66,13 +71,15 @@ class ProcedureSchedulesController {
 
     editSchedule(req, res) {
         try {
+            const { userId, procedureId } = req.params;
+            const newSchedule = req.body;
             const newUserFile = procedureService.getFileFromDB(usersFile).map(item => {
-                if (item.userId === Number(req.params.userId)) {
+                if (item.userId === Number(userId)) {
                     item.data.map(procedure => {
-                        if (procedure.id === Number(req.params.procedureId)) {
+                        if (procedure.id === Number(procedureId)) {
                             procedure.schedule = procedure.schedule.map(schedule => {
-                                if (schedule.id === req.body.id) {
-                                    schedule = req.body;
+                                if (schedule.id === newSchedule.id) {
+                                    schedule = newSchedule;
                                 }
                                 return schedule;
                             });
@@ -85,8 +92,8 @@ class ProcedureSchedulesController {
 
             procedureService.setFileToDB(usersFile, newUserFile);
             const newProcedure = newUserFile
-                .find(item => item.userId === Number(req.params.userId))
-                .data.find(item => item.id === Number(req.params.procedureId));
+                .find(item => item.userId === Number(userId))
+                .data.find(item => item.id === Number(procedureId));
             res.send(JSON.stringify(newProcedure));
         } catch (e) {
             res.send(JSON.stringify({status: ERROR}));

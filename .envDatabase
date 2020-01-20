@@ -1,0 +1,5 @@
+dataBaseName="internship-project"
+userName="postgres"
+password="1234567"
+dialect="postgres"
+host="localhost"

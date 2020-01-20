@@ -1,5 +1,4 @@
 const runProcedureService = require("@services/runProcedureService");
-
 const {ERROR} = require("@constants/constants");
 
 class RunProcedureController {

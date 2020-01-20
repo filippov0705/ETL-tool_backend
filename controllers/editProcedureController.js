@@ -1,15 +1,16 @@
 const procedureService = require("@services/procedureService");
-const usersFile = "./mockData/mockData.json";
-
 const {ERROR} = require("@constants/constants");
+
+const usersFile = "./mockData/mockData.json";
 
 class EditProcedureController {
     changeProcedureName(req, res) {
         try {
+            const { userId, procedureId } = req.params;
             const newUserFile = procedureService.getFileFromDB(usersFile).map(item => {
-                if (item.userId === Number(req.params.userId)) {
+                if (item.userId === Number(userId)) {
                     item.data.map(procedure => {
-                        if (procedure.id === Number(req.params.procedureId)) {
+                        if (procedure.id === Number(procedureId)) {
                             procedure.name = req.body.newName;
                         }
                         return procedure;
@@ -20,8 +21,8 @@ class EditProcedureController {
 
             procedureService.setFileToDB(usersFile, newUserFile);
             const newProcedure = newUserFile
-                .find(item => item.userId === Number(req.params.userId))
-                .data.find(item => item.id === Number(req.params.procedureId));
+                .find(item => item.userId === Number(userId))
+                .data.find(item => item.id === Number(procedureId));
             res.send(JSON.stringify(newProcedure));
         } catch (e) {
             res.send(JSON.stringify({status: ERROR}));
@@ -30,11 +31,13 @@ class EditProcedureController {
 
     addNewTaskToProcedure(req, res) {
         try {
+            const { userId, procedureId } = req.params;
+            const newTask = req.body.newTask;
             const newUserFile = procedureService.getFileFromDB(usersFile).map(item => {
-                if (item.userId === Number(req.params.userId)) {
+                if (item.userId === Number(userId)) {
                     item.data.map(procedure => {
-                        if (procedure.id === Number(req.params.procedureId)) {
-                            procedure.tasks = [...procedure.tasks, req.body.newTask];
+                        if (procedure.id === Number(procedureId)) {
+                            procedure.tasks = [...procedure.tasks, newTask];
                         }
                         return procedure;
                     });
@@ -44,8 +47,8 @@ class EditProcedureController {
 
             procedureService.setFileToDB(usersFile, newUserFile);
             const newProcedure = newUserFile
-                .find(item => item.userId === Number(req.params.userId))
-                .data.find(item => item.id === Number(req.params.procedureId));
+                .find(item => item.userId === Number(userId))
+                .data.find(item => item.id === Number(procedureId));
             res.send(JSON.stringify(newProcedure));
         } catch (e) {
             res.send(JSON.stringify({status: ERROR}));
@@ -54,11 +57,13 @@ class EditProcedureController {
 
     deleteTaskInProcedure(req, res) {
         try {
+            const { userId, procedureId } = req.params;
+            const newTask = req.body.newTask;
             const newUserFile = procedureService.getFileFromDB(usersFile).map(item => {
-                if (item.userId === Number(req.params.userId)) {
+                if (item.userId === Number(userId)) {
                     item.data.map(procedure => {
-                        if (procedure.id === Number(req.params.procedureId)) {
-                            procedure.tasks = procedure.tasks.filter(task => task.id !== req.body.taskId);
+                        if (procedure.id === Number(procedureId)) {
+                            procedure.tasks = procedure.tasks.filter(task => task.id !== newTask);
                         }
                         return procedure;
                     });
@@ -68,8 +73,8 @@ class EditProcedureController {
 
             procedureService.setFileToDB(usersFile, newUserFile);
             const newProcedure = newUserFile
-                .find(item => item.userId === Number(req.params.userId))
-                .data.find(item => item.id === Number(req.params.procedureId));
+                .find(item => item.userId === Number(userId))
+                .data.find(item => item.id === Number(procedureId));
             res.send(JSON.stringify(newProcedure));
         } catch (e) {
             res.send(JSON.stringify({status: ERROR}));

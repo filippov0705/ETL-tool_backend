@@ -1,6 +1,7 @@
 const taskService = require("@services/taskService");
-const possibleTasksFile = "./mockData/possibleTasks.json";
 const procedureService = require("@services/procedureService");
+
+const possibleTasksFile = "./mockData/possibleTasks.json";
 
 class ProcedureController {
     getTasksTypes(req, res) {

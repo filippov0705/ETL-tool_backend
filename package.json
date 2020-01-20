@@ -13,7 +13,8 @@
     "@services": "./services",
     "@controllers": "./controllers",
     "@constants": "./constants",
-    "@models": "./models"
+    "@models": "./models",
+    "@repostory": "./repostory"
   },
   "author": "",
   "license": "ISC",
