@@ -1,14 +1,16 @@
-require('module-alias/register');
+require("module-alias/register");
 
 const procedureService = require("@services/procedureService");
 const usersFile = "../frontend/src/mockData/mockData.json";
 
-const { ERROR } =  require("@constants/constants");
+const {ERROR} = require("@constants/constants");
 
 class ProcedureSchedulesController {
     getProcedureSchedules(req, res) {
         try {
-            const user = procedureService.getFileFromDB(usersFile).find(item => item.userId === Number(req.params.userId));
+            const user = procedureService
+                .getFileFromDB(usersFile)
+                .find(item => item.userId === Number(req.params.userId));
             const procedure = user.data.find(item => item.id === Number(req.params.procedureId));
             res.send(JSON.stringify(procedure));
         } catch (e) {
@@ -31,7 +33,9 @@ class ProcedureSchedulesController {
             });
 
             procedureService.setFileToDB(usersFile, newUserFile);
-            const newProcedure = newUserFile.find(item => item.userId === Number(req.params.userId)).data.find(item => item.id === Number(req.params.procedureId));
+            const newProcedure = newUserFile
+                .find(item => item.userId === Number(req.params.userId))
+                .data.find(item => item.id === Number(req.params.procedureId));
             res.send(JSON.stringify(newProcedure));
         } catch (e) {
             res.send(JSON.stringify({status: ERROR}));
@@ -44,7 +48,7 @@ class ProcedureSchedulesController {
                 if (item.userId === Number(req.params.userId)) {
                     item.data.map(procedure => {
                         if (procedure.id === Number(req.params.procedureId)) {
-                            procedure.schedule = [...procedure.schedule, req.body]
+                            procedure.schedule = [...procedure.schedule, req.body];
                         }
                         return procedure;
                     });
@@ -53,7 +57,9 @@ class ProcedureSchedulesController {
             });
 
             procedureService.setFileToDB(usersFile, newUserFile);
-            const newProcedure = newUserFile.find(item => item.userId === Number(req.params.userId)).data.find(item => item.id === Number(req.params.procedureId));
+            const newProcedure = newUserFile
+                .find(item => item.userId === Number(req.params.userId))
+                .data.find(item => item.id === Number(req.params.procedureId));
             res.send(JSON.stringify(newProcedure));
         } catch (e) {
             res.send(JSON.stringify({status: ERROR}));
@@ -71,7 +77,7 @@ class ProcedureSchedulesController {
                                     schedule = req.body;
                                 }
                                 return schedule;
-                            })
+                            });
                         }
                         return procedure;
                     });
@@ -80,7 +86,9 @@ class ProcedureSchedulesController {
             });
 
             procedureService.setFileToDB(usersFile, newUserFile);
-            const newProcedure = newUserFile.find(item => item.userId === Number(req.params.userId)).data.find(item => item.id === Number(req.params.procedureId));
+            const newProcedure = newUserFile
+                .find(item => item.userId === Number(req.params.userId))
+                .data.find(item => item.id === Number(req.params.procedureId));
             res.send(JSON.stringify(newProcedure));
         } catch (e) {
             res.send(JSON.stringify({status: ERROR}));

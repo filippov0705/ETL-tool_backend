@@ -1,7 +1,7 @@
 const xlsx = require("node-xlsx");
 const serverCalls = require("@services/serverCalls");
 
-const { ERROR, USER_DATA_STORAGE, SUCCESS } = require("@constants/constants");
+const {ERROR, USER_DATA_STORAGE, SUCCESS} = require("@constants/constants");
 
 class ReadFileService {
     readExcel(task) {
@@ -17,8 +17,7 @@ class ReadFileService {
 
     readCSV(task) {
         return new Promise(resolve => {
-            serverCalls.readFromFTP(task)
-                .then(result => resolve(result));
+            serverCalls.readFromFTP(task).then(result => resolve(result));
         });
     }
 }

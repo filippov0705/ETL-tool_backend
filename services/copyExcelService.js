@@ -1,6 +1,6 @@
-const xl = require('excel4node');
+const xl = require("excel4node");
 
-const { BOOLEAN, ERROR, STRING, SUCCESS, NUMBER, USER_DATA_STORAGE  } = require("@constants/constants");
+const {BOOLEAN, ERROR, STRING, SUCCESS, NUMBER, USER_DATA_STORAGE} = require("@constants/constants");
 
 class CopyExcelService {
     copyExcel(task, data) {
@@ -10,26 +10,32 @@ class CopyExcelService {
                 const ws = wb.addWorksheet(data[0].name);
                 const style = wb.createStyle({
                     font: {
-                        color: '#000000',
+                        color: "#000000",
                         size: 9,
                     },
-                    numberFormat: '###; (###); -',
+                    numberFormat: "###; (###); -",
                 });
 
                 data[0].data.forEach((item, row) => {
                     item.forEach((item, column) => {
-                        switch (typeof(item)) {
+                        switch (typeof item) {
                             case STRING:
-                                return ws.cell(row + 1, column + 1)
-                                    .string(item).style(style);
+                                return ws
+                                    .cell(row + 1, column + 1)
+                                    .string(item)
+                                    .style(style);
 
                             case NUMBER:
-                                return ws.cell(row + 1, column + 1)
-                                    .number(item).style(style);
+                                return ws
+                                    .cell(row + 1, column + 1)
+                                    .number(item)
+                                    .style(style);
 
                             case BOOLEAN:
-                                return ws.cell(row + 1, column + 1)
-                                    .bool(item).style(style);
+                                return ws
+                                    .cell(row + 1, column + 1)
+                                    .bool(item)
+                                    .style(style);
 
                             default:
                                 return;

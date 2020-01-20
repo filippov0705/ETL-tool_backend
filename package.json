@@ -20,6 +20,8 @@
   "dependencies": {
     "basic-ftp": "^4.5.3",
     "body-parser": "^1.19.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-prettier": "^3.1.2",
     "excel4node": "^1.7.2",
     "express": "^4.17.1",
     "file-system": "^2.2.2",
@@ -38,6 +40,10 @@
     "shortid": "^2.2.15"
   },
   "devDependencies": {
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.20.0",
+    "prettier": "1.19.1"
   }
 }

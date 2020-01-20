@@ -1,18 +1,18 @@
-require('module-alias/register');
+require("module-alias/register");
 
 const procedureService = require("@services/procedureService");
 const usersFile = "../frontend/src/mockData/mockData.json";
 
-const { ERROR } = require("@constants/constants");
+const {ERROR} = require("@constants/constants");
 
 class ProcedureController {
     getAllProcedures(req, res) {
         try {
             const user = procedureService.getFileFromDB(usersFile).find(item => item.userId === Number(req.params.id));
-            procedureService.readUsersFromDB();
+            // procedureService.readUsersFromDB();
             if (user) {
                 const data = user.data.map(item => {
-                    return {name: item.name, id: item.id, tasks: item.tasks}
+                    return {name: item.name, id: item.id, tasks: item.tasks};
                 });
                 res.send(JSON.stringify(data));
             } else {
@@ -29,11 +29,11 @@ class ProcedureController {
             const user = data.find(item => item.userId === Number(req.params.id));
             const newData = user.data.filter(item => item.id !== Number(req.params.procedureId));
             const newUserFile = data.map(item => {
-                if(item.userId === Number(req.params.id)) {
+                if (item.userId === Number(req.params.id)) {
                     item.data = newData;
                 }
                 return item;
-            })
+            });
             const dataToSend = newData.map(item => {
                 return {name: item.name, id: item.id, tasks: item.tasks};
             });

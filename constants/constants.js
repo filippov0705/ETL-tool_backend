@@ -7,5 +7,5 @@ module.exports = {
     COPY_EXCEL: "Copy Excel",
     STRING: "string",
     NUMBER: "number",
-    READ_CSV_FROM_FTP: "Read CSV from FTP"
-}
+    READ_CSV_FROM_FTP: "Read CSV from FTP",
+};

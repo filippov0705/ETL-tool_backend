@@ -1,9 +1,9 @@
-require('module-alias/register');
+require("module-alias/register");
 
 const procedureService = require("@services/procedureService");
 const usersFile = "../frontend/src/mockData/mockData.json";
 
-const { ERROR } =  require("@constants/constants");
+const {ERROR} = require("@constants/constants");
 
 class EditProcedureController {
     changeProcedureName(req, res) {
@@ -14,14 +14,16 @@ class EditProcedureController {
                         if (procedure.id === Number(req.params.procedureId)) {
                             procedure.name = req.body.newName;
                         }
-                        return procedure
+                        return procedure;
                     });
                 }
                 return item;
             });
 
             procedureService.setFileToDB(usersFile, newUserFile);
-            const newProcedure = newUserFile.find(item => item.userId === Number(req.params.userId)).data.find(item => item.id === Number(req.params.procedureId));
+            const newProcedure = newUserFile
+                .find(item => item.userId === Number(req.params.userId))
+                .data.find(item => item.id === Number(req.params.procedureId));
             res.send(JSON.stringify(newProcedure));
         } catch (e) {
             res.send(JSON.stringify({status: ERROR}));
@@ -37,13 +39,15 @@ class EditProcedureController {
                             procedure.tasks = [...procedure.tasks, req.body.newTask];
                         }
                         return procedure;
-                    })
+                    });
                 }
                 return item;
             });
 
             procedureService.setFileToDB(usersFile, newUserFile);
-            const newProcedure = newUserFile.find(item => item.userId === Number(req.params.userId)).data.find(item => item.id === Number(req.params.procedureId));
+            const newProcedure = newUserFile
+                .find(item => item.userId === Number(req.params.userId))
+                .data.find(item => item.id === Number(req.params.procedureId));
             res.send(JSON.stringify(newProcedure));
         } catch (e) {
             res.send(JSON.stringify({status: ERROR}));
@@ -59,13 +63,15 @@ class EditProcedureController {
                             procedure.tasks = procedure.tasks.filter(task => task.id !== req.body.taskId);
                         }
                         return procedure;
-                    })
+                    });
                 }
                 return item;
             });
 
             procedureService.setFileToDB(usersFile, newUserFile);
-            const newProcedure = newUserFile.find(item => item.userId === Number(req.params.userId)).data.find(item => item.id === Number(req.params.procedureId));
+            const newProcedure = newUserFile
+                .find(item => item.userId === Number(req.params.userId))
+                .data.find(item => item.id === Number(req.params.procedureId));
             res.send(JSON.stringify(newProcedure));
         } catch (e) {
             res.send(JSON.stringify({status: ERROR}));

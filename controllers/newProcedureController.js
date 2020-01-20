@@ -1,4 +1,4 @@
-require('module-alias/register');
+require("module-alias/register");
 
 const procedureService = require("@services/procedureService");
 const usersFile = "../frontend/src/mockData/mockData.json";
@@ -8,7 +8,7 @@ class NewProcedureController {
         try {
             const newUserFile = procedureService.getFileFromDB(usersFile).map(item => {
                 if (item.userId === Number(req.params.id)) {
-                    item.data = [...item.data, req.body]
+                    item.data = [...item.data, req.body];
                 }
                 return item;
             });
