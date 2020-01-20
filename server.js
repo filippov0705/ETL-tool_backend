@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const procedureRouter = require("@routers/procedureRouter");
 const registrationRouter = require("@routers/registrationRouter");
-const tasksRouter = require("@routers/tasksRouter")
+const tasksRouter = require("@routers/tasksRouter");
 
 const app = express();
 

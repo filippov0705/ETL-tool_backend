@@ -1,5 +1,5 @@
 const readFileService = require("@services/readFileService");
-const copyExcelService = require("@services/CopyExcelService")
+const copyExcelService = require("@services/copyExcelService")
 
 const { ERROR, READ_EXCEL, COPY_EXCEL, READ_CSV_FROM_FTP } = require("@constants/constants");
 
