@@ -1,5 +1,3 @@
-require("module-alias/register");
-
 const {Sequelize} = require("sequelize");
 const {sequelize} = require("./index");
 

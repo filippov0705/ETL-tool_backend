@@ -1,5 +1,3 @@
-require("module-alias/register");
-
 const express = require("express");
 
 const procedureController = require("@controllers/procedureController.js");
