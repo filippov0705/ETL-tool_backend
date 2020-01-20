@@ -1,10 +1,10 @@
 const {CLIENT_ID, CLIENT_SECRET} = require("@constants/environemtConstants");
 
 class RegistratinController {
-    registration() {
-        const data = req.body;
+    async registration(req, res) {
+        const data = req.body.code;
 
-        (async () => {
+        await (async () => {
             const rawResponse = await fetch("https://github.com/login/oauth/access_token", {
                 method: "POST",
                 headers: {"Content-Type": "application/json;charset=utf-8"},

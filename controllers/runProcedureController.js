@@ -5,7 +5,7 @@ class RunProcedureController {
     runProcedure(req, res, next) {
         try {
             runProcedureService.procedureActionsChain(res.targetProcedureTasks);
-            res.send("404");
+            res.status(404);
         } catch (e) {
             res.send(JSON.stringify({status: ERROR}));
         }
