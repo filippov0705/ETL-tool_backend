@@ -1,7 +1,5 @@
-require("module-alias/register");
-
 const taskService = require("@services/taskService");
-const possibleTasksFile = "../frontend/src/mockData/possibleTasks.json";
+const possibleTasksFile = "./mockData/possibleTasks.json";
 const procedureService = require("@services/procedureService");
 
 class ProcedureController {

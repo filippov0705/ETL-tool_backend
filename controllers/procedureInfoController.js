@@ -1,9 +1,7 @@
-require("module-alias/register");
-
 const procedureService = require("@services/procedureService");
-const usersFile = "../frontend/src/mockData/mockData.json";
-
 const {ERROR} = require("@constants/constants");
+
+const usersFile = "./mockData/mockData.json";
 
 class ProcedureInfoController {
     editTaskSettings(req, res) {

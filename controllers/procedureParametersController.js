@@ -1,7 +1,5 @@
-require("module-alias/register");
-
 const procedureService = require("@services/procedureService");
-const usersFile = "../frontend/src/mockData/mockData.json";
+const usersFile = "./mockData/mockData.json";
 
 const {ERROR} = require("@constants/constants");
 

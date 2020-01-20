@@ -1,5 +1,3 @@
-require("module-alias/register");
-
 const FtpClient = require("ftp");
 
 const {SUCCESS, ERROR} = require("@constants/constants");
@@ -16,8 +14,10 @@ class ProcedureService {
                     password: task.settings.password,
                 });
 
+                c.on("error", () => resolve({status: ERROR}));
+
                 c.on("ready", function() {
-                    c.get("/readme.txt", function(err, stream) {
+                    c.get(`/${task.settings.name}`, function(err, stream) {
                         let content = "";
                         stream.on("data", function(chunk) {
                             content += chunk.toString();

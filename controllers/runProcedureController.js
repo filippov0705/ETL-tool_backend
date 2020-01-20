@@ -1,5 +1,3 @@
-require("module-alias/register");
-
 const runProcedureService = require("@services/runProcedureService");
 
 const {ERROR} = require("@constants/constants");

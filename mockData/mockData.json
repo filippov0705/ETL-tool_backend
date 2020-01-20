@@ -1,0 +1,1 @@
+[{"userId":19128378,"data":[{"name":"Procedure-17992803","id":41669952,"schedule":[{"id":88903491,"value":["Thu","Wed","Tue",0,0],"periodicity":"Periodically"}],"tasks":[{"name":"Read CSV from FTP","id":81462388,"settings":{"host":"test.rebex.net","user":"demo","password":"password","name":"pub/example/readme.txt"}},{"name":"Read Excel","id":66690917,"settings":{"from":""}}]}]}]

@@ -1,0 +1,32 @@
+[{
+    "name": "Read Excel",
+    "id": 1,
+    "settings": {
+      "from": ""
+    }
+  },
+  {
+    "name": "Show results",
+    "id": 2
+  },
+  {
+    "name": "Read CSV from FTP",
+    "id": 3,
+    "settings": {
+      "host": "",
+      "user": "",
+      "password": "",
+      "name": ""
+    }
+  },
+  {
+    "name": "Сalculate each one's average",
+    "id": 4 
+  },
+{
+  "name": "Copy Excel",
+  "id": 5,
+  "settings": {
+    "to": ""
+  }
+}]

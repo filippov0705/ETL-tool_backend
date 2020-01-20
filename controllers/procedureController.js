@@ -1,7 +1,5 @@
-require("module-alias/register");
-
 const procedureService = require("@services/procedureService");
-const usersFile = "../frontend/src/mockData/mockData.json";
+const usersFile = "./mockData/mockData.json";
 
 const {ERROR} = require("@constants/constants");
 
@@ -9,7 +7,7 @@ class ProcedureController {
     getAllProcedures(req, res) {
         try {
             const user = procedureService.getFileFromDB(usersFile).find(item => item.userId === Number(req.params.id));
-            // procedureService.readUsersFromDB();
+            procedureService.readUsersFromDB();
             if (user) {
                 const data = user.data.map(item => {
                     return {name: item.name, id: item.id, tasks: item.tasks};

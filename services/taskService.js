@@ -1,5 +1,3 @@
-require("module-alias/register");
-
 const nodemailer = require("nodemailer");
 
 const {ROUTING_MAIL, ROUTING_MAIL_PASSWORD} = require("@constants/environemtConstants");
