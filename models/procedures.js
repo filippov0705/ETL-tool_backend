@@ -17,18 +17,6 @@ const Procedure = sequelize.define(
     {timestamps: false}
 );
 
-const procedureRepository = {
-    findAll() {
-        Procedure.findAll({raw: true})
-        .then(procedures => {
-            console.log(procedures);
-        })
-        .catch(err => console.log(err));
-    }
-}
-
-
 module.exports = {
     Procedure,
-    procedureRepository
 };

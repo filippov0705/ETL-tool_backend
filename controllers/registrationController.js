@@ -1,12 +1,8 @@
-const fetch = require("node-fetch");
-
-const {CLIENT_ID, CLIENT_SECRET} = require("@constants/environemtConstants");
+const userRegistrationService = require("@services/userRegistrationService");
 
 class RegistratinController {
-    async registration(req, res) {
-        const data = req.body.code.slice(6);
-
-        await (async () => {
+    async registration(req, res, next) {
+         await (async () => {
             const rawResponse = await fetch("https://github.com/login/oauth/access_token", {
                 method: "POST",
                 headers: {"Content-Type": "application/json;charset=utf-8"},

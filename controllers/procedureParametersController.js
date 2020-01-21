@@ -11,7 +11,8 @@ class ProcedureParametersController {
                 .getFileFromDB(usersFile)
                 .find(item => item.userId === Number(id))
                 .data.find(item => item.id === Number(procedureId)).tasks;
-            res.targetProcedureTasks = targetProcedureTasks;
+            res.ctx = {};
+            res.ctx.targetProcedureTasks = targetProcedureTasks;
             next();
         } catch (e) {
             res.send(JSON.stringify({status: ERROR}));
