@@ -11,17 +11,21 @@ class UserRegistrationService {
                     code: code,
                 })
                 .then(response => {
-                    axios
-                        .get("https://api.github.com/user", {
-                            params: {
-                                access_token: response.data.match(/=\w+&/)[0].match(/\w+/)[0],
-                                client_id: CLIENT_ID,
-                                client_secret: CLIENT_SECRET,
-                            },
-                        })
-                        .then(function(response) {});
+                    resolve(response.data);
                 });
         });
+    }
+
+    getUserParams(token) {
+        axios
+            .get("https://api.github.com/user", {
+                params: {
+                    access_token: response.data.match(/=\w+&/)[0].match(/\w+/)[0],
+                    client_id: CLIENT_ID,
+                    client_secret: CLIENT_SECRET,
+                },
+            })
+            .then(function(response) {});
     }
 }
 

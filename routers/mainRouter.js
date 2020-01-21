@@ -1,8 +1,8 @@
 const express = require("express");
-const RegistratinController = require("@controllers/registrationController.js");
+const registratinController = require("@controllers/registrationController.js");
 
 const router = express.Router();
 
-router.route("/registration").post(RegistratinController.registration);
+router.route("/registration").post(registratinController.registration, registratinController.newUserCreation);
 
 module.exports = router;
