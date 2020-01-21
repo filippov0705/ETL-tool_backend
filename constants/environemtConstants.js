@@ -11,5 +11,7 @@ module.exports = {
     USER_NAME: envDatabase.parsed.userName,
     PASSWORD: envDatabase.parsed.password,
     DIALECT: envDatabase.parsed.dialect,
-    HOST: envDatabase.parsed.host
+    HOST: envDatabase.parsed.host,
+    CLIENT_ID: envDatabase.parsed.clientId,
+    CLIENT_SECRET: envDatabase.parsed.clientSecret
 };

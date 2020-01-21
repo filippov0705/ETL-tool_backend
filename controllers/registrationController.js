@@ -1,8 +1,10 @@
+const fetch = require("node-fetch");
+
 const {CLIENT_ID, CLIENT_SECRET} = require("@constants/environemtConstants");
 
 class RegistratinController {
     async registration(req, res) {
-        const data = req.body.code;
+        const data = req.body.code.slice(6);
 
         await (async () => {
             const rawResponse = await fetch("https://github.com/login/oauth/access_token", {
@@ -11,7 +13,7 @@ class RegistratinController {
                 body: JSON.stringify({
                     client_id: CLIENT_ID,
                     client_secret: CLIENT_SECRET,
-                    code: data.code,
+                    code: data,
                 }),
             });
             const content = await rawResponse.text();
