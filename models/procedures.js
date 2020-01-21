@@ -1,5 +1,5 @@
 const {Sequelize} = require("sequelize");
-const {sequelize} = require("../models");
+const {sequelize} = require("./index");
 
 const Procedure = sequelize.define(
     "procedure",
@@ -17,14 +17,18 @@ const Procedure = sequelize.define(
     {timestamps: false}
 );
 
-const proceduresFind = () =>
-    Procedure.findAll({raw: true})
+const procedureRepository = {
+    findAll() {
+        Procedure.findAll({raw: true})
         .then(procedures => {
             console.log(procedures);
         })
         .catch(err => console.log(err));
+    }
+}
+
 
 module.exports = {
     Procedure,
-    proceduresFind,
+    procedureRepository
 };

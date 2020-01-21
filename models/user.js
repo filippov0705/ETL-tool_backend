@@ -1,5 +1,5 @@
 const {Sequelize} = require("sequelize");
-const {sequelize} = require("../models");
+const {sequelize} = require("./index");
 
 const User = sequelize.define(
     "user",

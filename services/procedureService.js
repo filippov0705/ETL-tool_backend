@@ -1,6 +1,6 @@
-const {User} = require("@repostory/user");
-const {Procedure} = require("@repostory/procedures");
-const {User_procedure} = require("@repostory/userProcedure");
+const {User} = require("@models/user");
+const {Procedure, procedureRepository} = require("@models/procedures");
+const {User_procedure} = require("@models/userProcedure");
 const {Op} = require("sequelize");
 
 const fs = require("fs");

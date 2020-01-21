@@ -1,7 +1,7 @@
 const {Sequelize} = require("sequelize");
-const {Procedure} = require("@repostory/procedures");
-const {User} = require("@repostory/user");
-const {sequelize} = require("../models");
+const {Procedure} = require("@models/procedures");
+const {User} = require("@models/user");
+const {sequelize} = require("./index");
 
 const User_procedure = sequelize.define(
     "users_procedures",
