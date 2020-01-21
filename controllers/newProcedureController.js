@@ -15,9 +15,9 @@ class NewProcedureController {
             });
 
             procedureService.setFileToDB(usersFile, newUserFile);
-            res.status(404);
+            res.status(200);
         } catch (e) {
-            res.send(JSON.stringify({status: ERROR}));
+            res.status(400).send(JSON.stringify({message: ERROR}));
         }
     }
 }

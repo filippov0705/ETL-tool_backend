@@ -6,9 +6,9 @@ const possibleTasksFile = "./mockData/possibleTasks.json";
 class ProcedureController {
     getTasksTypes(req, res) {
         try {
-            res.send(JSON.stringify(procedureService.getFileFromDB(possibleTasksFile)));
+            res.status(200).send(JSON.stringify(procedureService.getFileFromDB(possibleTasksFile)));
         } catch (e) {
-            res.send(JSON.stringify({status: ERROR}));
+            res.status(400).send(JSON.stringify({message: ERROR}));
         }
     }
 

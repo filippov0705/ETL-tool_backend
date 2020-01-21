@@ -13,12 +13,12 @@ class ProcedureController {
                 const data = user.data.map(item => {
                     return {name: item.name, id: item.id, tasks: item.tasks};
                 });
-                res.send(JSON.stringify(data));
+                res.status(200).send(JSON.stringify(data));
             } else {
-                res.send(JSON.stringify([]));
+                res.status(200).send(JSON.stringify([]));
             }
         } catch (e) {
-            res.send(JSON.stringify({status: ERROR}));
+            res.status(400).send(JSON.stringify({message: ERROR}));
         }
     }
 
@@ -39,9 +39,9 @@ class ProcedureController {
             });
 
             procedureService.setFileToDB(usersFile, newUserFile);
-            res.send(JSON.stringify(dataToSend));
+            res.status(200).send(JSON.stringify(dataToSend));
         } catch (e) {
-            res.send(JSON.stringify({status: ERROR}));
+            res.status(400).send(JSON.stringify({message: ERROR}));
         }
     }
 }

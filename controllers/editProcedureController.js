@@ -25,7 +25,7 @@ class EditProcedureController {
                 .data.find(item => item.id === Number(procedureId));
             res.send(JSON.stringify(newProcedure));
         } catch (e) {
-            res.send(JSON.stringify({status: ERROR}));
+            res.status(400).send(JSON.stringify({message: ERROR}));
         }
     }
 
@@ -49,9 +49,9 @@ class EditProcedureController {
             const newProcedure = newUserFile
                 .find(item => item.userId === Number(userId))
                 .data.find(item => item.id === Number(procedureId));
-            res.send(JSON.stringify(newProcedure));
+            res.status(200).send(JSON.stringify(newProcedure));
         } catch (e) {
-            res.send(JSON.stringify({status: ERROR}));
+            res.status(400).send(JSON.stringify({message: ERROR}));
         }
     }
 
@@ -75,9 +75,9 @@ class EditProcedureController {
             const newProcedure = newUserFile
                 .find(item => item.userId === Number(userId))
                 .data.find(item => item.id === Number(procedureId));
-            res.send(JSON.stringify(newProcedure));
+            res.status(200).send(JSON.stringify(newProcedure));
         } catch (e) {
-            res.send(JSON.stringify({status: ERROR}));
+            res.status(400).send(JSON.stringify({message: ERROR}));
         }
     }
 }

@@ -15,7 +15,7 @@ class ProcedureParametersController {
             res.ctx.targetProcedureTasks = targetProcedureTasks;
             next();
         } catch (e) {
-            res.send(JSON.stringify({status: ERROR}));
+            res.status(400).send(JSON.stringify({message: ERROR}));
         }
     }
 }
