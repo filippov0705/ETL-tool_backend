@@ -58,12 +58,12 @@ class EditProcedureController {
     deleteTaskInProcedure(req, res) {
         try {
             const { userId, procedureId } = req.params;
-            const newTask = req.body.newTask;
+            const deletedTaskId = req.body.taskId;
             const newUserFile = procedureService.getFileFromDB(usersFile).map(item => {
                 if (item.userId === Number(userId)) {
                     item.data.map(procedure => {
                         if (procedure.id === Number(procedureId)) {
-                            procedure.tasks = procedure.tasks.filter(task => task.id !== newTask);
+                            procedure.tasks = procedure.tasks.filter(task => task.id !== deletedTaskId);
                         }
                         return procedure;
                     });
@@ -75,6 +75,7 @@ class EditProcedureController {
             const newProcedure = newUserFile
                 .find(item => item.userId === Number(userId))
                 .data.find(item => item.id === Number(procedureId));
+            console.log(newProcedure);
             res.status(200).send(JSON.stringify(newProcedure));
         } catch (e) {
             res.status(400).send(JSON.stringify({message: ERROR}));

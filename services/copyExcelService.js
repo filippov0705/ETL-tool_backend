@@ -18,28 +18,10 @@ class CopyExcelService {
 
                 data[0].data.forEach((item, row) => {
                     item.forEach((item, column) => {
-                        switch (typeof item) {
-                            case STRING:
-                                return ws
-                                    .cell(row + 1, column + 1)
-                                    .string(item)
-                                    .style(style);
-
-                            case NUMBER:
-                                return ws
-                                    .cell(row + 1, column + 1)
-                                    .number(item)
-                                    .style(style);
-
-                            case BOOLEAN:
-                                return ws
-                                    .cell(row + 1, column + 1)
-                                    .bool(item)
-                                    .style(style);
-
-                            default:
-                                return;
-                        }
+                        return ws
+                            .cell(row + 1, column + 1)
+                            [typeof item](item)
+                            .style(style);
                     });
                 });
                 wb.write(`${USER_DATA_STORAGE}${task.settings.to}.xlsx`);
