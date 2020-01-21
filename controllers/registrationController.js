@@ -9,8 +9,7 @@ class RegistratinController {
     }
 
     newUserCreation(req, res) {
-        userRegistrationService.getUserParams(req.user.access_token);
-        // res.status(200).send(JSON.stringify({access_token: response}));
+        userRegistrationService.getUserParams(req.user.access_token).then(response => console.log(response));
     }
 }
 

@@ -17,15 +17,19 @@ class UserRegistrationService {
     }
 
     getUserParams(token) {
-        axios
-            .get("https://api.github.com/user", {
-                params: {
-                    access_token: response.data.match(/=\w+&/)[0].match(/\w+/)[0],
-                    client_id: CLIENT_ID,
-                    client_secret: CLIENT_SECRET,
-                },
-            })
-            .then(function(response) {});
+        return new Promise(resolve => {
+            axios
+                .get("https://api.github.com/user", {
+                    params: {
+                        access_token: token.match(/=\w+&/)[0].match(/\w+/)[0],
+                        client_id: CLIENT_ID,
+                        client_secret: CLIENT_SECRET,
+                    },
+                })
+                .then(response => {
+                    resolve(response.data);
+                });
+        });
     }
 }
 
