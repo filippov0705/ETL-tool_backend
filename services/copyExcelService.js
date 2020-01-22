@@ -1,6 +1,6 @@
 const xl = require("excel4node");
 
-const {BOOLEAN, ERROR, STRING, SUCCESS, NUMBER, USER_DATA_STORAGE} = require("@constants/constants");
+const { ERROR, SUCCESS,  USER_DATA_STORAGE} = require("@constants/constants");
 
 class CopyExcelService {
     copyExcel(task, data) {

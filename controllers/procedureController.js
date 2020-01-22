@@ -5,18 +5,12 @@ const usersFile = "./mockData/mockData.json";
 
 class ProcedureController {
     getAllProcedures(req, res) {
+        const userId = 46339050;
         try {
-            const { id } = req.params;
-            const user = procedureService.getFileFromDB(usersFile).find(item => item.userId === Number(id));
-            procedureService.readUsersFromDB();
-            if (user) {
-                const data = user.data.map(item => {
-                    return {name: item.name, id: item.id, tasks: item.tasks};
-                });
-                res.status(200).send(JSON.stringify(data));
-            } else {
-                res.status(200).send(JSON.stringify([]));
-            }
+            procedureService.getUserProcedures(46339050).then(resolve => {
+                console.log(resolve)
+                res.status(200).send(JSON.stringify(resolve));
+            })
         } catch (e) {
             res.status(400).send(JSON.stringify({message: ERROR}));
         }
