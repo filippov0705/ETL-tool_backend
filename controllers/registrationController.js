@@ -30,6 +30,7 @@ class RegistratinController {
     testCookie(req, res) {
         console.log('!!!!!')
         console.log(req.headers)
+        res.status(400).send(JSON.stringify({auth: false}))
     }
 }
 
