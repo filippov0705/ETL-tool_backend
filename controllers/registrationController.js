@@ -20,7 +20,7 @@ class RegistratinController {
                     console.log(req.user.access_token);
                     console.log(req.user.access_token.match(/=\w+&/)[0].match(/\w+/)[0]);
                     // res.setHeader('Set-Cookie', `access_token=${req.user.access_token.match(/=\w+&/)[0].match(/\w+/)[0]}; expires=${new Date(Date.now() + 900000)} HttpOnly`);
-                    res.setHeader('Set-Cookie', `access_token=12345; expires=${new Date(Date.now() + 900000)} HttpOnly`);
+                    res.setHeader('Set-Cookie', `access_token=12345; HttpOnly`);
                     res.status(200).send(JSON.stringify({value: 'check'}));
                 }
             });

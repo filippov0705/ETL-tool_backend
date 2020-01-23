@@ -1,14 +1,19 @@
 const taskService = require("@services/taskService");
-const procedureService = require("@services/procedureService");
-
-const possibleTasksFile = "./mockData/possibleTasks.json";
+const taskServeice = require("@services/taskService");
+const {ERROR} = require("@constants/constants");
 
 class ProcedureController {
     getTasksTypes(req, res) {
         try {
-            res.status(200).send(JSON.stringify(procedureService.getFileFromDB(possibleTasksFile)));
+            taskServeice.getTaskTypes().then(taskTypes => {
+                res.status(200).send(
+                    taskTypes.map(item => {
+                        return {name: item.task_name, id: item.task_id, setting: item.task_settings};
+                    })
+                );
+            });
         } catch (e) {
-            res.status(400).send(JSON.stringify({message: ERROR}));
+            res.status(404).send(JSON.stringify({message: ERROR}));
         }
     }
 

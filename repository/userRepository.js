@@ -14,6 +14,7 @@ class UserRepository {
             User.findByPk(user_id).then(user => resolve(user));
         });
     }
+
 }
 
 module.exports = new UserRepository();

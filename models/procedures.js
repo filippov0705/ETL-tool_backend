@@ -1,5 +1,6 @@
 const {Sequelize} = require("sequelize");
 const {sequelize} = require("./index");
+const { Task } = require("@models/tasks");
 
 const Procedure = sequelize.define(
     "procedure",
@@ -16,6 +17,8 @@ const Procedure = sequelize.define(
     },
     {timestamps: false}
 );
+
+Procedure.hasMany(Task);
 
 module.exports = {
     Procedure,
