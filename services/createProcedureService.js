@@ -7,14 +7,6 @@ class CreateProcedureService {
             resolve();
         });
     }
-
-    createTasks(userId, tasks) {
-        return new Promise(resolve => {
-            console.log(tasks);
-            tasks.forEach(item => procedureRepository.createTasks(userId, item));
-            resolve();
-        });
-    }
 }
 
 module.exports = new CreateProcedureService();

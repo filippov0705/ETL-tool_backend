@@ -14,15 +14,9 @@ class ProcedureRepository {
         Procedure.create({
             procedure_id: procedureId,
             procedure_name: procedureName,
-        })
-            .then(() => {
-                userProcedure.create(userId, procedureId);
-            })
-            .then(() => resolve());
-    }
-
-    createTasks(tasks) {
-
+        }).then(() => {
+            userProcedure.create(userId, procedureId);
+        });
     }
 
     delete(id) {

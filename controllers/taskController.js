@@ -8,7 +8,7 @@ class ProcedureController {
             taskServeice.getTaskTypes().then(taskTypes => {
                 res.status(200).send(
                     taskTypes.map(item => {
-                        return {name: item.task_name, id: item.task_id, setting: item.task_settings};
+                        return {name: item.task_name, id: item.task_id, settings: item.task_settings};
                     })
                 );
             });

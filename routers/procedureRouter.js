@@ -19,7 +19,7 @@ router
     .delete(procedureController.deleteProcedure);
 router.route("/tasks").get(taskController.getTasksTypes);
 router.route("/new/:id").post(newProcedureController.createNewProcedure);
-router.route("/target/:userId/:procedureId").get(procedureSchedulesController.getProcedureSchedules);
+router.route("/target/:userId/:procedureId").get(procedureSchedulesController.getTargetProcedure);
 router
     .route("/schedules/:userId/:procedureId")
     .post(procedureSchedulesController.postNewSchedule)

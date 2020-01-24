@@ -12,7 +12,7 @@ const Task = sequelize.define(
         task_name: {
             type: Sequelize.STRING(50),
             allowNull: false,
-            unique: true,
+            unique: false,
         },
         procedure_id: {
             type: Sequelize.INTEGER,

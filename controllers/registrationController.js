@@ -45,7 +45,6 @@ class RegistratinController {
             }
             userRegistrationService.getUserParams(req.headers.cookie.split("=")[1]).then(result => {
                 if (result) {
-                    // res.clearCookie('access_token', { httpOnly: true, path: '/api/main' });
                     res.status(200).send(JSON.stringify({auth: true}));
                 }
             });

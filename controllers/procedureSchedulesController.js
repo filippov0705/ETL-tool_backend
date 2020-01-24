@@ -4,14 +4,16 @@ const {ERROR} = require("@constants/constants");
 const usersFile = "./mockData/mockData.json";
 
 class ProcedureSchedulesController {
-    getProcedureSchedules(req, res) {
+    getTargetProcedure(req, res) {
+        const userId = 46339050;
         try {
-            const { userId, procedureId } = req.params;
-            const user = procedureService
-                .getFileFromDB(usersFile)
-                .find(item => item.userId === Number(userId));
-            const procedure = user.data.find(item => item.id === Number(procedureId));
-            res.status(200).send(JSON.stringify(procedure));
+            const { procedureId } = req.params;
+
+            // const user = procedureService
+            //     .getFileFromDB(usersFile)
+            //     .find(item => item.userId === Number(userId));
+            // const procedure = user.data.find(item => item.id === Number(procedureId));
+            res.status(200).send(JSON.stringify([]));
         } catch (e) {
             res.status(400).send(JSON.stringify({message: ERROR}));
         }
