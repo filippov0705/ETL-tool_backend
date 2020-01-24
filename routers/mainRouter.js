@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.route("/registration")
     .post(registratinController.registration, registratinController.newUserCreation)
-    .get(registratinController.testCookie);
+    .get(registratinController.testCookie)
+    .put(registratinController.logOut);
 
 module.exports = router;

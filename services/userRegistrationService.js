@@ -21,14 +21,14 @@ class UserRegistrationService {
             axios
                 .get("https://api.github.com/user", {
                     params: {
-                        access_token: token.match(/=\w+&/)[0].match(/\w+/)[0],
+                        access_token: token,
                         client_id: CLIENT_ID,
                         client_secret: CLIENT_SECRET,
                     },
                 })
                 .then(response => {
                     resolve(response.data);
-                });
+                }).catch(err => console.log(err));
         });
     }
 }
