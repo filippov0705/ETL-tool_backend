@@ -10,53 +10,41 @@ class RegistratinController {
     }
 
     newUserCreation(req, response) {
-
-        userRegistrationService.getUserParams(req.user.access_token.match(/=\w+&/)[0].match(/\w+/)[0]).then(res => {
+        userRegistrationService.getUserParams(req.user.access_token.match(/=\w+&/)[0].match(/\w+/)[0]).then(userData => {
             userRepository
-                .findUser(res.id)
+                .findUser(userData.id, userData.login)
                 .then(user => {
                     if (!user) {
-                        userRepository.createUser(response.id, response.login);
-                        response.setHeader(
-                            "Set-Cookie",
-                            `access_token=${req.user.access_token.match(/=\w+&/)[0].match(/\w+/)[0]};  HttpOnly`
-                        );
-                        res.status(200).send(JSON.stringify({access_token: req.user.access_token}));
-                    } else {
-                        response.setHeader(
-                            "Set-Cookie",
-                            `access_token=${req.user.access_token.match(/=\w+&/)[0].match(/\w+/)[0]};  HttpOnly`
-                        );
-                        response
-                            .status(200)
-                            .send(
-                                JSON.stringify({access_token: req.user.access_token.match(/=\w+&/)[0].match(/\w+/)[0]})
-                            );
+                        userRepository.createUser(userData.id, userData.login);
                     }
+                    response.setHeader(
+                        "Set-Cookie",
+                        `access_token=${req.user.access_token.match(/=\w+&/)[0].match(/\w+/)[0]};  HttpOnly`
+                    );
+                    response.status(200).send(JSON.stringify({login: userData.login}));
                 })
-                .catch(err => console.log(err));
         });
     }
 
     testCookie(req, res) {
         try {
             if (!req.headers.cookie || !req.headers.cookie.split("=")[1]) {
-                res.status(200).send(JSON.stringify({auth: false}));
+                res.status(403).send(JSON.stringify({auth: false}));
             }
             userRegistrationService.getUserParams(req.headers.cookie.split("=")[1]).then(result => {
                 if (result) {
-                    res.status(200).send(JSON.stringify({auth: true}));
+                    res.status(200).send(JSON.stringify({login: result.login}));
                 }
             });
         } catch (e) {
-            res.status(400).send(JSON.stringify({auth: false}));
+            res.status(403).send(JSON.stringify({auth: false}));
         }
     }
 
     logOut(req, res) {
-        res.clearCookie('access_token', { httpOnly: true, path: '/api/main' });
+        res.clearCookie('access_token', { httpOnly: true, path: '/api' });
             res
-                .status(200).send(JSON.stringify({message: true}))
+                .status(200).send(JSON.stringify({message: true}));
     }
 }
 

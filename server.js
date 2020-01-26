@@ -5,9 +5,10 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const procedureRouter = require("@routers/procedureRouter");
-const mainRouter = require("@routers/mainRouter");
+const authorizationRouter = require("@routers/authorizationRouter");
 const tasksRouter = require("@routers/tasksRouter");
 const userRouter = require("@routers//userRouter");
+const authenticationRouter = require("@routers/authenticationRouter");
 
 const app = express();
 
@@ -24,14 +25,15 @@ app.use(morgan("common"));
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-    res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE, HEAD");
+    res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
 
 app.use("/api/procedures/", procedureRouter);
-app.use("/api/main", mainRouter);
+app.use("/api/authorization", authorizationRouter);
 app.use("/api/tasks", tasksRouter);
 app.use("/api/user", userRouter);
+app.use("/api/authentication", authenticationRouter);
 
 app.listen(3001, () => console.log("Server has been started..."));
