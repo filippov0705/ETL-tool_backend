@@ -1,7 +1,12 @@
 const {Procedure} = require("@models/procedures");
+const {Task} = require("@models/tasks");
 const userProcedureRepository = require("@repository/userProcedureRepository");
 
 class ProcedureRepository {
+    async findOne(id) {
+        return await Procedure.findByPk(id);
+    }
+
     findAll() {
         Procedure.findAll({raw: true})
             .then(procedures => {

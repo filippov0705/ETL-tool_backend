@@ -7,6 +7,7 @@ class NewProcedureController {
         try {
             await createProcedureService.createProcedure(req.user.id, name, id);
             await tasks.forEach(item => createTaskService.createTasks(id, item));
+
             res.status(200).send("200");
         } catch (e) {
             res.status(400).send(JSON.stringify({message: ERROR}));

@@ -4,7 +4,6 @@ const procedureController = require("@controllers/procedureController.js");
 const taskController = require("@controllers/taskController.js");
 const procedureParametersController = require("@controllers/procedureParametersController");
 const runProcedureController = require("@controllers/runProcedureController");
-const registratinController = require("@controllers/registrationController.js");
 const newProcedureController = require("@controllers/newProcedureController");
 const procedureSchedulesController = require("@controllers/procedureSchedulesController");
 const editProcedureController = require("@controllers/editProcedureController");

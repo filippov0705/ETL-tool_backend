@@ -18,8 +18,6 @@ const Procedure = sequelize.define(
     {timestamps: false}
 );
 
-Procedure.hasMany(Task);
-
 module.exports = {
     Procedure,
 };
