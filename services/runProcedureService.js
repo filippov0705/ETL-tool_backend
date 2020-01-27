@@ -1,7 +1,8 @@
 const readFileService = require("@services/readFileService");
 const copyExcelService = require("@services/copyExcelService");
+const taskService = require("@services/taskService");
 
-const {ERROR, READ_EXCEL, COPY_EXCEL, READ_CSV_FROM_FTP} = require("@constants/constants");
+const {ERROR, READ_EXCEL, COPY_EXCEL, READ_CSV_FROM_FTP, MAIL_EXCEL, MAIL_TEXT} = require("@constants/constants");
 
 class RunProcedureService {
     procedureActionsChain(tasks, previousTaskRunResults) {
@@ -26,6 +27,12 @@ class RunProcedureService {
 
             case READ_CSV_FROM_FTP:
                 return readFileService.readCSV;
+
+            case MAIL_EXCEL:
+                return taskService.mailExcel;
+
+            case MAIL_TEXT:
+                return taskService.mailText;
 
             default:
                 return null;

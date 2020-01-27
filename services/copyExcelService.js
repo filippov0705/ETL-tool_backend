@@ -16,7 +16,7 @@ class CopyExcelService {
                     numberFormat: "###; (###); -",
                 });
 
-                data[0].data.forEach((item, row) => {
+                data.excel.data[0].data.forEach((item, row) => {
                     item.forEach((item, column) => {
                         return ws
                             .cell(row + 1, column + 1)
