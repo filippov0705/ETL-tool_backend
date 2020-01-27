@@ -1,11 +1,10 @@
 const {Procedure} = require("@models/procedures");
-const userProcedure = require("@repository/userProcedureRepository");
+const userProcedureRepository = require("@repository/userProcedureRepository");
 
 class ProcedureRepository {
     findAll() {
         Procedure.findAll({raw: true})
             .then(procedures => {
-                console.log(procedures);
             })
             .catch(err => console.log(err));
     }
@@ -15,7 +14,7 @@ class ProcedureRepository {
             procedure_id: procedureId,
             procedure_name: procedureName,
         }).then(() => {
-            userProcedure.create(userId, procedureId);
+            userProcedureRepository.create(userId, procedureId);
         });
     }
 
