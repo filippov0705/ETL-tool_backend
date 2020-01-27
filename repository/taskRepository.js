@@ -10,8 +10,18 @@ class TaskRepository {
         });
     }
 
+    async getTaskSettings(id) {
+        let settings = await Task.findOne({attributes: ["task_settings"], where: {task_id: id}});
+        return settings.dataValues.task_settings;
+    }
+
     async findTasks(id) {
-        return await Task.findAll({where:{procedure_id: id}, raw: true });
+        let tasks = await Task.findAll({where:{procedure_id: id}, raw: true });
+        return tasks;
+    }
+
+    async changeSettings(task_id, newSettings) {
+        await Task.update({task_settings: newSettings}, {where: {task_id}})
     }
 }
 
