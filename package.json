@@ -14,7 +14,8 @@
     "@controllers": "./controllers",
     "@constants": "./constants",
     "@models": "./models",
-    "@repository": "./repository"
+    "@repository": "./repository",
+    "@middlewares": "./middlewares"
   },
   "author": "",
   "license": "ISC",

@@ -1,6 +1,5 @@
 const procedureRepository = require("@repository/procedureRepository");
 const userRepository = require("@repository/userRepository");
-
 const fs = require("fs");
 
 class ProcedureService {
