@@ -5,7 +5,6 @@ const usersFile = "./mockData/mockData.json";
 
 class ProcedureSchedulesController {
     getTargetProcedure(req, res) {
-        const userId = 46339050;
         try {
             const { procedureId } = req.params;
 

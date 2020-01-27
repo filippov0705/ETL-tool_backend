@@ -1,13 +1,10 @@
 const procedureService = require("@services/procedureService");
 const {ERROR, SUCCES} = require("@constants/constants");
 
-const usersFile = "./mockData/mockData.json";
-
 class ProcedureController {
     getAllProcedures(req, res) {
-        const userId = 46339050;
         try {
-            procedureService.getUserProcedures(46339050).then(resolve => {
+            procedureService.getUserProcedures(req.user.id).then(resolve => {
                 res.status(200).send(JSON.stringify(resolve));
             });
         } catch (e) {
@@ -16,10 +13,9 @@ class ProcedureController {
     }
 
     deleteProcedure(req, res) {
-        const userId = 46339050;
         try {
             const {procedureId} = req.params;
-            procedureService.deleteProcedure(userId, procedureId).then(() => {
+            procedureService.deleteProcedure(req.user.id, procedureId).then(() => {
                 res.status(200).send({message: SUCCES});
             });
         } catch (e) {
