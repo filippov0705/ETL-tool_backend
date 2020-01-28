@@ -7,7 +7,7 @@ class CopyExcelService {
         return new Promise(resolve => {
             try {
                 const wb = new xl.Workbook();
-                const ws = wb.addWorksheet(data.excel[0].name);
+                const ws = wb.addWorksheet(task.settings.from[0].name);
                 const style = wb.createStyle({
                     font: {
                         color: "#000000",
@@ -15,7 +15,7 @@ class CopyExcelService {
                     },
                     numberFormat: "###; (###); -",
                 });
-                data.excel[0].data.forEach((item, row) => {
+                data[task.settings.from][0].data.forEach((item, row) => {
                     item.forEach((item, column) => {
                         return ws
                             .cell(row + 1, column + 1)
