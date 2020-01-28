@@ -8,7 +8,7 @@ class ReadFileService {
         return new Promise(resolve => {
             try {
                 const content = xlsx.parse(`${USER_DATA_STORAGE}${task.settings.from}.xlsx`);
-                data.excel = content;
+                data[task.settings.as] = content;
                 resolve({status: SUCCESS, runResult: data});
             } catch (e) {
                 resolve({status: ERROR});
@@ -19,7 +19,7 @@ class ReadFileService {
     readCSV(task, data) {
         return new Promise(resolve => {
             serverCalls.readFromFTP(task).then(result => {
-                data.text = result;
+                data[task.settings.as] = result;
                 resolve({status: SUCCESS, runResult: data});
             });
         });

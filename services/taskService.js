@@ -2,7 +2,7 @@ const nodemailerService = require("@services/nodemailerService");
 const taskTypesRepository = require("@repository/taskTypesRepository");
 const taskRepository = require("@repository/taskRepository");
 
-const {SUCCESS} = require("@constants/constants");
+const {ALPHABET, SUCCESS, ERROR} = require("@constants/constants");
 
 class taskServeice {
     async getTaskSettings(id) {
@@ -22,7 +22,7 @@ class taskServeice {
     mailExcel(task, data) {
         return new Promise(resolve => {
             try {
-                data.excel[0].data.slice(1).forEach(item => {
+                data[task.settings.from][0].data.slice(1).forEach(item => {
                     nodemailerService.send(
                         "ETL-tool",
                         item[0],
@@ -37,13 +37,36 @@ class taskServeice {
         });
     }
 
-    mailText(task, data) {
+    createVariable(task, data) {
         return new Promise(resolve => {
-            nodemailerService.send("ETL-tool", task.settings.Email, "info", data.text);
+            const col = ALPHABET.indexOf(task.settings.field[0].toLowerCase());
+            const row = task.settings.field[1] - 1;
+            data[task.settings.as] = data[task.settings.from][0].data[row][col];
             resolve({status: SUCCESS, runResult: data});
         });
     }
 
+    changeField(task, data) {
+        return new Promise(resolve => {
+            const newValue = Object.keys(data).includes(task.settings.value)
+                ? data[task.settings.value]
+                : task.settings.value;
+            const col = ALPHABET.indexOf(task.settings.field[0].toLowerCase());
+            const row = task.settings.field[1] - 1;
+            data[task.settings.target][0].data[row][col] = newValue;
+            resolve({status: SUCCESS, runResult: data});
+        });
+    }
+
+    mailText(task, data) {
+        return new Promise(resolve => {
+            const mailAdress = Object.keys(data).includes(task.settings.Email)
+                ? data[task.settings.Email]
+                : task.settings.Email;
+            nodemailerService.send("ETL-tool", mailAdress, "info", data[task.settings.variable]);
+            resolve({status: SUCCESS, runResult: data});
+        });
+    }
 }
 
 module.exports = new taskServeice();
