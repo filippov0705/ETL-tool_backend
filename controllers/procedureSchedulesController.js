@@ -12,6 +12,10 @@ class ProcedureSchedulesController {
 
             const procedureData = await procedureRepository.findOne(procedureId);
             const tasksData = await taskRepository.findTasks(procedureData.dataValues.procedure_id);
+            tasksData.sort((a, b) => {
+                if (a.task_order > b.task_order) return 1;
+                if (a.task_order < b.task_order) return -1;
+            });
             const tasks = tasksData.map(item => {
                 return {id: item.task_id, name: item.task_name, settings: item.task_settings};
             });

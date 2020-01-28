@@ -2,6 +2,8 @@ const nodemailerService = require("@services/nodemailerService");
 const taskTypesRepository = require("@repository/taskTypesRepository");
 const taskRepository = require("@repository/taskRepository");
 
+const {SUCCESS} = require("@constants/constants");
+
 class taskServeice {
     async getTaskSettings(id) {
         return await taskRepository.getTaskSettings(id);
@@ -20,7 +22,6 @@ class taskServeice {
     mailExcel(task, data) {
         return new Promise(resolve => {
             try {
-                console.log(data)
                 data.excel[0].data.slice(1).forEach(item => {
                     nodemailerService.send(
                         "ETL-tool",

@@ -8,9 +8,7 @@ class ReadFileService {
         return new Promise(resolve => {
             try {
                 const content = xlsx.parse(`${USER_DATA_STORAGE}${task.settings.from}.xlsx`);
-                console.log(content)
                 data.excel = content;
-                console.log(data.excel)
                 resolve({status: SUCCESS, runResult: data});
             } catch (e) {
                 resolve({status: ERROR});

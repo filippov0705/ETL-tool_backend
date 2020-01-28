@@ -8,8 +8,6 @@ class RunProcedureService {
     procedureActionsChain(tasks, previousTaskRunResults) {
         const nextTask = tasks.shift();
         if (nextTask) {
-            // console.log(nextTask)
-            // console.log(previousTaskRunResults)
             this.switchToAppropriateTask(nextTask.name)(nextTask, previousTaskRunResults).then(result => {
                 if (result.status === ERROR) return Promise.resolve();
                 this.procedureActionsChain(tasks, result.runResult);

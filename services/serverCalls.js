@@ -7,7 +7,6 @@ class ProcedureService {
         return new Promise(resolve => {
             try {
                 const c = new FtpClient();
-
                 c.connect({
                     host: task.settings.host,
                     user: task.settings.user,
@@ -23,12 +22,12 @@ class ProcedureService {
                             content += chunk.toString();
                         });
                         stream.on("end", function() {
-                            resolve({status: SUCCESS, runResult: content});
+                            resolve(content);
                         });
                     });
                 });
             } catch (error) {
-                resolve({status: ERROR});
+                console.log(error);
             }
         });
     }
