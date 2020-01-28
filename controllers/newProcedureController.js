@@ -10,7 +10,7 @@ class NewProcedureController {
 
             res.status(200).send("200");
         } catch (e) {
-            res.status(400).send(JSON.stringify({message: ERROR}));
+            res.status(400).send({message: e});
         }
     }
 }

@@ -10,9 +10,8 @@ class ProcedureSchedulesController {
         try {
             const {procedureId} = req.params;
 
-            let procedureData = await procedureRepository.findOne(procedureId);
-            let tasksData = await taskRepository.findTasks(procedureData.dataValues.procedure_id);
-            console.log(tasksData);
+            const procedureData = await procedureRepository.findOne(procedureId);
+            const tasksData = await taskRepository.findTasks(procedureData.dataValues.procedure_id);
             const tasks = tasksData.map(item => {
                 return {id: item.task_id, name: item.task_name, settings: item.task_settings};
             });
@@ -24,7 +23,7 @@ class ProcedureSchedulesController {
             };
             res.status(200).send(procedure);
         } catch (e) {
-            res.status(400).send(JSON.stringify({message: ERROR}));
+            res.status(400).send({message: e});
         }
     }
 

@@ -1,11 +1,10 @@
 const procedureRepository = require("@repository/procedureRepository");
+const userProcedureRepository = require("@repository/userProcedureRepository");
 
 class CreateProcedureService {
-    createProcedure(userId, procedureName, procedureId) {
-        return new Promise(resolve => {
-            procedureRepository.create(userId, procedureId, procedureName);
-            resolve();
-        });
+    async createProcedure(userId, procedureName, procedureId) {
+        await procedureRepository.create(procedureId, procedureName);
+        await userProcedureRepository.create(userId, procedureId);
     }
 }
 

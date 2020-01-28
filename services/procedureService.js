@@ -1,6 +1,6 @@
+const fs = require("fs");
 const procedureRepository = require("@repository/procedureRepository");
 const userRepository = require("@repository/userRepository");
-const fs = require("fs");
 
 class ProcedureService {
     getFileFromDB(file) {
@@ -12,9 +12,9 @@ class ProcedureService {
     }
 
     async deleteProcedure(userId, procedureId) {
-        let user = await userRepository.findUser(userId);
+        const user = await userRepository.findUser(userId);
         if (!user) return;
-        let procedures = await user.getProcedures();
+        const procedures = await user.getProcedures();
         if (!procedures.length) return;
         procedures.forEach(item => {
             if (item.dataValues.procedure_id === Number(procedureId)) {
@@ -25,9 +25,9 @@ class ProcedureService {
     }
 
     async getUserProcedures(id) {
-        let user = await userRepository.findUser(id);
+        const user = await userRepository.findUser(id);
         if (!user) return;
-        let procedures = await user.getProcedures();
+        const procedures = await user.getProcedures();
         if (!procedures.length) return [];
         return procedures.map(item => {
             return {name: item.dataValues.procedure_name, id: item.dataValues.procedure_id};

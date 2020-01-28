@@ -1,12 +1,12 @@
 const procedureService = require("@services/procedureService");
-const {ERROR} = require("@constants/constants");
 
 class ProcedureController {
     async getAllProcedures(req, res) {
         try {
-            res.status(200).send(JSON.stringify(await procedureService.getUserProcedures(req.user.id)));
+            const procedures = await procedureService.getUserProcedures(req.user.id);
+            res.status(200).send(procedures);
         } catch (e) {
-            res.status(400).send(JSON.stringify({message: ERROR}));
+            res.status(400).send({message: e});
         }
     }
 
@@ -18,7 +18,7 @@ class ProcedureController {
             }
             res.status(200).send("200");
         } catch (e) {
-            res.status(400).send(JSON.stringify({message: ERROR}));
+            res.status(400).send({message: e});
         }
     }
 }

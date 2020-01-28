@@ -1,6 +1,5 @@
 const {Sequelize} = require("sequelize");
 const {sequelize} = require("./index");
-const { Task } = require("@models/tasks");
 
 const Procedure = sequelize.define(
     "procedure",
