@@ -20,6 +20,7 @@ class taskServeice {
     mailExcel(task, data) {
         return new Promise(resolve => {
             try {
+                console.log(data)
                 data.excel[0].data.slice(1).forEach(item => {
                     nodemailerService.send(
                         "ETL-tool",

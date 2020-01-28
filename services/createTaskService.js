@@ -1,8 +1,8 @@
 const taskRepository = require("@repository/taskRepository");
 
 class CreateTaskService {
-    async createTasks(procedureId, task) {
-        await taskRepository.createTask(procedureId, task);
+    async createTasks(procedureId, task, i) {
+        await taskRepository.createTask(procedureId, task, i);
     }
 }
 

@@ -5,6 +5,11 @@ class ProcedureParametersController {
     async getProcedureTasks(req, res, next) {
         try {
             const { procedureId } = req.params;
+            let tasksData = await taskRepository.findTasks(procedureId);
+            const targetProcedureTasks = tasksData.map(item => {
+               return {name: item.task_name, id: item.task_id, settings: item.task_settings}
+            });
+            req.user = {targetProcedureTasks};
             next();
         } catch (e) {
             res.status(400).send({message: ERROR});

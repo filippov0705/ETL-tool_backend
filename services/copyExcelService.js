@@ -1,13 +1,13 @@
 const xl = require("excel4node");
 
-const { ERROR, SUCCESS,  USER_DATA_STORAGE} = require("@constants/constants");
+const {ERROR, SUCCESS, USER_DATA_STORAGE} = require("@constants/constants");
 
 class CopyExcelService {
     copyExcel(task, data) {
         return new Promise(resolve => {
             try {
                 const wb = new xl.Workbook();
-                const ws = wb.addWorksheet(data[0].name);
+                const ws = wb.addWorksheet(data.excel[0].name);
                 const style = wb.createStyle({
                     font: {
                         color: "#000000",
@@ -15,8 +15,7 @@ class CopyExcelService {
                     },
                     numberFormat: "###; (###); -",
                 });
-
-                data.excel.data[0].data.forEach((item, row) => {
+                data.excel[0].data.forEach((item, row) => {
                     item.forEach((item, column) => {
                         return ws
                             .cell(row + 1, column + 1)
