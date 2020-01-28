@@ -11,5 +11,7 @@ module.exports = {
     READ_CSV_FROM_FTP: "Read CSV from FTP",
     TRAINEE: "trainee",
     MAIL_EXCEL: "Mail Excel",
-    MAIL_TEXT: "Mail Text"
+    MAIL_TEXT: "Mail Text",
+    USER_NOT_FOUND: "User not found",
+    NO_PROCEDURE_FOUND: "No procedures found"
 };

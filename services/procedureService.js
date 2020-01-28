@@ -1,6 +1,7 @@
 const fs = require("fs");
 const procedureRepository = require("@repository/procedureRepository");
 const userRepository = require("@repository/userRepository");
+const {USER_NOT_FOUND, NO_PROCEDURE_FOUND} = require("@constants/constants");
 
 class ProcedureService {
     getFileFromDB(file) {
@@ -13,9 +14,9 @@ class ProcedureService {
 
     async deleteProcedure(userId, procedureId) {
         const user = await userRepository.findUser(userId);
-        if (!user) return;
+        if (!user) throw new Error(USER_NOT_FOUND);
         const procedures = await user.getProcedures();
-        if (!procedures.length) return;
+        if (!procedures.length) throw new Error(NO_PROCEDURE_FOUND);
         procedures.forEach(item => {
             if (item.dataValues.procedure_id === Number(procedureId)) {
                 procedureRepository.delete(item.dataValues.procedure_id);
@@ -26,7 +27,7 @@ class ProcedureService {
 
     async getUserProcedures(id) {
         const user = await userRepository.findUser(id);
-        if (!user) return;
+        if (!user) throw new Error(USER_NOT_FOUND);
         const procedures = await user.getProcedures();
         if (!procedures.length) return [];
         return procedures.map(item => {
