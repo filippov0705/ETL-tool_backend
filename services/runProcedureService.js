@@ -2,16 +2,24 @@ const readFileService = require("@services/readFileService");
 const copyExcelService = require("@services/copyExcelService");
 const taskService = require("@services/taskService");
 
-const {ADD_VARIABLE, CHANGE_FIELD, ERROR, READ_EXCEL, COPY_EXCEL, READ_FROM_FTP, MAIL_EXCEL, MAIL_TEXT} = require("@constants/constants");
+const {
+    ADD_VARIABLE,
+    CHANGE_FIELD,
+    ERROR,
+    READ_EXCEL,
+    COPY_EXCEL,
+    READ_FROM_FTP,
+    MAIL_EXCEL,
+    MAIL_TEXT,
+} = require("@constants/constants");
 
 class RunProcedureService {
-    procedureActionsChain(tasks, previousTaskRunResults) {
+    async procedureActionsChain(tasks, previousTaskRunResults) {
         const nextTask = tasks.shift();
         if (nextTask) {
-            this.switchToAppropriateTask(nextTask.name)(nextTask, previousTaskRunResults).then(result => {
-                if (result.status === ERROR) return Promise.resolve();
-                this.procedureActionsChain(tasks, result.runResult);
-            });
+            const result = await this.switchToAppropriateTask(nextTask.name)(nextTask, previousTaskRunResults);
+            if (result.status === ERROR) return Promise.resolve();
+            await this.procedureActionsChain(tasks, result.runResult);
         } else {
             return Promise.resolve();
         }

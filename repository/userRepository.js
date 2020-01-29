@@ -16,21 +16,19 @@ class UserRepository {
         return userData;
     }
 
-    changeUserRole(user_login, user_role) {
-        return new Promise(resolve => {
-            User.update({user_role}, {where: {user_login}});
-            resolve();
-        });
+    async changeUserRole(user_login, user_role) {
+        await User.update({user_role}, {where: {user_login}});
+        return;
     }
 
-    getUserRole(user_login) {
-        return new Promise(resolve => {
-            User.findOne({where: {user_login}}).then(role => resolve(role));
-        });
+    async getUserRole(user_login) {
+        const role = await User.findOne({where: {user_login}});
+        return role;
     }
 
-    deleteUser(user_login) {
-        User.destroy({where: {user_login}});
+    async deleteUser(user_login) {
+        await User.destroy({where: {user_login}});
+        return;
     }
 }
 
