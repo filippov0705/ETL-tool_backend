@@ -9,6 +9,7 @@ class ProcedureController {
             const taskTypesArray = taskTypes.map(item => {
                 return {name: item.task_name, id: item.task_id, settings: item.task_settings};
             });
+
             res.status(200).send(taskTypesArray);
         } catch (e) {
             res.status(404).send(JSON.stringify({message: ERROR}));

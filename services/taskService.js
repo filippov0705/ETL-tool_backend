@@ -1,4 +1,5 @@
 const nodemailerService = require("@services/nodemailerService");
+const userRepository = require("@repository/userRepository");
 const taskTypesRepository = require("@repository/taskTypesRepository");
 const taskRepository = require("@repository/taskRepository");
 
@@ -65,6 +66,48 @@ class taskServeice {
                 : task.settings.Email;
             nodemailerService.send("ETL-tool", mailAdress, "info", data[task.settings.variable]);
             resolve({status: SUCCESS, runResult: data});
+        });
+    }
+
+    changeUserRole(task, data) {
+        return new Promise(resolve => {
+            const newRole = task.settings.role.toLowerCase();
+            if (newRole === "user" || newRole === "trainee") {
+                userRepository.getUserRole(task.settings.login).then(role => {
+                    if (!role) {
+                        return resolve({status: ERROR, runResult: data});
+                    }
+                    if (role.dataValues.user_role === "admin") {
+                        return resolve({status: ERROR, runResult: data});
+                    }
+                    userRepository.changeUserRole(task.settings.login, newRole).then(() => {
+                        resolve({status: SUCCESS, runResult: data});
+                    });
+                });
+            } else {
+                resolve({status: ERROR, runResult: data});
+            }
+        });
+    }
+
+    deleteUser(task, data) {
+        return new Promise(resolve => {
+            try {
+                userRepository.getUserRole(task.settings.login).then(role => {
+                    if (!role) {
+                        return resolve({status: ERROR, runResult: data});
+                    }
+                    if (role.dataValues.user_role === "admin") {
+                        resolve({status: ERROR, runResult: data});
+                    } else {
+                        userRepository.deleteUser(task.settings.login);
+                        resolve({status: SUCCESS, runResult: data});
+                    }
+                });
+            } catch (e) {
+                console.log(e);
+                resolve({status: ERROR, runResult: data});
+            }
         });
     }
 }

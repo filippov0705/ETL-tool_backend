@@ -15,6 +15,23 @@ class UserRepository {
         const userData = await User.findByPk(user_id);
         return userData;
     }
+
+    changeUserRole(user_login, user_role) {
+        return new Promise(resolve => {
+            User.update({user_role}, {where: {user_login}});
+            resolve();
+        });
+    }
+
+    getUserRole(user_login) {
+        return new Promise(resolve => {
+            User.findOne({where: {user_login}}).then(role => resolve(role));
+        });
+    }
+
+    deleteUser(user_login) {
+        User.destroy({where: {user_login}});
+    }
 }
 
 module.exports = new UserRepository();

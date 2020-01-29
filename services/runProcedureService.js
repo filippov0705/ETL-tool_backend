@@ -40,6 +40,12 @@ class RunProcedureService {
             case CHANGE_FIELD:
                 return taskService.changeField;
 
+            case "Change user role":
+                return taskService.changeUserRole;
+
+            case "Delete user":
+                return taskService.deleteUser;
+
             default:
                 return null;
         }
