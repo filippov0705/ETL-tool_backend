@@ -30,6 +30,11 @@ class UserRepository {
         await User.destroy({where: {user_login}});
         return;
     }
+
+    async getAllUsers() {
+        const allUsers = await User.findAll({raw: true});
+        return allUsers;
+    }
 }
 
 module.exports = new UserRepository();

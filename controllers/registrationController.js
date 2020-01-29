@@ -12,11 +12,8 @@ class RegistratinController {
                 userRepository.createUser(userData.id, userData.login);
             }
             response.setHeader("Set-Cookie", `access_token=${tokenValue};  HttpOnly`);
-<<<<<<< HEAD
-            response.status(200).send({login: userData.login});
-=======
-            response.status(200).send(JSON.stringify({userRole: user.dataValues.user_role}));
->>>>>>> feat/add work with DB to scheduleContoller
+
+            response.status(200).send({userRole: user.dataValues.user_role});
         } catch (e) {
             response.status(403);
         }

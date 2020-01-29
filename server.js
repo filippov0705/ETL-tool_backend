@@ -7,7 +7,7 @@ const morgan = require("morgan");
 const procedureRouter = require("@routers/procedureRouter");
 const authorizationRouter = require("@routers/authorizationRouter");
 const tasksRouter = require("@routers/tasksRouter");
-const userRouter = require("@routers//userRouter");
+const usersRouter = require("@routers//usersRouter");
 const authenticationRouter = require("@routers/authenticationRouter");
 
 const app = express();
@@ -33,7 +33,7 @@ app.use((req, res, next) => {
 app.use("/api/procedures/", procedureRouter);
 app.use("/api/authorization", authorizationRouter);
 app.use("/api/tasks", tasksRouter);
-app.use("/api/user", userRouter);
 app.use("/api/authentication", authenticationRouter);
+app.use("/api/users", usersRouter);
 
 app.listen(3001, () => console.log("Server has been started..."));
