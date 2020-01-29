@@ -20,12 +20,15 @@ router
     .delete(userMiddleware.getUserParams, procedureController.deleteProcedure);
 router.route("/tasks").get(taskController.getTasksTypes);
 router.route("/new/:id").post(userMiddleware.getUserParams, newProcedureController.createNewProcedure);
-router.route("/target/:userId/:procedureId").get(userMiddleware.getUserParams, procedureSchedulesController.getTargetProcedure);
+router
+    .route("/target/:userId/:procedureId")
+    .get(userMiddleware.getUserParams, procedureSchedulesController.getTargetProcedure);
 router
     .route("/schedules/:userId/:procedureId")
-    .post(procedureSchedulesController.postNewSchedule)
-    .delete(procedureSchedulesController.deleteSchedule)
-    .put(procedureSchedulesController.editSchedule);
+    .post(procedureSchedulesController.postNewSchedule, procedureSchedulesController.getTargetProcedure)
+    .put(procedureSchedulesController.editSchedule, procedureSchedulesController.getTargetProcedure);
+
+router.route("/:procedureId/schedules/:scheduleId").delete(procedureSchedulesController.deleteSchedule);
 
 router
     .route("/edit/:userId/:procedureId")

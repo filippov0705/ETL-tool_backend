@@ -61,7 +61,7 @@ const Schedule = sequelize.define(
             type: Sequelize.INTEGER,
             allowNull: false,
         },
-        periodisity: {
+        periodicity: {
             type: Sequelize.INTEGER,
             allowNull: true,
         },

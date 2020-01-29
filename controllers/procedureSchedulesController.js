@@ -1,18 +1,7 @@
-const procedureService = require("@services/procedureService");
 const procedureRepository = require("@repository/procedureRepository");
 const taskRepository = require("@repository/taskRepository");
 const scheduleRepository = require("@repository/scheduleRepository");
 const {ERROR} = require("@constants/constants");
-
-const usersFile = "./mockData/mockData.json";
-
-//{ id: 44917509, value: [ 2020, 1, 25, 20, 25 ], periodicity: 'Single' }
-//
-//{
-//    id: 43487638,
-//        value: [ 'Mon', 'Tue', 'Wed', 16, 26 ],
-//    periodicity: 'Periodically'
-//}
 
 class ProcedureSchedulesController {
     async getTargetProcedure(req, res) {
@@ -28,12 +17,31 @@ class ProcedureSchedulesController {
             const tasks = tasksData.map(item => {
                 return {id: item.task_id, name: item.task_name, settings: item.task_settings};
             });
-            const schedules = await scheduleRepository.getSchedules(procedureId);
-
+            const schedulesData = await scheduleRepository.getSchedules(procedureId);
+            const schedule = schedulesData.map(item => {
+                const value = [];
+                if (item.periodicity === 1) {
+                    value.push(item.year, item.month, item.day, item.hour, item.minute);
+                } else {
+                    if (item.monday) value.push("Mon");
+                    if (item.tuesday) value.push("Tue");
+                    if (item.wednsday) value.push("Wed");
+                    if (item.thursday) value.push("Thu");
+                    if (item.friday) value.push("Fri");
+                    if (item.saturday) value.push("Sat");
+                    if (item.sunday) value.push("Sun");
+                    value.push(item.hour, item.minute);
+                }
+                return {
+                    id: item.schedule_id,
+                    value,
+                    periodicity: item.periodicity === 1 ? "Single" : "Periodically",
+                };
+            });
             const procedure = {
                 name: procedureData.dataValues.procedure_name,
                 id: procedureData.dataValues.procedure_id,
-                schedule: [],
+                schedule,
                 tasks,
             };
             res.status(200).send(procedure);
@@ -42,72 +50,35 @@ class ProcedureSchedulesController {
         }
     }
 
-    deleteSchedule(req, res) {
+    async deleteSchedule(req, res) {
         try {
-            const {userId, procedureId} = req.params;
-            const {id} = req.body;
-            const newUserFile = procedureService.getFileFromDB(usersFile).map(item => {
-                if (item.userId === Number(userId)) {
-                    item.data.map(procedure => {
-                        if (procedure.id === Number(procedureId)) {
-                            procedure.schedule = procedure.schedule.filter(schedule => schedule.id !== id);
-                        }
-                        return procedure;
-                    });
-                }
-                return item;
-            });
-
-            procedureService.setFileToDB(usersFile, newUserFile);
-            const newProcedure = newUserFile
-                .find(item => item.userId === Number(userId))
-                .data.find(item => item.id === Number(procedureId));
-            res.status(200).send(JSON.stringify(newProcedure));
-        } catch (e) {
-            res.status(400).send(JSON.stringify({message: ERROR}));
-        }
-    }
-
-    async postNewSchedule(req, res) {
-        try {
-            const {procedureId} = req.params;
-            const newSchedule = req.body;
-            console.log(newSchedule);
-            await scheduleRepository.createSchedule(procedureId, newSchedule);
+            const {scheduleId} = req.params;
+            await scheduleRepository.deleteSchedule(scheduleId);
             res.status(200).send(200);
         } catch (e) {
             res.status(400).send({message: ERROR});
         }
     }
 
-    editSchedule(req, res) {
+    async postNewSchedule(req, res, next) {
         try {
-            const {userId, procedureId} = req.params;
+            const {procedureId} = req.params;
             const newSchedule = req.body;
-            const newUserFile = procedureService.getFileFromDB(usersFile).map(item => {
-                if (item.userId === Number(userId)) {
-                    item.data.map(procedure => {
-                        if (procedure.id === Number(procedureId)) {
-                            procedure.schedule = procedure.schedule.map(schedule => {
-                                if (schedule.id === newSchedule.id) {
-                                    schedule = newSchedule;
-                                }
-                                return schedule;
-                            });
-                        }
-                        return procedure;
-                    });
-                }
-                return item;
-            });
-
-            procedureService.setFileToDB(usersFile, newUserFile);
-            const newProcedure = newUserFile
-                .find(item => item.userId === Number(userId))
-                .data.find(item => item.id === Number(procedureId));
-            res.status(200).send(JSON.stringify(newProcedure));
+            await scheduleRepository.createSchedule(procedureId, newSchedule);
+            next();
         } catch (e) {
-            res.status(400).send(JSON.stringify({message: ERROR}));
+            res.status(400).send({message: ERROR});
+        }
+    }
+
+    async editSchedule(req, res, next) {
+        try {
+            const newSchedule = req.body;
+            await scheduleRepository.editSchedule(newSchedule.id, newSchedule);
+            // res.status(200).send(200);
+            next();
+        } catch (e) {
+            res.status(400).send({message: ERROR});
         }
     }
 }

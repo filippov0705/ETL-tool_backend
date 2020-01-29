@@ -11,8 +11,9 @@ class UserRepository {
         });
     }
 
-    findUser(user_id) {
-        return User.findByPk(user_id);
+    async findUser(user_id) {
+        const userData = await User.findByPk(user_id);
+        return userData;
     }
 }
 

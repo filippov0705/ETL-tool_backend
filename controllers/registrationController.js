@@ -12,7 +12,11 @@ class RegistratinController {
                 userRepository.createUser(userData.id, userData.login);
             }
             response.setHeader("Set-Cookie", `access_token=${tokenValue};  HttpOnly`);
+<<<<<<< HEAD
             response.status(200).send({login: userData.login});
+=======
+            response.status(200).send(JSON.stringify({userRole: user.dataValues.user_role}));
+>>>>>>> feat/add work with DB to scheduleContoller
         } catch (e) {
             response.status(403);
         }
@@ -24,9 +28,12 @@ class RegistratinController {
             if (!req.headers.cookie || !accessToken) {
                 res.status(403).send({auth: false});
             }
-            const result = await userRegistrationService.getUserParams(accessToken);
-            if (result.data) {
-                res.status(200).send({login: result.data.login});
+            const result = await userRegistrationService.getUserParams(
+                querystring.parse(req.headers.cookie).access_token
+            );
+            if (result) {
+                const userData = await userRepository.findUser(result.id);
+                res.status(200).send(JSON.stringify({login: result.login, userRole: userData.dataValues.user_role}));
             }
         } catch (e) {
             res.status(403).send({auth: false});
