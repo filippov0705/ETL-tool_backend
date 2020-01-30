@@ -1,26 +1,36 @@
 const procedureService = require("@services/procedureService");
+const procedureRepository = require("@repository/procedureRepository");
+const taskRepository = require("@repository/taskRepository");
 const {ERROR} = require("@constants/constants");
 
 const usersFile = "./mockData/mockData.json";
 
 class ProcedureSchedulesController {
-    getProcedureSchedules(req, res) {
+    async getTargetProcedure(req, res) {
         try {
-            const { userId, procedureId } = req.params;
-            const user = procedureService
-                .getFileFromDB(usersFile)
-                .find(item => item.userId === Number(userId));
-            const procedure = user.data.find(item => item.id === Number(procedureId));
-            res.status(200).send(JSON.stringify(procedure));
+            const {procedureId} = req.params;
+
+            const procedureData = await procedureRepository.findOne(procedureId);
+            const tasksData = await taskRepository.findTasks(procedureData.dataValues.procedure_id);
+            const tasks = tasksData.map(item => {
+                return {id: item.task_id, name: item.task_name, settings: item.task_settings};
+            });
+            const procedure = {
+                name: procedureData.dataValues.procedure_name,
+                id: procedureData.dataValues.procedure_id,
+                schedule: [],
+                tasks,
+            };
+            res.status(200).send(procedure);
         } catch (e) {
-            res.status(400).send(JSON.stringify({message: ERROR}));
+            res.status(400).send({message: e});
         }
     }
 
     deleteSchedule(req, res) {
         try {
-            const { userId, procedureId } = req.params;
-            const { id } = req.body;
+            const {userId, procedureId} = req.params;
+            const {id} = req.body;
             const newUserFile = procedureService.getFileFromDB(usersFile).map(item => {
                 if (item.userId === Number(userId)) {
                     item.data.map(procedure => {
@@ -45,7 +55,7 @@ class ProcedureSchedulesController {
 
     postNewSchedule(req, res) {
         try {
-            const { userId, procedureId } = req.params;
+            const {userId, procedureId} = req.params;
             const newSchedule = req.body;
             const newUserFile = procedureService.getFileFromDB(usersFile).map(item => {
                 if (item.userId === Number(userId)) {
@@ -71,7 +81,7 @@ class ProcedureSchedulesController {
 
     editSchedule(req, res) {
         try {
-            const { userId, procedureId } = req.params;
+            const {userId, procedureId} = req.params;
             const newSchedule = req.body;
             const newUserFile = procedureService.getFileFromDB(usersFile).map(item => {
                 if (item.userId === Number(userId)) {

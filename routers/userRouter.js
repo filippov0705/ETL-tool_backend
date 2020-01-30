@@ -3,6 +3,7 @@ const registratinController = require("@controllers/registrationController.js");
 
 const router = express.Router();
 
-router.route("/registration").post(registratinController.registration, registratinController.newUserCreation);
+router.route("/")
+    .get(registratinController.logOut);
 
 module.exports = router;

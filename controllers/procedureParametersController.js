@@ -1,20 +1,13 @@
-const procedureService = require("@services/procedureService");
+const taskRepository = require("@repository/taskRepository");
 const {ERROR} = require("@constants/constants");
 
-const usersFile = "./mockData/mockData.json";
-
 class ProcedureParametersController {
-    getProcedureTasks(req, res, next) {
+    async getProcedureTasks(req, res, next) {
         try {
-            const { id, procedureId } = req.params;
-            const targetProcedureTasks = procedureService
-                .getFileFromDB(usersFile)
-                .find(item => item.userId === Number(id))
-                .data.find(item => item.id === Number(procedureId)).tasks;
-            req.user = { targetProcedureTasks };
+            const { procedureId } = req.params;
             next();
         } catch (e) {
-            res.status(400).send(JSON.stringify({message: ERROR}));
+            res.status(400).send({message: ERROR});
         }
     }
 }

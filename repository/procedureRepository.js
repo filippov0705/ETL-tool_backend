@@ -1,13 +1,25 @@
 const {Procedure} = require("@models/procedures");
 
 class ProcedureRepository {
+    async findOne(id) {
+        return await Procedure.findByPk(id);
+    }
+
     findAll() {
         Procedure.findAll({raw: true})
-            .then(procedures => {
-                console.log(procedures);
-            })
-            .catch(err => console.log(err));
+            .then(procedures => {});
+    }
+
+    async create(procedureId, procedureName) {
+        await Procedure.create({
+            procedure_id: procedureId,
+            procedure_name: procedureName,
+        });
+    }
+
+    delete(id) {
+        Procedure.destroy({where: {procedure_id: id}});
     }
 }
 
-module.exports = ProcedureRepository();
+module.exports = new ProcedureRepository();

@@ -1,8 +1,8 @@
 const {Sequelize} = require("sequelize");
 const {sequelize} = require("./index");
 
-const taskTypes = sequelize.define(
-    "task_types",
+const Task = sequelize.define(
+    "task",
     {
         task_id: {
             type: Sequelize.INTEGER,
@@ -12,16 +12,20 @@ const taskTypes = sequelize.define(
         task_name: {
             type: Sequelize.STRING(50),
             allowNull: false,
-            unique: true,
+            unique: false,
+        },
+        procedure_id: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
         },
         task_settings: {
             type: Sequelize.JSON,
             allowNull: false,
         },
     },
-    {freezeTableName: true, timestamps: false}
+    {timestamps: false}
 );
 
 module.exports = {
-    taskTypes,
+    Task,
 };

@@ -1,23 +1,16 @@
-const procedureService = require("@services/procedureService");
-
-const usersFile = "./mockData/mockData.json";
+const createProcedureService = require("@services/createProcedureService");
+const createTaskService = require("@services/createTaskService");
 
 class NewProcedureController {
-    createNewProcedure(req, res) {
+    async createNewProcedure(req, res) {
+        const {name, id, tasks} = req.body;
         try {
-            const { id } = req.params;
-            const newData = req.body;
-            const newUserFile = procedureService.getFileFromDB(usersFile).map(item => {
-                if (item.userId === Number(id)) {
-                    item.data = [...item.data, newData];
-                }
-                return item;
-            });
+            await createProcedureService.createProcedure(req.user.id, name, id);
+            await tasks.forEach(async item => await createTaskService.createTasks(id, item));
 
-            procedureService.setFileToDB(usersFile, newUserFile);
-            res.status(200);
+            res.status(200).send("200");
         } catch (e) {
-            res.status(400).send(JSON.stringify({message: ERROR}));
+            res.status(400).send({message: e});
         }
     }
 }

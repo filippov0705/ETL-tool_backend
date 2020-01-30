@@ -4,10 +4,11 @@ const serverCalls = require("@services/serverCalls");
 const {ERROR, USER_DATA_STORAGE, SUCCESS} = require("@constants/constants");
 
 class ReadFileService {
-    readExcel(task) {
+    readExcel(task, data) {
         return new Promise(resolve => {
             try {
-                const data = xlsx.parse(`${USER_DATA_STORAGE}${task.settings.from}.xlsx`);
+                const content = xlsx.parse(`${USER_DATA_STORAGE}${task.settings.from}.xlsx`);
+                data.excel = content;
                 resolve({status: SUCCESS, runResult: data});
             } catch (e) {
                 resolve({status: ERROR});
@@ -15,9 +16,12 @@ class ReadFileService {
         });
     }
 
-    readCSV(task) {
+    readCSV(task, data) {
         return new Promise(resolve => {
-            serverCalls.readFromFTP(task).then(result => resolve(result));
+            serverCalls.readFromFTP(task).then(result => {
+                data.text = result;
+                resolve({status: SUCCESS, runResult: data});
+            });
         });
     }
 }

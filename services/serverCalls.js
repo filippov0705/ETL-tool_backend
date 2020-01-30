@@ -23,7 +23,6 @@ class ProcedureService {
                             content += chunk.toString();
                         });
                         stream.on("end", function() {
-                            console.log(content);
                             resolve({status: SUCCESS, runResult: content});
                         });
                     });

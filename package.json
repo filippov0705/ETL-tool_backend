@@ -14,7 +14,8 @@
     "@controllers": "./controllers",
     "@constants": "./constants",
     "@models": "./models",
-    "@repostory": "./repostory"
+    "@repository": "./repository",
+    "@middlewares": "./middlewares"
   },
   "author": "",
   "license": "ISC",
@@ -22,6 +23,8 @@
     "axios": "^0.19.1",
     "basic-ftp": "^4.5.3",
     "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "eslint-config-prettier": "^6.9.0",
     "eslint-plugin-prettier": "^3.1.2",

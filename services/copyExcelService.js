@@ -1,6 +1,6 @@
 const xl = require("excel4node");
 
-const {BOOLEAN, ERROR, STRING, SUCCESS, NUMBER, USER_DATA_STORAGE} = require("@constants/constants");
+const { ERROR, SUCCESS,  USER_DATA_STORAGE} = require("@constants/constants");
 
 class CopyExcelService {
     copyExcel(task, data) {
@@ -16,7 +16,7 @@ class CopyExcelService {
                     numberFormat: "###; (###); -",
                 });
 
-                data[0].data.forEach((item, row) => {
+                data.excel.data[0].data.forEach((item, row) => {
                     item.forEach((item, column) => {
                         return ws
                             .cell(row + 1, column + 1)
