@@ -5,7 +5,7 @@ const {ERROR} = require("@constants/constants");
 class ProcedureController {
     async getTasksTypes(req, res) {
         try {
-            let taskTypes = await taskServeice.getTaskTypes();
+            const taskTypes = await taskServeice.getTaskTypes();
             const taskTypesArray = taskTypes.map(item => {
                 return {name: item.task_name, id: item.task_id, settings: item.task_settings};
             });

@@ -11,12 +11,12 @@ class TaskRepository {
     }
 
     async getTaskSettings(id) {
-        let settings = await Task.findOne({attributes: ["task_settings"], where: {task_id: id}});
+        const settings = await Task.findOne({attributes: ["task_settings"], where: {task_id: id}});
         return settings.dataValues.task_settings;
     }
 
     async findTasks(id) {
-        let tasks = await Task.findAll({where:{procedure_id: id}, raw: true });
+        const tasks = await Task.findAll({where:{procedure_id: id}, raw: true });
         return tasks;
     }
 

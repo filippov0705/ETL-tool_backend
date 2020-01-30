@@ -7,8 +7,7 @@ class ProcedureRepository {
 
     findAll() {
         Procedure.findAll({raw: true})
-            .then(procedures => {})
-            .catch(err => console.log(err));
+            .then(procedures => {});
     }
 
     async create(procedureId, procedureName) {

@@ -3,7 +3,7 @@ const nodemailer = require("nodemailer");
 const {ROUTING_MAIL, ROUTING_MAIL_PASSWORD} = require("@constants/environemtConstants");
 
 class NodemailerService {
-    send(from, to, subject, text) {
+    async send(from, to, subject, text) {
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
@@ -14,13 +14,14 @@ class NodemailerService {
 
         const mailOptions = { from, to, subject, text };
 
-        transporter.sendMail(mailOptions, function(error, info) {
+        const result = await transporter.sendMail(mailOptions, async function(error, info) {
             if (error) {
-                console.log(error);
+                return error;
             } else {
-                console.log("Email sent: " + info.response);
+                return `Email sent: ${info.response}`;
             }
         });
+        return result;
     }
 }
 
