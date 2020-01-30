@@ -1,4 +1,5 @@
 const procedureService = require("@services/procedureService");
+const rolesService = require("@services/rolesService");
 
 class ProcedureController {
     async getAllProcedures(req, res) {

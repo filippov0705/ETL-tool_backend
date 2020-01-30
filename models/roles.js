@@ -9,7 +9,7 @@ const Role = sequelize.define(
             autoIncrement: true,
             primaryKey: true,
         },
-        role: {
+        role_name: {
             type: Sequelize.STRING(30),
             allowNull: false,
             unique: true,

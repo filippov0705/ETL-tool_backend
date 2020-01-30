@@ -8,6 +8,7 @@ module.exports = {
     ERROR: "Error",
     READ_EXCEL: "Read Excel",
     RUN_ERROR: "Error during procedure execution",
+    Role_NOT_FOUND: "Roles not found",
     COPY_EXCEL: "Copy Excel",
     STRING: "string",
     NUMBER: "number",

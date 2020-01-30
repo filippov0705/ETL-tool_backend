@@ -1,5 +1,8 @@
 const userRegistrationService = require("@services/userRegistrationService");
 const userRepository = require("@repository/userRepository");
+const rolesService = require("@services/rolesService");
+const rolesRepository = require("@repository/rolesRepository");
+const userRolesRepository = require("@repository/userRolesRepository");
 const querystring = require("querystring");
 
 class RegistratinController {
@@ -9,11 +12,14 @@ class RegistratinController {
             const userData = await userRegistrationService.getUserParams(tokenValue);
             const user = await userRepository.findUser(userData.data.id, userData.data.login);
             if (!user) {
-                userRepository.createUser(userData.id, userData.login);
+                await userRepository.createUser(userData.data.id, userData.data.login);
+                const traineeRoleId = await rolesRepository.getTraineeId();
+                await userRolesRepository.create(userData.data.id, traineeRoleId);
             }
+            const roles = user ? await rolesService.getUserRoles(user.dataValues.user_id) : ["trainee"];
             response.setHeader("Set-Cookie", `access_token=${tokenValue};  HttpOnly`);
 
-            response.status(200).send({userRole: "admin"});
+            response.status(200).send({userRole: roles});
         } catch (e) {
             response.status(403);
         }

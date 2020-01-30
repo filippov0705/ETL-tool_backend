@@ -4,14 +4,6 @@ const userRepository = require("@repository/userRepository");
 const {USER_NOT_FOUND, NO_PROCEDURE_FOUND} = require("@constants/constants");
 
 class ProcedureService {
-    getFileFromDB(file) {
-        return JSON.parse(fs.readFileSync(file, "utf8"));
-    }
-
-    setFileToDB(file, data) {
-        return fs.writeFileSync(file, JSON.stringify(data));
-    }
-
     async deleteProcedure(userId, procedureId) {
         const user = await userRepository.findUser(userId);
         if (!user) throw new Error(USER_NOT_FOUND);
