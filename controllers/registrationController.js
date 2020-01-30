@@ -13,7 +13,7 @@ class RegistratinController {
             }
             response.setHeader("Set-Cookie", `access_token=${tokenValue};  HttpOnly`);
 
-            response.status(200).send({userRole: user.dataValues.user_role});
+            response.status(200).send({userRole: "admin"});
         } catch (e) {
             response.status(403);
         }

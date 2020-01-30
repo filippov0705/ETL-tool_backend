@@ -10,7 +10,7 @@ class UsersController {
                 return {
                     id: item.user_id,
                     name: item.user_login,
-                    role: item.user_role,
+                    role: "admin",
                 };
             });
             res.status(200).send(newAllUserList);

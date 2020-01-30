@@ -7,7 +7,6 @@ class UserRepository {
             user_id: user_id,
             user_login: user_login,
             user_name: user_login,
-            user_role: TRAINEE,
         });
     }
 
