@@ -29,7 +29,7 @@ class RegistratinController {
                 querystring.parse(req.headers.cookie).access_token
             );
             if (result) {
-                const userData = await userRepository.findUser(result.id);
+                const userData = await userRepository.findUser(result.data.id);
                 res.status(200).send(JSON.stringify({login: result.login, userRole: userData.dataValues.user_role}));
             }
         } catch (e) {
