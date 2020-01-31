@@ -17,9 +17,10 @@ class RegistratinController {
                 await userRolesRepository.create(userData.data.id, traineeRoleId);
             }
             const roles = user ? await rolesService.getUserRoles(user.dataValues.user_id) : ["trainee"];
+
             response.setHeader("Set-Cookie", `access_token=${tokenValue};  HttpOnly`);
 
-            response.status(200).send({userRole: roles});
+            response.status(200).send({userRole: roles, login: userData.data.login});
         } catch (e) {
             response.status(403);
         }
@@ -35,8 +36,8 @@ class RegistratinController {
                 querystring.parse(req.headers.cookie).access_token
             );
             if (result) {
-                const userData = await userRepository.findUser(result.data.id);
-                res.status(200).send(JSON.stringify({login: result.login, userRole: userData.dataValues.user_role}));
+                const role = await rolesService.getUserRoles(result.data.id);
+                res.status(200).send({userRole: role, login: result.data.login});
             }
         } catch (e) {
             res.status(403).send({auth: false});

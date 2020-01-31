@@ -1,4 +1,5 @@
 const usersService = require("@services/usersService");
+const rolesService = require("@services/rolesService");
 
 const {ERROR} = require("@constants/constants");
 
@@ -10,10 +11,17 @@ class UsersController {
                 return {
                     id: item.user_id,
                     name: item.user_login,
-                    role: "admin",
                 };
             });
-            res.status(200).send(newAllUserList);
+
+            const results = newAllUserList.map(async item => {
+                item.role = await rolesService.getUserRoles(item.id);
+                return item;
+            });
+
+            Promise.all(results).then(userList => {
+                res.status(200).send(userList);
+            });
         } catch (e) {
             res.status(404).send({message: ERROR});
         }
