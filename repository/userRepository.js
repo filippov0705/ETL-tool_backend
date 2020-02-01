@@ -6,6 +6,7 @@ class UserRepository {
             user_id: user_id,
             user_login: user_login,
             user_name: user_login,
+            is_active: false,
         });
     }
 
@@ -22,6 +23,15 @@ class UserRepository {
     async getAllUsers() {
         const allUsers = await User.findAll({raw: true});
         return allUsers;
+    }
+
+    async getUserActiveness(user_id) {
+        const userData = await User.findByPk(user_id);
+        return userData.dataValues.is_active;
+    }
+
+    async changeActiveness(user_id, state) {
+        await User.update({is_active: state}, {where: {user_id}});
     }
 }
 

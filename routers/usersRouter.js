@@ -11,4 +11,6 @@ router
     .get(rolesController.getRoles)
     .patch(rolesController.addRole);
 
+router.route("/:userId").patch(usersController.changeUserState);
+
 module.exports = router;

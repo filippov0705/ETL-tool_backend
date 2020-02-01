@@ -11,6 +11,7 @@ class UsersController {
                 return {
                     id: item.user_id,
                     name: item.user_login,
+                    isActive: item.is_active,
                 };
             });
 
@@ -22,6 +23,17 @@ class UsersController {
             Promise.all(results).then(userList => {
                 res.status(200).send(userList);
             });
+        } catch (e) {
+            res.status(404).send({message: ERROR});
+        }
+    }
+
+    async changeUserState(req, res) {
+        try {
+            const {userId} = req.params;
+            const {state} = req.body;
+            await usersService.changeActiveness(userId, state);
+            res.status(200).send(state);
         } catch (e) {
             res.status(404).send({message: ERROR});
         }

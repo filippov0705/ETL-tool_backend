@@ -30,11 +30,11 @@ router
 
 router.route("/:procedureId/schedules/:scheduleId").delete(procedureSchedulesController.deleteSchedule);
 
-router
-    .route("/edit/:userId/:procedureId")
-    .put(editProcedureController.changeProcedureName)
-    .post(editProcedureController.addNewTaskToProcedure)
-    .delete(editProcedureController.deleteTaskInProcedure);
+router.route("/:procedureId").patch(editProcedureController.changeProcedureName);
+
+router.route("/:procedureId/tasks").post(editProcedureController.addNewTaskToProcedure);
+
+router.route("/:procedureId/tasks/:taskId").delete(editProcedureController.deleteTaskInProcedure);
 
 router.route("/info").put(procedureInfoController.editTaskSettings);
 

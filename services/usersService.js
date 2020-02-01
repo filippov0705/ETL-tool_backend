@@ -5,6 +5,10 @@ class userServeice {
         const allUsers = await userRepository.getAllUsers();
         return allUsers;
     }
+
+    async changeActiveness(user_id, state) {
+        await userRepository.changeActiveness(user_id, state);
+    }
 }
 
 module.exports = new userServeice();

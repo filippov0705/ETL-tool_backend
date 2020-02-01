@@ -26,6 +26,10 @@ class ProcedureService {
             return {name: item.dataValues.procedure_name, id: item.dataValues.procedure_id};
         });
     }
+
+    async changeName(procedureId, newName) {
+        await procedureRepository.changeName(procedureId, newName);
+    }
 }
 
 module.exports = new ProcedureService();

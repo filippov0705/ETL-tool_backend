@@ -18,6 +18,10 @@ const User = sequelize.define(
             type: Sequelize.STRING(30),
             allowNull: false,
         },
+        is_active: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false,
+        },
     },
     {timestamps: false}
 );

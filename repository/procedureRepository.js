@@ -6,8 +6,7 @@ class ProcedureRepository {
     }
 
     findAll() {
-        Procedure.findAll({raw: true})
-            .then(procedures => {});
+        Procedure.findAll({raw: true}).then(procedures => {});
     }
 
     async create(procedureId, procedureName) {
@@ -17,8 +16,12 @@ class ProcedureRepository {
         });
     }
 
-    delete(id) {
-        Procedure.destroy({where: {procedure_id: id}});
+    async delete(id) {
+        await Procedure.destroy({where: {procedure_id: id}});
+    }
+
+    async changeName(procedure_id, procedure_name) {
+        await Procedure.update({procedure_name}, {where: {procedure_id}});
     }
 }
 
