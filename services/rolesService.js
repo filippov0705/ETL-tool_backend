@@ -16,9 +16,9 @@ class RolesService {
         return possibleRoles;
     }
 
-    async addRole(id, role) {
+    async addRole(user_id, role) {
         const roleId = await rolesRepository.getRoleId(role);
-        console.log(roleId)
+        await userRolesRepository.create(user_id, roleId);
     }
 }
 

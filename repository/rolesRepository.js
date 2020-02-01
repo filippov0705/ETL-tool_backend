@@ -11,8 +11,9 @@ class RolesRepository {
         return roles.map(item => item.role_name);
     }
 
-    async getRoleId(role) {
-        // const
+    async getRoleId(role_name) {
+        const roleId = await Role.findOne({attributes: ["role_id"], where: {role_name}});
+        return roleId.dataValues.role_id;
     }
 }
 
