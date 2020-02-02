@@ -20,6 +20,11 @@ class RolesService {
         const roleId = await rolesRepository.getRoleId(role);
         await userRolesRepository.create(user_id, roleId);
     }
+
+    async deleteRole(user_id, role) {
+        const roleId = await rolesRepository.getRoleId(role);
+        await userRolesRepository.deleteRole(user_id, roleId);
+    }
 }
 
 module.exports = new RolesService();

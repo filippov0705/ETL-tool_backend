@@ -33,6 +33,14 @@ class UserRepository {
     async changeActiveness(user_id, state) {
         await User.update({is_active: state}, {where: {user_id}});
     }
+
+    async deleteUser(user_id) {
+        await User.destroy({where: {user_id}});
+    }
+
+    async changeUserNames(user_id, user_name) {
+        await User.update({user_name}, {where: {user_id}});
+    }
 }
 
 module.exports = new UserRepository();

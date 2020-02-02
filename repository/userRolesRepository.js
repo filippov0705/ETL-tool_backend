@@ -5,6 +5,10 @@ class UserRolesRepository {
         await UserRoles.create({user_id, role_id})
         return;
     }
+
+    async deleteRole(user_id, role_id) {
+        await UserRoles.destroy({where: {user_id, role_id}})
+    }
 }
 
 module.exports = new UserRolesRepository();

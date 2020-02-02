@@ -30,6 +30,10 @@ class ProcedureService {
     async changeName(procedureId, newName) {
         await procedureRepository.changeName(procedureId, newName);
     }
+
+    async deleteAllProcedures(procedure_id) {
+        await procedureRepository.delete(procedure_id);
+    }
 }
 
 module.exports = new ProcedureService();

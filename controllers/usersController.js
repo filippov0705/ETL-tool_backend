@@ -1,4 +1,5 @@
 const usersService = require("@services/usersService");
+const procedureService = require("@services/procedureService");
 const rolesService = require("@services/rolesService");
 
 const {ERROR} = require("@constants/constants");
@@ -10,7 +11,8 @@ class UsersController {
             const newAllUserList = allUsers.map(item => {
                 return {
                     id: item.user_id,
-                    name: item.user_login,
+                    name: item.user_name,
+                    login: item.user_login,
                     isActive: item.is_active,
                 };
             });
@@ -31,9 +33,35 @@ class UsersController {
     async changeUserState(req, res) {
         try {
             const {userId} = req.params;
-            const {state} = req.body;
-            await usersService.changeActiveness(userId, state);
-            res.status(200).send(state);
+            const {state, value} = req.body;
+            if (state === "name") {
+                await usersService.changeUserName(userId, value);
+            } else {
+                await usersService.changeActiveness(userId, value);
+            }
+            res.status(200).send(value);
+        } catch (e) {
+            res.status(404).send({message: ERROR});
+        }
+    }
+
+    async deleteRole(req, res) {
+        try {
+            const {userId, role} = req.params;
+            await rolesService.deleteRole(userId, role);
+            res.status(200).send(200);
+        } catch (e) {
+            res.status(404).send({message: ERROR});
+        }
+    }
+
+    async deleteUser(req, res) {
+        try {
+            const {userId} = req.params;
+            const proceduresData = await procedureService.getUserProcedures(userId);
+            Promise.all(proceduresData.forEach(async item => await procedureService.deleteAllProcedures(item.id)));
+            await usersService.deleteUser(userId);
+            res.status(200).send(200);
         } catch (e) {
             res.status(404).send({message: ERROR});
         }

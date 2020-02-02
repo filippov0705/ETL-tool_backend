@@ -14,6 +14,7 @@ class RolesController {
         try {
             const {id, role} = req.body;
             await rolesService.addRole(id, role);
+            res.status(200).send(role);
         } catch (e) {
             res.status(400).send({message: "Error"});
         }

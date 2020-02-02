@@ -11,6 +11,11 @@ router
     .get(rolesController.getRoles)
     .patch(rolesController.addRole);
 
-router.route("/:userId").patch(usersController.changeUserState);
+router.route("/:userId/roles/:role").delete(usersController.deleteRole);
+
+router
+    .route("/:userId")
+    .patch(usersController.changeUserState)
+    .delete(usersController.deleteUser);
 
 module.exports = router;
