@@ -60,40 +60,6 @@ class taskServeice {
         nodemailerService.send("ETL-tool", mailAdress, "info", data[task.settings.variable]);
         return {status: SUCCESS, runResult: data};
     }
-
-    async changeUserRole(task, data) {
-        const newRole = task.settings.role.toLowerCase();
-        if (newRole === "user" || newRole === "trainee") {
-            const role = await userRepository.getUserRole(task.settings.login);
-            if (!role) {
-                return {status: ERROR, runResult: data};
-            }
-            if (role.dataValues.user_role === "admin") {
-                return {status: ERROR, runResult: data};
-            }
-            await userRepository.changeUserRole(task.settings.login, newRole);
-            return {status: SUCCESS, runResult: data};
-        } else {
-            return {status: ERROR, runResult: data};
-        }
-    }
-
-    async deleteUser(task, data) {
-        try {
-            const role = await userRepository.getUserRole(task.settings.login);
-            if (!role) {
-                return {status: ERROR, runResult: data};
-            }
-            if (role.dataValues.user_role === "admin") {
-                return {status: ERROR, runResult: data};
-            } else {
-                await userRepository.deleteUser(task.settings.login);
-                return {status: SUCCESS, runResult: data};
-            }
-        } catch (e) {
-            return {status: ERROR, runResult: data};
-        }
-    }
 }
 
 module.exports = new taskServeice();

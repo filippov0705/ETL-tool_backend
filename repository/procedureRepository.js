@@ -5,10 +5,6 @@ class ProcedureRepository {
         return await Procedure.findByPk(id);
     }
 
-    findAll() {
-        Procedure.findAll({raw: true}).then(procedures => {});
-    }
-
     async create(procedureId, procedureName) {
         await Procedure.create({
             procedure_id: procedureId,

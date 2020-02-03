@@ -41,18 +41,6 @@ const Schedule = sequelize.define(
             type: Sequelize.BOOLEAN,
             allowNull: true,
         },
-        year: {
-            type: Sequelize.INTEGER,
-            allowNull: true,
-        },
-        month: {
-            type: Sequelize.INTEGER,
-            allowNull: true,
-        },
-        day: {
-            type: Sequelize.INTEGER,
-            allowNull: true,
-        },
         hour: {
             type: Sequelize.INTEGER,
             allowNull: false,

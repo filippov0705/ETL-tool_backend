@@ -1,13 +1,10 @@
 const {Schedule} = require("@models/schedules");
+const {DAYS_OF_THE_WEEK, DAYS_OF_THE_WEEK_ABBREVIATED} = require("@constants/constants");
 
 class ScheduleRepository {
     async createSchedule(procedureId, newSchedule) {
-        const isSingle = newSchedule.periodicity === "Single";
-        const periodicity = isSingle ? 1 : 2;
-        const year = isSingle ? newSchedule.value[0] : null;
-        const month = isSingle ? newSchedule.value[1] : null;
-        const day = isSingle ? newSchedule.value[2] : null;
-        const date = isSingle ? new Date(`${month},${day + 1},${year}`).getTime() : null;
+        const [year, month, day] = newSchedule.value;
+        const date = newSchedule.periodicity === 1 ? new Date(`${month},${day + 1},${year}`).getTime() : null;
         await Schedule.create({
             schedule_id: newSchedule.id,
             procedure_id: procedureId,
@@ -18,19 +15,15 @@ class ScheduleRepository {
             friday: newSchedule.value.includes("Fri"),
             saturday: newSchedule.value.includes("Sat"),
             sunday: newSchedule.value.includes("Sun"),
-            year,
-            month,
-            day,
             date,
             hour: newSchedule.value[newSchedule.value.length - 2],
             minute: newSchedule.value[newSchedule.value.length - 1],
-            periodicity,
+            periodicity: newSchedule.periodicity,
         });
     }
 
     async getSchedules(procedure_id) {
         const schedules = await Schedule.findAll({where: {procedure_id}, raw: true});
-        console.log(schedules);
         return schedules;
     }
 

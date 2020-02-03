@@ -17,7 +17,7 @@ class TaskRepository {
     }
 
     async findTasks(id) {
-        const tasks = await Task.findAll({where: {procedure_id: id}, raw: true});
+        const tasks = await Task.findAll({where: {procedure_id: id}, order: [["task_order", "ASC"]], raw: true});
         return tasks;
     }
 

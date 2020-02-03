@@ -22,21 +22,21 @@ class UsersController {
                 return item;
             });
 
-            Promise.all(results).then(userList => {
-                res.status(200).send(userList);
-            });
+            const userList = await Promise.all(results);
+            res.status(200).send(userList);
         } catch (e) {
             res.status(404).send({message: ERROR});
         }
     }
 
-    async changeUserState(req, res) {
+    async changeUserParameter(req, res) {
         try {
             const {userId} = req.params;
             const {state, value} = req.body;
             if (state === "name") {
                 await usersService.changeUserName(userId, value);
             } else {
+                if (req.user.id === Number(userId)) throw new Error();
                 await usersService.changeActiveness(userId, value);
             }
             res.status(200).send(value);
@@ -48,6 +48,7 @@ class UsersController {
     async deleteRole(req, res) {
         try {
             const {userId, role} = req.params;
+            if (req.user.id === Number(userId)) throw new Error();
             await rolesService.deleteRole(userId, role);
             res.status(200).send(200);
         } catch (e) {
@@ -59,7 +60,8 @@ class UsersController {
         try {
             const {userId} = req.params;
             const proceduresData = await procedureService.getUserProcedures(userId);
-            Promise.all(proceduresData.forEach(async item => await procedureService.deleteAllProcedures(item.id)));
+            if (req.user.id === Number(userId)) throw new Error();
+            await Promise.all(proceduresData.map(item => procedureService.deleteAllProcedures(item.id)));
             await usersService.deleteUser(userId);
             res.status(200).send(200);
         } catch (e) {

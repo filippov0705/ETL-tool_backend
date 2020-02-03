@@ -9,13 +9,13 @@ router.route("/").get(userMiddleware.getUserParams, usersController.getUsers);
 router
     .route("/roles")
     .get(rolesController.getRoles)
-    .patch(rolesController.addRole);
+    .patch(userMiddleware.getUserParams, rolesController.addRole);
 
-router.route("/:userId/roles/:role").delete(usersController.deleteRole);
+router.route("/:userId/roles/:role").delete(userMiddleware.getUserParams, usersController.deleteRole);
 
 router
     .route("/:userId")
-    .patch(usersController.changeUserState)
-    .delete(usersController.deleteUser);
+    .patch(userMiddleware.getUserParams, usersController.changeUserParameter)
+    .delete(userMiddleware.getUserParams, usersController.deleteUser);
 
 module.exports = router;

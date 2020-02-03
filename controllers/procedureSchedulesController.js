@@ -1,7 +1,8 @@
 const procedureRepository = require("@repository/procedureRepository");
 const taskRepository = require("@repository/taskRepository");
 const scheduleRepository = require("@repository/scheduleRepository");
-const {ERROR} = require("@constants/constants");
+const constantRepository = require("@repository/constantRepository");
+const {ERROR, DAYS_OF_THE_WEEK, DAYS_OF_THE_WEEK_ABBREVIATED} = require("@constants/constants");
 
 class ProcedureSchedulesController {
     async getTargetProcedure(req, res) {
@@ -10,10 +11,6 @@ class ProcedureSchedulesController {
 
             const procedureData = await procedureRepository.findOne(procedureId);
             const tasksData = await taskRepository.findTasks(procedureData.dataValues.procedure_id);
-            tasksData.sort((a, b) => {
-                if (a.task_order > b.task_order) return 1;
-                if (a.task_order < b.task_order) return -1;
-            });
             const tasks = tasksData.map(item => {
                 return {id: item.task_id, name: item.task_name, settings: item.task_settings};
             });
@@ -21,15 +18,14 @@ class ProcedureSchedulesController {
             const schedule = schedulesData.map(item => {
                 const value = [];
                 if (item.periodicity === 1) {
-                    value.push(item.year, item.month, item.day, item.hour, item.minute);
+                    const [year, month, day] = item.date.split("-");
+                    value.push(year, month, day, item.hour, item.minute);
                 } else {
-                    if (item.monday) value.push("Mon");
-                    if (item.tuesday) value.push("Tue");
-                    if (item.wednsday) value.push("Wed");
-                    if (item.thursday) value.push("Thu");
-                    if (item.friday) value.push("Fri");
-                    if (item.saturday) value.push("Sat");
-                    if (item.sunday) value.push("Sun");
+                    DAYS_OF_THE_WEEK.map((day, i) => {
+                        if (item[day]) {
+                            value.push(DAYS_OF_THE_WEEK_ABBREVIATED[i]);
+                        }
+                    });
                     value.push(item.hour, item.minute);
                 }
                 return {
@@ -64,6 +60,7 @@ class ProcedureSchedulesController {
         try {
             const {procedureId} = req.params;
             const newSchedule = req.body;
+            newSchedule.periodicity = await constantRepository.getConstantId(newSchedule.periodicity);
             await scheduleRepository.createSchedule(procedureId, newSchedule);
             next();
         } catch (e) {

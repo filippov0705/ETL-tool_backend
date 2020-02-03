@@ -13,6 +13,7 @@ class RolesController {
     async addRole(req, res) {
         try {
             const {id, role} = req.body;
+            if (req.user.id === id) throw new Error();
             await rolesService.addRole(id, role);
             res.status(200).send(role);
         } catch (e) {

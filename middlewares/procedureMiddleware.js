@@ -1,7 +1,7 @@
 const taskRepository = require("@repository/taskRepository");
 const {ERROR} = require("@constants/constants");
 
-class ProcedureParametersController {
+class ProcedureMiddleware {
     async getProcedureTasks(req, res, next) {
         try {
             const { procedureId } = req.params;
@@ -21,4 +21,4 @@ class ProcedureParametersController {
     }
 }
 
-module.exports = new ProcedureParametersController();
+module.exports = new ProcedureMiddleware();
