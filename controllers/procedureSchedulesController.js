@@ -75,7 +75,6 @@ class ProcedureSchedulesController {
         try {
             const newSchedule = req.body;
             await scheduleRepository.editSchedule(newSchedule.id, newSchedule);
-            // res.status(200).send(200);
             next();
         } catch (e) {
             res.status(400).send({message: ERROR});

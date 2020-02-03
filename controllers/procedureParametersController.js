@@ -5,7 +5,7 @@ class ProcedureParametersController {
     async getProcedureTasks(req, res, next) {
         try {
             const { procedureId } = req.params;
-            let tasksData = await taskRepository.findTasks(procedureId);
+            const tasksData = await taskRepository.findTasks(procedureId);
             tasksData.sort((a, b) => {
                 if (a.task_order > b.task_order) return 1;
                 if (a.task_order < b.task_order) return -1;

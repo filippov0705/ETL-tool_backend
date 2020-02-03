@@ -18,6 +18,10 @@ class ProcedureService {
                 c.on("ready", function() {
                     c.get(`/${task.settings.name}`, function(err, stream) {
                         let content = "";
+                        if(!stream) {
+                            return resolve({status: ERROR});
+                        }
+
                         stream.on("data", function(chunk) {
                             content += chunk.toString();
                         });

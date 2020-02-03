@@ -7,7 +7,7 @@ class ScheduleRepository {
         const year = isSingle ? newSchedule.value[0] : null;
         const month = isSingle ? newSchedule.value[1] : null;
         const day = isSingle ? newSchedule.value[2] : null;
-
+        const date = isSingle ? new Date(`${month},${day + 1},${year}`).getTime() : null;
         await Schedule.create({
             schedule_id: newSchedule.id,
             procedure_id: procedureId,
@@ -21,6 +21,7 @@ class ScheduleRepository {
             year,
             month,
             day,
+            date,
             hour: newSchedule.value[newSchedule.value.length - 2],
             minute: newSchedule.value[newSchedule.value.length - 1],
             periodicity,
@@ -29,6 +30,7 @@ class ScheduleRepository {
 
     async getSchedules(procedure_id) {
         const schedules = await Schedule.findAll({where: {procedure_id}, raw: true});
+        console.log(schedules);
         return schedules;
     }
 

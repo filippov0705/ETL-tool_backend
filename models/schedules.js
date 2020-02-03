@@ -65,6 +65,10 @@ const Schedule = sequelize.define(
             type: Sequelize.INTEGER,
             allowNull: true,
         },
+        date: {
+            type: Sequelize.DATE,
+            allowNull: true,
+        },
     },
     {timestamps: false}
 );
