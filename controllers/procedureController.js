@@ -1,4 +1,5 @@
 const procedureService = require("@services/procedureService");
+const scheduleService = require("@services/scheduleService");
 const rolesService = require("@services/rolesService");
 
 class ProcedureController {
@@ -21,6 +22,12 @@ class ProcedureController {
         } catch (e) {
             res.status(400).send({message: e});
         }
+    }
+
+    async getClosestExecutedProcedures(date, dayOfTheWeek) {
+        try {
+            const procedures = await scheduleService.getClosestProceduresId(date, dayOfTheWeek);
+        } catch (e) {}
     }
 }
 

@@ -1,4 +1,5 @@
 const {Schedule} = require("@models/schedules");
+const {Op} = require("sequelize");
 const {DAYS_OF_THE_WEEK, DAYS_OF_THE_WEEK_ABBREVIATED} = require("@constants/constants");
 
 class ScheduleRepository {
@@ -20,6 +21,22 @@ class ScheduleRepository {
             minute: newSchedule.value[newSchedule.value.length - 1],
             periodicity: newSchedule.periodicity,
         });
+    }
+
+    async findInArray(newDate, dayOfTheWeek, transaction) {
+        const date = new Date(`${newDate.getMonth() + 1},${newDate.getDate() + 1},${newDate.getFullYear()}`).getTime();
+        const schedules = await Schedule.findAll({
+            where: {
+                [Op.or]: [
+                    {hour: newDate.getHours(), minute: {[Op.lte]: newDate.getMinutes()}},
+                    {hour: newDate.getHours() + 1, minute: {[Op.gte]: newDate.getMinutes()}},
+                ],
+                [Op.or]: [{[dayOfTheWeek]: true}, {date}],
+            },
+            raw: true,
+            transaction,
+        });
+        return schedules;
     }
 
     async getSchedules(procedure_id) {

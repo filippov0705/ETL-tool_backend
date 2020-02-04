@@ -10,8 +10,8 @@ class UserRepository {
         });
     }
 
-    async findUser(user_id) {
-        const userData = await User.findByPk(user_id);
+    async findUser(user_id, transaction) {
+        const userData = await User.findOne({where: {user_id}, transaction});
         return userData;
     }
 

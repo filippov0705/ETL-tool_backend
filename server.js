@@ -9,6 +9,7 @@ const authorizationRouter = require("@routers/authorizationRouter");
 const tasksRouter = require("@routers/tasksRouter");
 const usersRouter = require("@routers//usersRouter");
 const authenticationRouter = require("@routers/authenticationRouter");
+const cron = require("@schedules/index");
 
 const app = express();
 
