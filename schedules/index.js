@@ -12,7 +12,6 @@ class Schedules {
     async getSchedulesFromBD(minutes) {
         const date = new Date();
         cron.schedule(`${date.getMinutes() + 1} * * * *`, async () => {
-            console.log("running a task every minute");
             const date = new Date();
             const dayOfTheWeek = DAYS_OF_THE_WEEK[date.getDay() - 1];
             const schedules = await procedureController.getClosestExecutedProcedures(date, dayOfTheWeek);

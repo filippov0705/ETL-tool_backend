@@ -24,6 +24,7 @@ class userService {
         try {
             transaction = await sequelize.transaction();
             const user = await userRepository.findUser(id, transaction);
+            await transaction.commit();
             return user;
         } catch (e) {
             if (transaction) await transaction.rollback();

@@ -30,7 +30,7 @@ router
 
 router
     .route("/:procedureId/schedules")
-    .post(procedureSchedulesController.postNewSchedule, procedureSchedulesController.getTargetProcedure);
+    .post(procedureSchedulesController.postNewSchedule);
 
 router.route("/:procedureId/schedules/:scheduleId").delete(procedureSchedulesController.deleteSchedule);
 

@@ -3,9 +3,10 @@ const taskRepository = require("@repository/taskRepository");
 const scheduleRepository = require("@repository/scheduleRepository");
 const scheduleService = require("@services/scheduleService");
 const schedules = require("@schedules/index");
+const scheduleMapper = require("@mappers/scheduleMapper");
 const constantRepository = require("@repository/constantRepository");
 
-const {ERROR, DAYS_OF_THE_WEEK, DAYS_OF_THE_WEEK_ABBREVIATED} = require("@constants/constants");
+const {ERROR} = require("@constants/constants");
 
 class ProcedureSchedulesController {
     async getTargetProcedure(req, res) {
@@ -18,25 +19,7 @@ class ProcedureSchedulesController {
                 return {id: item.task_id, name: item.task_name, settings: item.task_settings};
             });
             const schedulesData = await scheduleRepository.getSchedules(procedureId);
-            const schedule = schedulesData.map(item => {
-                const value = [];
-                if (item.periodicity === 1) {
-                    const [year, month, day] = item.date.split("-");
-                    value.push(year, month, day, item.hour, item.minute);
-                } else {
-                    DAYS_OF_THE_WEEK.map((day, i) => {
-                        if (item[day]) {
-                            value.push(DAYS_OF_THE_WEEK_ABBREVIATED[i]);
-                        }
-                    });
-                    value.push(item.hour, item.minute);
-                }
-                return {
-                    id: item.schedule_id,
-                    value,
-                    periodicity: item.periodicity === 1 ? "Single" : "Periodically",
-                };
-            });
+            const schedule = await scheduleMapper.transformScheduleData(schedulesData);
             const procedure = {
                 name: procedureData.dataValues.procedure_name,
                 id: procedureData.dataValues.procedure_id,
@@ -60,7 +43,7 @@ class ProcedureSchedulesController {
         }
     }
 
-    async postNewSchedule(req, res, next) {
+    async postNewSchedule(req, res) {
         try {
             const {procedureId} = req.params;
             const newSchedule = req.body;
@@ -69,7 +52,7 @@ class ProcedureSchedulesController {
             if (scheduleService.isInHourInterval(newSchedule)) {
                 await schedules.addProcedureToCron(procedureId, newSchedule);
             }
-            next();
+            res.status(200).send(200);
         } catch (e) {
             res.status(400).send({message: ERROR});
         }
