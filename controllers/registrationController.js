@@ -3,6 +3,7 @@ const userRepository = require("@repository/userRepository");
 const rolesService = require("@services/rolesService");
 const rolesRepository = require("@repository/rolesRepository");
 const userRolesRepository = require("@repository/userRolesRepository");
+const userService = require("@services/usersService");
 const querystring = require("querystring");
 
 class RegistratinController {
@@ -10,7 +11,7 @@ class RegistratinController {
         try {
             const tokenValue = querystring.parse(req.user.access_token).access_token;
             const userData = await userRegistrationService.getUserParams(tokenValue);
-            const user = await userRepository.findUser(userData.data.id, userData.data.login);
+            const user = await userService.findUser(userData.data.id);
             if (!user) {
                 await userRepository.createUser(userData.data.id, userData.data.login);
                 const traineeRoleId = await rolesRepository.getTraineeId();

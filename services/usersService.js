@@ -1,6 +1,7 @@
 const userRepository = require("@repository/userRepository");
+const {sequelize} = require("@models/index");
 
-class userServeice {
+class userService {
     async getAllUsers() {
         const allUsers = await userRepository.getAllUsers();
         return allUsers;
@@ -17,6 +18,17 @@ class userServeice {
     async changeUserName(user_id, user_name) {
         await userRepository.changeUserNames(user_id, user_name);
     }
+
+    async findUser(id) {
+        let transaction;
+        try {
+            transaction = await sequelize.transaction();
+            const user = await userRepository.findUser(id, transaction);
+            return user;
+        } catch (e) {
+            if (transaction) await transaction.rollback();
+        }
+    }
 }
 
-module.exports = new userServeice();
+module.exports = new userService();

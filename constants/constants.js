@@ -27,7 +27,7 @@ module.exports = {
         "y",
         "z",
     ],
-    DAYS_OF_THE_WEEK: ["monday", "tuesday", "wednsday", "thursday", "friday", "sturday", "sunday"],
+    DAYS_OF_THE_WEEK: ["monday", "tuesday", "wednsday", "thursday", "friday", "saturday", "sunday"],
     DAYS_OF_THE_WEEK_ABBREVIATED: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
     ADD_VARIABLE: "Add variable",
     BOOLEAN: "boolean",

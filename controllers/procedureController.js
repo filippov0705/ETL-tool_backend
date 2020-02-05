@@ -1,6 +1,7 @@
 const procedureService = require("@services/procedureService");
 const scheduleService = require("@services/scheduleService");
 const rolesService = require("@services/rolesService");
+const sequelizeDataMapper = require("@mappers/sequelizeDataMapper");
 
 class ProcedureController {
     async getAllProcedures(req, res) {
@@ -25,9 +26,8 @@ class ProcedureController {
     }
 
     async getClosestExecutedProcedures(date, dayOfTheWeek) {
-        try {
-            const procedures = await scheduleService.getClosestProceduresId(date, dayOfTheWeek);
-        } catch (e) {}
+        const schedules = await scheduleService.getClosestProceduresSchedules(date, dayOfTheWeek);
+        return schedules;
     }
 }
 

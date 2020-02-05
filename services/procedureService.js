@@ -26,6 +26,7 @@ class ProcedureService {
             if (!user) throw new Error(USER_NOT_FOUND);
             const procedures = await user.getProcedures({transaction});
             if (!procedures.length) return [];
+            await transaction.commit();
             return procedures.map(item => {
                 return {name: item.dataValues.procedure_name, id: item.dataValues.procedure_id};
             });
@@ -40,6 +41,31 @@ class ProcedureService {
 
     async deleteAllProcedures(procedure_id) {
         await procedureRepository.delete(procedure_id);
+    }
+
+    async makeRunMark(procedure_id) {
+        let transaction;
+        try {
+            transaction = await sequelize.transaction();
+            await procedureRepository.makeRunMark(procedure_id, transaction);
+            await transaction.commit();
+            return;
+        } catch (e) {
+            if (transaction) await transaction.rollback();
+        }
+        return;
+    }
+
+    async getLastRunTimeMark(procedure_id) {
+        let transaction;
+        try {
+            transaction = await sequelize.transaction();
+            const timeMark = await procedureRepository.getTimeMark(procedure_id, transaction);
+            await transaction.commit();
+            return timeMark;
+        } catch (e) {
+            if (transaction) await transaction.rollback();
+        }
     }
 }
 

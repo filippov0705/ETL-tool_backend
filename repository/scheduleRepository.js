@@ -3,35 +3,41 @@ const {Op} = require("sequelize");
 const {DAYS_OF_THE_WEEK, DAYS_OF_THE_WEEK_ABBREVIATED} = require("@constants/constants");
 
 class ScheduleRepository {
-    async createSchedule(procedureId, newSchedule) {
-        const [year, month, day] = newSchedule.value;
-        const date = newSchedule.periodicity === 1 ? new Date(`${month},${day + 1},${year}`).getTime() : null;
+    async createSchedule(procedure_id, newSchedule) {
+        const date = newSchedule.year
+            ? new Date(`${newSchedule.month},${newSchedule.day + 1},${newSchedule.year}`).getTime()
+            : null;
         await Schedule.create({
-            schedule_id: newSchedule.id,
-            procedure_id: procedureId,
-            monday: newSchedule.value.includes("Mon"),
-            tuesday: newSchedule.value.includes("Tue"),
-            wednsday: newSchedule.value.includes("Wed"),
-            thursday: newSchedule.value.includes("Thu"),
-            friday: newSchedule.value.includes("Fri"),
-            saturday: newSchedule.value.includes("Sat"),
-            sunday: newSchedule.value.includes("Sun"),
+            schedule_id: newSchedule.schedule_id,
+            procedure_id,
+            monday: newSchedule.monday,
+            tuesday: newSchedule.tuesday,
+            wednsday: newSchedule.wednsday,
+            thursday: newSchedule.thursday,
+            friday: newSchedule.friday,
+            saturday: newSchedule.saturday,
+            sunday: newSchedule.sunday,
             date,
-            hour: newSchedule.value[newSchedule.value.length - 2],
-            minute: newSchedule.value[newSchedule.value.length - 1],
+            hour: newSchedule.hour,
+            minute: newSchedule.minute,
             periodicity: newSchedule.periodicity,
         });
+    }
+
+    async findProcedureId(schedule_id, transaction) {
+        const procedureId = await Schedule.findOne({attributes: ["procedure_id"], where: {schedule_id}, transaction});
+        return procedureId.dataValues.procedure_id;
     }
 
     async findInArray(newDate, dayOfTheWeek, transaction) {
         const date = new Date(`${newDate.getMonth() + 1},${newDate.getDate() + 1},${newDate.getFullYear()}`).getTime();
         const schedules = await Schedule.findAll({
             where: {
-                [Op.or]: [
-                    {hour: newDate.getHours(), minute: {[Op.lte]: newDate.getMinutes()}},
-                    {hour: newDate.getHours() + 1, minute: {[Op.gte]: newDate.getMinutes()}},
-                ],
                 [Op.or]: [{[dayOfTheWeek]: true}, {date}],
+                [Op.or]: [
+                    {hour: newDate.getHours(), minute: {[Op.gte]: newDate.getMinutes()}},
+                    {hour: newDate.getHours() + 1, minute: {[Op.lte]: newDate.getMinutes()}},
+                ],
             },
             raw: true,
             transaction,
@@ -50,30 +56,30 @@ class ScheduleRepository {
     }
 
     async editSchedule(schedule_id, newSchedule) {
-        if (newSchedule.periodicity === "Single") {
-            const [year, month, day, hour, minute] = newSchedule.value;
+        if (newSchedule.year) {
+            const date = new Date(
+                `${Number(newSchedule.month)},${Number(newSchedule.day) + 1},${Number(newSchedule.year)}`
+            ).getTime();
             await Schedule.update(
                 {
-                    year,
-                    month,
-                    day,
-                    hour,
-                    minute,
+                    date,
+                    hour: newSchedule.hour,
+                    minute: newSchedule.minute,
                 },
                 {where: {schedule_id}}
             );
         } else {
             await Schedule.update(
                 {
-                    monday: newSchedule.value.includes("Mon"),
-                    tuesday: newSchedule.value.includes("Tue"),
-                    wednsday: newSchedule.value.includes("Wed"),
-                    thursday: newSchedule.value.includes("Thu"),
-                    friday: newSchedule.value.includes("Fri"),
-                    saturday: newSchedule.value.includes("Sat"),
-                    sunday: newSchedule.value.includes("Sun"),
-                    hour: newSchedule.value[newSchedule.value.length - 2],
-                    minute: newSchedule.value[newSchedule.value.length - 1],
+                    monday: newSchedule.monday,
+                    tuesday: newSchedule.tuesday,
+                    wednsday: newSchedule.wednsday,
+                    thursday: newSchedule.thursday,
+                    friday: newSchedule.friday,
+                    saturday: newSchedule.saturday,
+                    sunday: newSchedule.sunday,
+                    hour: newSchedule.hour,
+                    minute: newSchedule.minute,
                 },
                 {where: {schedule_id}}
             );

@@ -23,10 +23,14 @@ router.route("/new/:id").post(userMiddleware.getUserParams, newProcedureControll
 router
     .route("/target/:userId/:procedureId")
     .get(userMiddleware.getUserParams, procedureSchedulesController.getTargetProcedure);
+
 router
-    .route("/schedules/:userId/:procedureId")
-    .post(procedureSchedulesController.postNewSchedule, procedureSchedulesController.getTargetProcedure)
+    .route("/:procedureId/schedules/:scheduleId")
     .put(procedureSchedulesController.editSchedule, procedureSchedulesController.getTargetProcedure);
+
+router
+    .route("/:procedureId/schedules")
+    .post(procedureSchedulesController.postNewSchedule, procedureSchedulesController.getTargetProcedure);
 
 router.route("/:procedureId/schedules/:scheduleId").delete(procedureSchedulesController.deleteSchedule);
 

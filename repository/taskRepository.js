@@ -28,6 +28,11 @@ class TaskRepository {
     async deleteTask(task_id) {
         await Task.destroy({where: {task_id}});
     }
+
+    async getProceduretasks(procedure_id, transaction) {
+        const tasks = await Task.findAll({where: {procedure_id}, transaction});
+        return tasks;
+    }
 }
 
 module.exports = new TaskRepository();

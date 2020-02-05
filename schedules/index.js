@@ -1,11 +1,59 @@
 const cron = require("node-cron");
 const procedureController = require("@controllers/procedureController.js");
+const runProcedureController = require("@controllers/runProcedureController");
 
 const {DAYS_OF_THE_WEEK} = require("@constants/constants");
 
-module.exports = cron.schedule(" 10,20,30,40,50 1-59 * * * *", () => {
-    console.log("running a task every minute");
-    const date = new Date();
-    const dayOfTheWeek = DAYS_OF_THE_WEEK[date.getDay() - 1];
-    procedureController.getClosestExecutedProcedures(date, dayOfTheWeek);
-});
+class Schedules {
+    constructor() {
+        this.runingSchedules = {};
+    }
+
+    async getSchedulesFromBD(minutes) {
+        const date = new Date();
+        cron.schedule(`${date.getMinutes() + 1} * * * *`, async () => {
+            console.log("running a task every minute");
+            const date = new Date();
+            const dayOfTheWeek = DAYS_OF_THE_WEEK[date.getDay() - 1];
+            const schedules = await procedureController.getClosestExecutedProcedures(date, dayOfTheWeek);
+            schedules.forEach(item => {
+                const newFunction = (itemData => {
+                    const data = itemData;
+                    return () => {
+                        runProcedureController.runTaskBySchedule(data);
+                    };
+                })(item.procedure_id);
+
+                const task = cron.schedule(
+                    `${item.minute} ${item.hour} ${date.getDate()} ${date.getMonth() + 1} *`,
+                    newFunction
+                );
+
+                this.runingSchedules[item.schedule_id] = task;
+            });
+        });
+    }
+
+    async deleteProcedureFromCron(schedule_id) {
+        if (this.runingSchedules[schedule_id]) {
+            this.runingSchedules[schedule_id].destroy();
+        }
+        return;
+    }
+
+    async addProcedureToCron(procedureId, schedule) {
+        const newFunction = (itemData => {
+            const data = itemData;
+            return () => {
+                runProcedureController.runTaskBySchedule(data);
+            };
+        })(procedureId);
+        const task = cron.schedule(
+            `${schedule.minute} ${schedule.hour} ${schedule.day || "*"} ${schedule.month || "*"} *`,
+            newFunction
+        );
+        this.runingSchedules[schedule.schedule_id] = task;
+    }
+}
+
+module.exports = new Schedules();

@@ -2,6 +2,7 @@ const nodemailerService = require("@services/nodemailerService");
 const userRepository = require("@repository/userRepository");
 const taskTypesRepository = require("@repository/taskTypesRepository");
 const taskRepository = require("@repository/taskRepository");
+const {sequelize} = require("@models/index");
 
 const {ALPHABET, SUCCESS, ERROR} = require("@constants/constants");
 
@@ -59,6 +60,18 @@ class taskServeice {
             : task.settings.Email;
         nodemailerService.send("ETL-tool", mailAdress, "info", data[task.settings.variable]);
         return {status: SUCCESS, runResult: data};
+    }
+
+    async getProcedureTasks(procedure_id) {
+        let transaction;
+        try {
+            transaction = await sequelize.transaction();
+            const tasks = await taskRepository.getProceduretasks(procedure_id, transaction);
+            await transaction.commit();
+            return tasks;
+        } catch (e) {
+            if (transaction) await transaction.rollback();
+        }
     }
 }
 
