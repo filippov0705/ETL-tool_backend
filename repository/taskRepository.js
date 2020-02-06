@@ -1,12 +1,13 @@
 const {Task} = require("@models/tasks");
 
 class TaskRepository {
-    async createTask(procedureId, task) {
+    async createTask(procedureId, task, i) {
         await Task.create({
             task_id: task.id,
             task_name: task.name,
             procedure_id: procedureId,
             task_settings: task.settings,
+            task_order: i + 1,
         });
     }
 
@@ -16,12 +17,21 @@ class TaskRepository {
     }
 
     async findTasks(id) {
-        const tasks = await Task.findAll({where:{procedure_id: id}, raw: true });
+        const tasks = await Task.findAll({where: {procedure_id: id}, order: [["task_order", "ASC"]], raw: true});
         return tasks;
     }
 
     async changeSettings(task_id, newSettings) {
-        await Task.update({task_settings: newSettings}, {where: {task_id}})
+        await Task.update({task_settings: newSettings}, {where: {task_id}});
+    }
+
+    async deleteTask(task_id) {
+        await Task.destroy({where: {task_id}});
+    }
+
+    async getProceduretasks(procedure_id, transaction) {
+        const tasks = await Task.findAll({where: {procedure_id}, transaction});
+        return tasks;
     }
 }
 

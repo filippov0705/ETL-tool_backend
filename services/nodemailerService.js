@@ -13,14 +13,15 @@ class NodemailerService {
         });
 
         const mailOptions = { from, to, subject, text };
-
-        const result = await transporter.sendMail(mailOptions, async function(error, info) {
+        let result = null;
+        await transporter.sendMail(mailOptions, async function(error, info) {
             if (error) {
-                return error;
+                result = error;
             } else {
-                return `Email sent: ${info.response}`;
+                result = `Email sent: ${info.response}`;
             }
         });
+
         return result;
     }
 }

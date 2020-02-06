@@ -6,6 +6,7 @@ class UserMiddleware {
         const accessToken = querystring.parse(req.headers.cookie).access_token;
         try {
             const userData = await userRegistrationService.getUserParams(accessToken);
+            if (!userData.data.login || !userData.data.id) throw new Error();
             req.user = {login: userData.data.login, id: userData.data.id};
             next();
         } catch (e) {

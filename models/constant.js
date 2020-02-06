@@ -1,25 +1,16 @@
 const {Sequelize} = require("sequelize");
 const {sequelize} = require("./index");
 
-const User = sequelize.define(
-    "user",
+const Constant = sequelize.define(
+    "constant",
     {
-        user_id: {
+        constant_id: {
             type: Sequelize.INTEGER,
             autoIncrement: true,
             primaryKey: true,
         },
-        user_login: {
-            type: Sequelize.STRING(50),
-            allowNull: false,
-            unique: true,
-        },
-        user_name: {
+        constant_value: {
             type: Sequelize.STRING(30),
-            allowNull: false,
-        },
-        is_active: {
-            type: Sequelize.BOOLEAN,
             allowNull: false,
         },
     },
@@ -27,5 +18,5 @@ const User = sequelize.define(
 );
 
 module.exports = {
-    User,
+    Constant,
 };

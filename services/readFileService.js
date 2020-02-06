@@ -4,25 +4,24 @@ const serverCalls = require("@services/serverCalls");
 const {ERROR, USER_DATA_STORAGE, SUCCESS} = require("@constants/constants");
 
 class ReadFileService {
-    readExcel(task, data) {
-        return new Promise(resolve => {
-            try {
-                const content = xlsx.parse(`${USER_DATA_STORAGE}${task.settings.from}.xlsx`);
-                data.excel = content;
-                resolve({status: SUCCESS, runResult: data});
-            } catch (e) {
-                resolve({status: ERROR});
-            }
-        });
+    async readExcel(task, data) {
+        try {
+            const content = await xlsx.parse(`${USER_DATA_STORAGE}${task.settings.from}.xlsx`);
+            data[task.settings.as] = content;
+            return {status: SUCCESS, runResult: data};
+        } catch (e) {
+            return {status: ERROR};
+        }
     }
 
-    readCSV(task, data) {
-        return new Promise(resolve => {
-            serverCalls.readFromFTP(task).then(result => {
-                data.text = result;
-                resolve({status: SUCCESS, runResult: data});
-            });
-        });
+    async readCSV(task, data) {
+        try {
+            const result = await serverCalls.readFromFTP(task);
+            data[task.settings.as] = result;
+            return {status: SUCCESS, runResult: data};
+        } catch (e) {
+            return {status: ERROR};
+        }
     }
 }
 

@@ -1,5 +1,4 @@
 const {User} = require("@models/user");
-const {TRAINEE} = require("@constants/constants");
 
 class UserRepository {
     createUser(user_id, user_login) {
@@ -7,12 +6,40 @@ class UserRepository {
             user_id: user_id,
             user_login: user_login,
             user_name: user_login,
-            user_role: TRAINEE,
+            is_active: false,
         });
     }
 
-    findUser(user_id) {
-        return User.findByPk(user_id);
+    async findUser(user_id, transaction) {
+        const userData = await User.findOne({where: {user_id}, transaction});
+        return userData;
+    }
+
+    async deleteUser(user_login) {
+        await User.destroy({where: {user_login}});
+        return;
+    }
+
+    async getAllUsers() {
+        const allUsers = await User.findAll({raw: true});
+        return allUsers;
+    }
+
+    async getUserActiveness(user_id) {
+        const userData = await User.findByPk(user_id);
+        return userData.dataValues.is_active;
+    }
+
+    async changeActiveness(user_id, state) {
+        await User.update({is_active: state}, {where: {user_id}});
+    }
+
+    async deleteUser(user_id) {
+        await User.destroy({where: {user_id}});
+    }
+
+    async changeUserNames(user_id, user_name) {
+        await User.update({user_name}, {where: {user_id}});
     }
 }
 

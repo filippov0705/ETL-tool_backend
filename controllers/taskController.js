@@ -11,12 +11,8 @@ class ProcedureController {
             });
             res.status(200).send(taskTypesArray);
         } catch (e) {
-            res.status(404).send(JSON.stringify({message: ERROR}));
+            res.status(404).send({message: ERROR});
         }
-    }
-
-    mailing(req, res) {
-        taskService.nodemail();
     }
 }
 

@@ -5,11 +5,6 @@ class ProcedureRepository {
         return await Procedure.findByPk(id);
     }
 
-    findAll() {
-        Procedure.findAll({raw: true})
-            .then(procedures => {});
-    }
-
     async create(procedureId, procedureName) {
         await Procedure.create({
             procedure_id: procedureId,
@@ -17,8 +12,21 @@ class ProcedureRepository {
         });
     }
 
-    delete(id) {
-        Procedure.destroy({where: {procedure_id: id}});
+    async makeRunMark(procedure_id, transaction) {
+        await Procedure.update({last_execution: new Date()}, {where: {procedure_id}, transaction});
+    }
+
+    async delete(id) {
+        await Procedure.destroy({where: {procedure_id: id}});
+    }
+
+    async changeName(procedure_id, procedure_name) {
+        await Procedure.update({procedure_name}, {where: {procedure_id}});
+    }
+
+    async getTimeMark(procedure_id, transaction) {
+        const timeMark = await Procedure.findOne({attributes: ["last_execution"], where: {procedure_id}, transaction});
+        return timeMark.dataValues.last_execution;
     }
 }
 
