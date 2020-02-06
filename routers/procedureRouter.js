@@ -32,7 +32,7 @@ router.route("/tasks").get(taskController.getTasksTypes);
 
 router
     .route("/:procedureId/schedules/:scheduleId")
-    .put(procedureSchedulesController.editSchedule, procedureSchedulesController.getTargetProcedure)
+    .put(procedureSchedulesController.editSchedule)
     .delete(procedureSchedulesController.deleteSchedule);
 
 router.route("/:procedureId/schedules").post(procedureSchedulesController.postNewSchedule);

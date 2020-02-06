@@ -1,4 +1,5 @@
 const taskRepository = require("@repository/taskRepository");
+const taskMapper = require("@mappers/taskMapper");
 const {ERROR} = require("@constants/constants");
 
 class ProcedureMiddleware {
@@ -6,13 +7,7 @@ class ProcedureMiddleware {
         try {
             const {procedureId} = req.params;
             const tasksData = await taskRepository.findTasks(procedureId);
-            tasksData.sort((a, b) => {
-                if (a.task_order > b.task_order) return 1;
-                if (a.task_order < b.task_order) return -1;
-            });
-            const targetProcedureTasks = tasksData.map(item => {
-                return {name: item.task_name, id: item.task_id, settings: item.task_settings};
-            });
+            const targetProcedureTasks = taskMapper.normalizeTasksForProcedure(tasksData);
             req.user = {targetProcedureTasks};
             next();
         } catch (e) {

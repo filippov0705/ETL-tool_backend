@@ -19,6 +19,15 @@ class userService {
         await userRepository.changeUserNames(user_id, user_name);
     }
 
+    async createUser(user_id, user_login) {
+        await userRepository.createUser(user_id, user_login);
+    }
+
+    async getUserActiveness(user_id) {
+        const isActive = await userRepository.getUserActiveness(user_id);
+        return isActive;
+    }
+
     async findUser(id) {
         let transaction;
         try {

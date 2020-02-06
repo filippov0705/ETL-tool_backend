@@ -13,6 +13,18 @@ class ConstantsService {
             if (transaction) await transaction.rollback();
         }
     }
+
+    async getConstantId(periodicity) {
+        let transaction;
+        try {
+            transaction = await sequelize.transaction();
+            const constantId = await constantRepository.getConstantId(periodicity, transaction);
+            await transaction.commit();
+            return constantId;
+        } catch (e) {
+            if (transaction) await transaction.rollback();
+        }
+    }
 }
 
 module.exports = new ConstantsService();

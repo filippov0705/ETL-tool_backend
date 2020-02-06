@@ -7,21 +7,9 @@ class ScheduleRepository {
         const date = newSchedule.year
             ? new Date(`${newSchedule.month},${newSchedule.day + 1},${newSchedule.year}`).getTime()
             : null;
-        await Schedule.create({
-            schedule_id: newSchedule.schedule_id,
-            procedure_id,
-            monday: newSchedule.monday,
-            tuesday: newSchedule.tuesday,
-            wednsday: newSchedule.wednsday,
-            thursday: newSchedule.thursday,
-            friday: newSchedule.friday,
-            saturday: newSchedule.saturday,
-            sunday: newSchedule.sunday,
-            date,
-            hour: newSchedule.hour,
-            minute: newSchedule.minute,
-            periodicity: newSchedule.periodicity,
-        });
+        newSchedule.procedure_id = procedure_id;
+        newSchedule.date = date;
+        await Schedule.create(newSchedule);
     }
 
     async findProcedureId(schedule_id, transaction) {

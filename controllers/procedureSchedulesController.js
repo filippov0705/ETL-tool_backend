@@ -1,10 +1,10 @@
-const procedureRepository = require("@repository/procedureRepository");
-const taskRepository = require("@repository/taskRepository");
-const scheduleRepository = require("@repository/scheduleRepository");
+const procedureService = require("@services/procedureService");
+const taskService = require("@services/taskService");
 const scheduleService = require("@services/scheduleService");
 const schedules = require("@schedules/index");
 const scheduleMapper = require("@mappers/scheduleMapper");
-const constantRepository = require("@repository/constantRepository");
+const taskMapper = require("@mappers/taskMapper");
+const constantsService = require("@services/constantsService");
 
 const {ERROR} = require("@constants/constants");
 
@@ -13,12 +13,10 @@ class ProcedureSchedulesController {
         try {
             const {procedureId} = req.params;
 
-            const procedureData = await procedureRepository.findOne(procedureId);
-            const tasksData = await taskRepository.findTasks(procedureData.dataValues.procedure_id);
-            const tasks = tasksData.map(item => {
-                return {id: item.task_id, name: item.task_name, settings: item.task_settings};
-            });
-            const schedulesData = await scheduleRepository.getSchedules(procedureId);
+            const procedureData = await procedureService.findProcedure(procedureId);
+            const tasksData = await taskService.findTasks(procedureData.dataValues.procedure_id);
+            const tasks = taskMapper.normalizeTasksForProcedure(tasksData);
+            const schedulesData = await scheduleService.getSchedules(procedureId);
             const schedule = await scheduleMapper.transformScheduleData(schedulesData);
             const procedure = {
                 name: procedureData.dataValues.procedure_name,
@@ -36,7 +34,7 @@ class ProcedureSchedulesController {
         try {
             const {scheduleId} = req.params;
             await schedules.deleteProcedureFromCron(scheduleId);
-            await scheduleRepository.deleteSchedule(scheduleId);
+            await scheduleService.deleteSchedule(scheduleId);
             res.status(200).send(200);
         } catch (e) {
             res.status(400).send({message: ERROR});
@@ -47,29 +45,24 @@ class ProcedureSchedulesController {
         try {
             const {procedureId} = req.params;
             const newSchedule = req.body;
-            newSchedule.periodicity = await constantRepository.getConstantId(newSchedule.periodicity);
-            await scheduleRepository.createSchedule(procedureId, newSchedule);
-            if (scheduleService.isInHourInterval(newSchedule)) {
-                await schedules.addProcedureToCron(procedureId, newSchedule);
-            }
+            newSchedule.periodicity = await constantsService.getConstantId(newSchedule.periodicity);
+            await scheduleService.createSchedule(procedureId, newSchedule);
+            await schedules.addProcedureToCron(procedureId, newSchedule);
             res.status(200).send(200);
         } catch (e) {
             res.status(400).send({message: ERROR});
         }
     }
 
-    async editSchedule(req, res, next) {
+    async editSchedule(req, res) {
         try {
             const {scheduleId} = req.params;
             const newSchedule = req.body;
             await schedules.deleteProcedureFromCron(scheduleId);
-            await scheduleRepository.editSchedule(scheduleId, newSchedule);
-
+            await scheduleService.editSchedule(scheduleId, newSchedule);
             const procedureId = await scheduleService.findScheduleProcedure(scheduleId);
-            if (scheduleService.isInHourInterval(newSchedule)) {
-                await schedules.addProcedureToCron(procedureId, newSchedule);
-            }
-            next();
+            await schedules.addProcedureToCron(procedureId, newSchedule);
+            res.status(200).send(200);
         } catch (e) {
             res.status(400).send({message: ERROR});
         }

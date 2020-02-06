@@ -25,6 +25,11 @@ class RolesService {
         const roleId = await rolesRepository.getRoleId(role);
         await userRolesRepository.deleteRole(user_id, roleId);
     }
+
+    async getTraineeId() {
+        const traineeRoleId = await rolesRepository.getTraineeId();
+        return traineeRoleId;
+    }
 }
 
 module.exports = new RolesService();

@@ -7,8 +7,21 @@ const {sequelize} = require("@models/index");
 const {ALPHABET, SUCCESS, ERROR} = require("@constants/constants");
 
 class taskServeice {
+    async createTasks(procedureId, task, i) {
+        await taskRepository.createTask(procedureId, task, i);
+    }
+
+    async deleteTask(taskId) {
+        await taskRepository.deleteTask(taskId);
+    }
+
     async getTaskSettings(id) {
         return await taskRepository.getTaskSettings(id);
+    }
+
+    async findTasks(procedure_id) {
+        const taskData = await taskRepository.findTasks(procedure_id);
+        return taskData;
     }
 
     async changeTaskSettings(taskId, newSettings) {

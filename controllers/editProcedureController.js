@@ -1,5 +1,5 @@
 const procedureService = require("@services/procedureService");
-const createTaskService = require("@services/createTaskService");
+const taskService = require("@services/taskService");
 const {ERROR} = require("@constants/constants");
 
 class EditProcedureController {
@@ -18,7 +18,7 @@ class EditProcedureController {
         try {
             const {procedureId} = req.params;
             const {newTask} = req.body;
-            await createTaskService.createTasks(procedureId, newTask, newTask.order);
+            await taskService.createTasks(procedureId, newTask, newTask.order);
             res.status(200).send(newTask);
         } catch (e) {
             res.status(400).send({message: ERROR});
@@ -28,7 +28,7 @@ class EditProcedureController {
     async deleteTaskInProcedure(req, res) {
         try {
             const {taskId} = req.params;
-            await createTaskService.deleteTask(taskId);
+            await taskService.deleteTask(taskId);
             res.status(200).send(200);
         } catch (e) {
             res.status(400).send(JSON.stringify({message: ERROR}));

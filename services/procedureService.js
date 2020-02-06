@@ -6,16 +6,23 @@ const {USER_NOT_FOUND, NO_PROCEDURE_FOUND} = require("@constants/constants");
 
 class ProcedureService {
     async deleteProcedure(userId, procedureId) {
-        const user = await userRepository.findUser(userId);
-        if (!user) throw new Error(USER_NOT_FOUND);
-        const procedures = await user.getProcedures();
-        if (!procedures.length) throw new Error(NO_PROCEDURE_FOUND);
-        procedures.forEach(item => {
-            if (item.dataValues.procedure_id === Number(procedureId)) {
-                procedureRepository.delete(item.dataValues.procedure_id);
-                return;
+        let transaction;
+        try {
+            transaction = await sequelize.transaction();
+            const user = await userRepository.findUser(userId, transaction);
+            if (!user) {
+                throw new Error(USER_NOT_FOUND);
             }
-        });
+            const procedures = await user.getProcedures();
+            if (!procedures.length) {
+                throw new Error(NO_PROCEDURE_FOUND);
+            }
+            const targetProcedure = procedures.find(item => item.dataValues.procedure_id === Number(procedureId));
+            await procedureRepository.delete(targetProcedure.dataValues.procedure_id, transaction);
+            await transaction.commit();
+        } catch (err) {
+            if (transaction) await transaction.rollback();
+        }
     }
 
     async getUserProcedures(id) {
@@ -66,6 +73,11 @@ class ProcedureService {
         } catch (e) {
             if (transaction) await transaction.rollback();
         }
+    }
+
+    async findProcedure(procedure_id) {
+        const procedure = await procedureRepository.findOne(procedure_id);
+        return procedure;
     }
 }
 

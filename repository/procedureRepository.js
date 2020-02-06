@@ -5,19 +5,16 @@ class ProcedureRepository {
         return await Procedure.findByPk(id);
     }
 
-    async create(procedureId, procedureName) {
-        await Procedure.create({
-            procedure_id: procedureId,
-            procedure_name: procedureName,
-        });
+    async create(procedure_id, procedure_name, transaction) {
+        await Procedure.create({procedure_id, procedure_name}, {transaction});
     }
 
     async makeRunMark(procedure_id, transaction) {
         await Procedure.update({last_execution: new Date()}, {where: {procedure_id}, transaction});
     }
 
-    async delete(id) {
-        await Procedure.destroy({where: {procedure_id: id}});
+    async delete(id, transaction) {
+        await Procedure.destroy({where: {procedure_id: id}, transaction});
     }
 
     async changeName(procedure_id, procedure_name) {

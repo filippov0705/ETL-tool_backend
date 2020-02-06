@@ -1,5 +1,6 @@
 const cron = require("node-cron");
 const procedureController = require("@controllers/procedureController.js");
+const scheduleService = require("@services/scheduleService");
 const runProcedureController = require("@controllers/runProcedureController");
 
 const {DAYS_OF_THE_WEEK} = require("@constants/constants");
@@ -41,6 +42,7 @@ class Schedules {
     }
 
     async addProcedureToCron(procedureId, schedule) {
+        if (!scheduleService.isInHourInterval(schedule)) return;
         const newFunction = (itemData => {
             const data = itemData;
             return () => {

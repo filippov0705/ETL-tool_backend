@@ -1,8 +1,6 @@
 const userRegistrationService = require("@services/userRegistrationService");
-const userRepository = require("@repository/userRepository");
 const rolesService = require("@services/rolesService");
-const rolesRepository = require("@repository/rolesRepository");
-const userRolesRepository = require("@repository/userRolesRepository");
+const userRolesService = require("@services/userRolesService");
 const userService = require("@services/usersService");
 const querystring = require("querystring");
 
@@ -13,12 +11,12 @@ class RegistratinController {
             const userData = await userRegistrationService.getUserParams(tokenValue);
             const user = await userService.findUser(userData.data.id);
             if (!user) {
-                await userRepository.createUser(userData.data.id, userData.data.login);
-                const traineeRoleId = await rolesRepository.getTraineeId();
-                await userRolesRepository.create(userData.data.id, traineeRoleId);
+                await userService.createUser(userData.data.id, userData.data.login);
+                const traineeRoleId = await rolesService.getTraineeId();
+                await userRolesService.create(userData.data.id, traineeRoleId);
             }
             const roles = user ? await rolesService.getUserRoles(user.dataValues.user_id) : ["trainee"];
-            const isActive = user ? await userRepository.getUserActiveness(user.dataValues.user_id) : false;
+            const isActive = user ? await userService.getUserActiveness(user.dataValues.user_id) : false;
             response.setHeader("Set-Cookie", `access_token=${tokenValue};  HttpOnly`);
 
             response.status(200).send({userRole: roles, login: userData.data.login, isActive});
@@ -37,7 +35,7 @@ class RegistratinController {
                 querystring.parse(req.headers.cookie).access_token
             );
             if (result) {
-                const isActive = await userRepository.getUserActiveness(result.data.id);
+                const isActive = await userService.getUserActiveness(result.data.id);
                 const role = await rolesService.getUserRoles(result.data.id);
 
                 res.status(200).send({userRole: role, login: result.data.login, isActive});

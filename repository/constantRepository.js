@@ -1,8 +1,8 @@
 const {Constant} = require("@models/constant");
 
 class ConstantRepository {
-    async getConstantId(constant_value) {
-        const constantId = await Constant.findOne({where: {constant_value}, attributes: ["constant_id"]});
+    async getConstantId(constant_value, transaction) {
+        const constantId = await Constant.findOne({where: {constant_value}, attributes: ["constant_id"], transaction});
         return constantId.dataValues.constant_id;
     }
 

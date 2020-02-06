@@ -16,6 +16,23 @@ class ScheduleService {
         }
     }
 
+    async deleteSchedule(schedule_id) {
+        await scheduleRepository.deleteSchedule(schedule_id);
+    }
+
+    async createSchedule(procedureId, newSchedule) {
+        await scheduleRepository.createSchedule(procedureId, newSchedule);
+    }
+
+    async editSchedule(scheduleId, newSchedule) {
+        await scheduleRepository.editSchedule(scheduleId, newSchedule);
+    }
+
+    async getSchedules(procedure_id) {
+        const schedulesData = await scheduleRepository.getSchedules(procedure_id);
+        return schedulesData;
+    }
+
     async findScheduleProcedure(schedule_id) {
         let transaction;
         try {

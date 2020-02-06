@@ -16,7 +16,7 @@ class RunProcedureController {
 
     async runTaskBySchedule(procedure_id) {
         const tasks = await taskService.getProcedureTasks(procedure_id);
-        const normalizedTasks = taskMapper.normalizeTasks(tasks);
+        const normalizedTasks = taskMapper.normalizeTasksForProcedure(tasks);
         const timeMark = await procedureService.getLastRunTimeMark(procedure_id);
         if (new Date(timeMark).getTime() === new Date().getTime()) return;
         await procedureService.makeRunMark(procedure_id);
