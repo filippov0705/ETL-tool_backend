@@ -12,31 +12,30 @@ const procedureMiddleware = require("@middlewares/procedureMiddleware");
 
 const router = express.Router();
 
-router.route("/main/:id").get(userMiddleware.getUserParams, procedureController.getAllProcedures);
+router
+    .route("/")
+    .get(userMiddleware.getUserParams, procedureController.getAllProcedures)
+    .post(userMiddleware.getUserParams, newProcedureController.createNewProcedure);
 
 router
-    .route("/:id/:procedureId")
-    .get(procedureMiddleware.getProcedureTasks, runProcedureController.runProcedure)
-    .delete(userMiddleware.getUserParams, procedureController.deleteProcedure);
-router.route("/tasks").get(taskController.getTasksTypes);
-router.route("/new/:id").post(userMiddleware.getUserParams, newProcedureController.createNewProcedure);
+    .route("/:procedureId")
+    .delete(userMiddleware.getUserParams, procedureController.deleteProcedure)
+    .get(userMiddleware.getUserParams, procedureSchedulesController.getTargetProcedure)
+    .patch(editProcedureController.changeProcedureName);
+
 router
-    .route("/target/:userId/:procedureId")
-    .get(userMiddleware.getUserParams, procedureSchedulesController.getTargetProcedure);
+    .route("/:procedureId/tasks")
+    .get(procedureMiddleware.getProcedureTasks, runProcedureController.runProcedure)
+    .post(editProcedureController.addNewTaskToProcedure);
+
+router.route("/tasks").get(taskController.getTasksTypes);
 
 router
     .route("/:procedureId/schedules/:scheduleId")
-    .put(procedureSchedulesController.editSchedule, procedureSchedulesController.getTargetProcedure);
+    .put(procedureSchedulesController.editSchedule, procedureSchedulesController.getTargetProcedure)
+    .delete(procedureSchedulesController.deleteSchedule);
 
-router
-    .route("/:procedureId/schedules")
-    .post(procedureSchedulesController.postNewSchedule);
-
-router.route("/:procedureId/schedules/:scheduleId").delete(procedureSchedulesController.deleteSchedule);
-
-router.route("/:procedureId").patch(editProcedureController.changeProcedureName);
-
-router.route("/:procedureId/tasks").post(editProcedureController.addNewTaskToProcedure);
+router.route("/:procedureId/schedules").post(procedureSchedulesController.postNewSchedule);
 
 router.route("/:procedureId/tasks/:taskId").delete(editProcedureController.deleteTaskInProcedure);
 

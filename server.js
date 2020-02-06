@@ -31,7 +31,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use("/api/procedures/", procedureRouter);
+app.use("/api/procedures", procedureRouter);
 app.use("/api/authorization", authorizationRouter);
 app.use("/api/tasks", tasksRouter);
 app.use("/api/authentication", authenticationRouter);
