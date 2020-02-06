@@ -10,6 +10,8 @@ const tasksRouter = require("@routers/tasksRouter");
 const usersRouter = require("@routers//usersRouter");
 const authenticationRouter = require("@routers/authenticationRouter");
 const schedules = require("@schedules/index");
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
 
 const app = express();
 
@@ -36,6 +38,7 @@ app.use("/api/authorization", authorizationRouter);
 app.use("/api/tasks", tasksRouter);
 app.use("/api/authentication", authenticationRouter);
 app.use("/api/users", usersRouter);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 schedules.getSchedulesFromBD();
 

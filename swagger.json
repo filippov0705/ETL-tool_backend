@@ -1,0 +1,221 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Internship project",
+        "description": "",
+        "version": "1.0"
+    },
+    "host": "localhost:3001",
+    "basePath": "/api",
+    "schemes": ["http", "https"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "paths": {
+        "/tasks": {
+            "get": {
+                "x-swagger-router-controller": "api/tasks",
+                "operationId": "impossible",
+                "tags": ["Getting task types"],
+                "description": "",
+                "parameters": [],
+                "responses": {}
+            }
+        },
+        "/procedures/{procedureId}/tasks/{taskId}": {
+            "delete": {
+                "tags": ["Delete Task"],
+                "description": "",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "procedureId",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "taskId",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/procedures/{procedureId}": {
+            "get": {
+                "tags": ["Procedures"],
+                "description": "",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "procedureId",
+                        "type": "integer",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Target procedure",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "integer",
+                                    "description": "Procedure Name"
+                                },
+                                "id": {
+                                    "type": "integer",
+                                    "description": "Procedure id"
+                                },
+                                "schedule": {
+                                    "type": "array",
+                                    "description": "Procedure schedules",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "schedule_id": {
+                                                "type": "integer"
+                                            },
+                                            "procedure_id": {
+                                                "type": "integer"
+                                            },
+                                            "monday": {
+                                                "type": "boolean"
+                                            },
+                                            "tuesday": {
+                                                "type": "boolean"
+                                            },
+                                            "wednsday": {
+                                                "type": "boolean"
+                                            },
+                                            "thursday": {
+                                                "type": "boolean"
+                                            },
+                                            "friday": {
+                                                "type": "boolean"
+                                            },
+                                            "saturday": {
+                                                "type": "boolean"
+                                            },
+                                            "sunday": {
+                                                "type": "boolean"
+                                            },
+                                            "hour": {
+                                                "type": "integer"
+                                            },
+                                            "minute": {
+                                                "type": "integer"
+                                            },
+                                            "periodicity": {
+                                                "type": "string"
+                                            },
+                                            "date": {
+                                                "type": "string"
+                                            },
+                                            "year": {
+                                                "type": "integer"
+                                            },
+                                            "day": {
+                                                "type": "integer"
+                                            },
+                                            "month": {
+                                                "type": "integer"
+                                            }
+                                        }
+                                    }
+                                },
+                                "tasks": {
+                                    "type": "array",
+                                    "description": "Procedure tasks",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "settings": {
+                                                "type": "object"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "index",
+                "tags": ["Procedure name change"],
+                "description": "",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "procedureId",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "newName": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/procedures/{procedureId}/tasks": {
+            "post": {
+                "operationId": "index",
+                "tags": ["Create new procedure"],
+                "description": "",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "procedureId",
+                        "type": "integer",
+                        "required": true
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "newTask": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "order": {
+                                            "type": "integer"
+                                        },
+                                        "settings": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        }
+    }
+}
