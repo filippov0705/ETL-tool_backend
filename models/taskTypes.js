@@ -1,7 +1,7 @@
 const {Sequelize} = require("sequelize");
 const {sequelize} = require("./index");
 
-const taskTypes = sequelize.define(
+const TaskTypes = sequelize.define(
     "task_types",
     {
         task_id: {
@@ -23,5 +23,5 @@ const taskTypes = sequelize.define(
 );
 
 module.exports = {
-    taskTypes,
+    TaskTypes,
 };

@@ -1,8 +1,8 @@
 const {Procedure} = require("@models/procedures");
 
 class ProcedureRepository {
-    async findOne(id) {
-        return await Procedure.findByPk(id);
+    async findOne(procedure_id, transaction) {
+        return await Procedure.findOne({where: {procedure_id}, transaction});
     }
 
     async create(procedure_id, procedure_name, transaction) {
@@ -17,8 +17,8 @@ class ProcedureRepository {
         await Procedure.destroy({where: {procedure_id: id}, transaction});
     }
 
-    async changeName(procedure_id, procedure_name) {
-        await Procedure.update({procedure_name}, {where: {procedure_id}});
+    async changeName(procedure_id, procedure_name, transaction) {
+        await Procedure.update({procedure_name}, {where: {procedure_id}, transaction});
     }
 
     async getTimeMark(procedure_id, transaction) {

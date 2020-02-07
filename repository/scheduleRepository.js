@@ -3,13 +3,13 @@ const {Op} = require("sequelize");
 const {DAYS_OF_THE_WEEK, DAYS_OF_THE_WEEK_ABBREVIATED} = require("@constants/constants");
 
 class ScheduleRepository {
-    async createSchedule(procedure_id, newSchedule) {
+    async createSchedule(procedure_id, newSchedule, transaction) {
         const date = newSchedule.year
             ? new Date(`${newSchedule.month},${newSchedule.day + 1},${newSchedule.year}`).getTime()
             : null;
         newSchedule.procedure_id = procedure_id;
         newSchedule.date = date;
-        await Schedule.create(newSchedule);
+        await Schedule.create(newSchedule, {transaction});
     }
 
     async findProcedureId(schedule_id, transaction) {
@@ -33,17 +33,17 @@ class ScheduleRepository {
         return schedules;
     }
 
-    async getSchedules(procedure_id) {
-        const schedules = await Schedule.findAll({where: {procedure_id}, raw: true});
+    async getSchedules(procedure_id, transaction) {
+        const schedules = await Schedule.findAll({where: {procedure_id}, raw: true, transaction});
         return schedules;
     }
 
-    async deleteSchedule(schedule_id) {
-        const rez = await Schedule.destroy({where: {schedule_id}});
+    async deleteSchedule(schedule_id, transaction) {
+        const rez = await Schedule.destroy({where: {schedule_id}, transaction});
         return rez;
     }
 
-    async editSchedule(schedule_id, newSchedule) {
+    async editSchedule(schedule_id, newSchedule, transaction) {
         if (newSchedule.year) {
             const date = new Date(
                 `${Number(newSchedule.month)},${Number(newSchedule.day) + 1},${Number(newSchedule.year)}`
@@ -54,7 +54,7 @@ class ScheduleRepository {
                     hour: newSchedule.hour,
                     minute: newSchedule.minute,
                 },
-                {where: {schedule_id}}
+                {where: {schedule_id}, transaction}
             );
         } else {
             await Schedule.update(
@@ -69,7 +69,7 @@ class ScheduleRepository {
                     hour: newSchedule.hour,
                     minute: newSchedule.minute,
                 },
-                {where: {schedule_id}}
+                {where: {schedule_id}, transaction}
             );
         }
     }

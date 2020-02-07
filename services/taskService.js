@@ -8,30 +8,73 @@ const {ALPHABET, SUCCESS, ERROR} = require("@constants/constants");
 
 class taskServeice {
     async createTasks(procedureId, task, i) {
-        await taskRepository.createTask(procedureId, task, i);
+        let transaction;
+        try {
+            transaction = await sequelize.transaction();
+            await taskRepository.createTask(procedureId, task, i, transaction);
+            await transaction.commit();
+        } catch (e) {
+            if (transaction) await transaction.rollback();
+        }
     }
 
     async deleteTask(taskId) {
-        await taskRepository.deleteTask(taskId);
+        let transaction;
+        try {
+            transaction = await sequelize.transaction();
+            await taskRepository.deleteTask(taskId, transaction);
+            await transaction.commit();
+        } catch (e) {
+            if (transaction) await transaction.rollback();
+        }
     }
 
     async getTaskSettings(id) {
-        return await taskRepository.getTaskSettings(id);
+        let transaction;
+        try {
+            transaction = await sequelize.transaction();
+            const settings = await taskRepository.getTaskSettings(id, transaction);
+            await transaction.commit();
+            return settings;
+        } catch (e) {
+            if (transaction) await transaction.rollback();
+        }
     }
 
     async findTasks(procedure_id) {
-        const taskData = await taskRepository.findTasks(procedure_id);
-        return taskData;
+        let transaction;
+        try {
+            transaction = await sequelize.transaction();
+            const taskData = await taskRepository.findTasks(procedure_id, transaction);
+            await transaction.commit();
+            return taskData;
+        } catch (e) {
+            if (transaction) await transaction.rollback();
+        }
     }
 
     async changeTaskSettings(taskId, newSettings) {
-        await taskRepository.changeSettings(taskId, newSettings);
+        let transaction;
+        try {
+            transaction = await sequelize.transaction();
+            await taskRepository.changeSettings(taskId, newSettings, transaction);
+            await transaction.commit();
+        } catch (e) {
+            if (transaction) await transaction.rollback();
+        }
     }
 
-    getTaskTypes() {
-        return new Promise(resolve => {
-            taskTypesRepository.getTaskTypes().then(taskTypes => resolve(taskTypes));
-        });
+    async getTaskTypes() {
+        let transaction;
+        try {
+            transaction = await sequelize.transaction();
+            const taskTypes = await taskTypesRepository.getTaskTypes(transaction);
+            await transaction.commit();
+            return taskTypes;
+        } catch (e) {
+            console.log(e);
+            if (transaction) await transaction.rollback();
+        }
     }
 
     mailExcel(task, data) {

@@ -3,29 +3,71 @@ const {sequelize} = require("@models/index");
 
 class userService {
     async getAllUsers() {
-        const allUsers = await userRepository.getAllUsers();
-        return allUsers;
+        let transaction;
+        try {
+            transaction = await sequelize.transaction();
+            const allUsers = await userRepository.getAllUsers(transaction);
+            await transaction.commit();
+            return allUsers;
+        } catch (e) {
+            if (transaction) await transaction.rollback();
+        }
     }
 
     async changeActiveness(user_id, state) {
-        await userRepository.changeActiveness(user_id, state);
+        let transaction;
+        try {
+            transaction = await sequelize.transaction();
+            await userRepository.changeActiveness(user_id, state, transaction);
+            await transaction.commit();
+        } catch (e) {
+            if (transaction) await transaction.rollback();
+        }
     }
 
     async deleteUser(user_id) {
-        await userRepository.deleteUser(user_id);
+        let transaction;
+        try {
+            transaction = await sequelize.transaction();
+            await userRepository.deleteUser(user_id, transaction);
+            await transaction.commit();
+        } catch (e) {
+            if (transaction) await transaction.rollback();
+        }
     }
 
     async changeUserName(user_id, user_name) {
-        await userRepository.changeUserNames(user_id, user_name);
+        let transaction;
+        try {
+            transaction = await sequelize.transaction();
+            await userRepository.changeUserNames(user_id, user_name, transaction);
+            await transaction.commit();
+        } catch (e) {
+            if (transaction) await transaction.rollback();
+        }
     }
 
     async createUser(user_id, user_login) {
-        await userRepository.createUser(user_id, user_login);
+        let transaction;
+        try {
+            transaction = await sequelize.transaction();
+            await userRepository.createUser(user_id, user_login, transaction);
+            await transaction.commit();
+        } catch (e) {
+            if (transaction) await transaction.rollback();
+        }
     }
 
     async getUserActiveness(user_id) {
-        const isActive = await userRepository.getUserActiveness(user_id);
-        return isActive;
+        let transaction;
+        try {
+            transaction = await sequelize.transaction();
+            const isActive = await userRepository.getUserActiveness(user_id, transaction);
+            await transaction.commit();
+            return isActive;
+        } catch (e) {
+            if (transaction) await transaction.rollback();
+        }
     }
 
     async findUser(id) {

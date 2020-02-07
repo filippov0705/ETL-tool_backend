@@ -43,11 +43,25 @@ class ProcedureService {
     }
 
     async changeName(procedureId, newName) {
-        await procedureRepository.changeName(procedureId, newName);
+        let transaction;
+        try {
+            transaction = await sequelize.transaction();
+            await procedureRepository.changeName(procedureId, newName, transaction);
+            await transaction.commit();
+        } catch (err) {
+            if (transaction) await transaction.rollback();
+        }
     }
 
     async deleteAllProcedures(procedure_id) {
-        await procedureRepository.delete(procedure_id);
+        let transaction;
+        try {
+            transaction = await sequelize.transaction();
+            await procedureRepository.delete(procedure_id, transaction);
+            await transaction.commit();
+        } catch (err) {
+            if (transaction) await transaction.rollback();
+        }
     }
 
     async makeRunMark(procedure_id) {
@@ -76,8 +90,15 @@ class ProcedureService {
     }
 
     async findProcedure(procedure_id) {
-        const procedure = await procedureRepository.findOne(procedure_id);
-        return procedure;
+        let transaction;
+        try {
+            transaction = await sequelize.transaction();
+            const procedure = await procedureRepository.findOne(procedure_id, transaction);
+            await transaction.commit();
+            return procedure;
+        } catch (e) {
+            if (transaction) await transaction.rollback();
+        }
     }
 }
 

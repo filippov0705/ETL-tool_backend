@@ -17,20 +17,48 @@ class ScheduleService {
     }
 
     async deleteSchedule(schedule_id) {
-        await scheduleRepository.deleteSchedule(schedule_id);
+        let transaction;
+        try {
+            transaction = await sequelize.transaction();
+            await scheduleRepository.deleteSchedule(schedule_id, transaction);
+            await transaction.commit();
+        } catch (e) {
+            if (transaction) await transaction.rollback();
+        }
     }
 
     async createSchedule(procedureId, newSchedule) {
-        await scheduleRepository.createSchedule(procedureId, newSchedule);
+        let transaction;
+        try {
+            transaction = await sequelize.transaction();
+            await scheduleRepository.createSchedule(procedureId, newSchedule, transaction);
+            await transaction.commit();
+        } catch (e) {
+            if (transaction) await transaction.rollback();
+        }
     }
 
     async editSchedule(scheduleId, newSchedule) {
-        await scheduleRepository.editSchedule(scheduleId, newSchedule);
+        let transaction;
+        try {
+            transaction = await sequelize.transaction();
+            await scheduleRepository.editSchedule(scheduleId, newSchedule, transaction);
+            await transaction.commit();
+        } catch (e) {
+            if (transaction) await transaction.rollback();
+        }
     }
 
     async getSchedules(procedure_id) {
-        const schedulesData = await scheduleRepository.getSchedules(procedure_id);
-        return schedulesData;
+        let transaction;
+        try {
+            transaction = await sequelize.transaction();
+            const schedulesData = await scheduleRepository.getSchedules(procedure_id, transaction);
+            await transaction.commit();
+            return schedulesData;
+        } catch (e) {
+            if (transaction) await transaction.rollback();
+        }
     }
 
     async findScheduleProcedure(schedule_id) {

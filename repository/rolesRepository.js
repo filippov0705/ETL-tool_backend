@@ -1,18 +1,18 @@
 const {Role} = require("@models/roles");
 
 class RolesRepository {
-    async getTraineeId() {
-        const roleId = await Role.findOne({attributes: ["role_id"], where: {role_name: "trainee"}});
+    async getTraineeId(transaction) {
+        const roleId = await Role.findOne({attributes: ["role_id"], where: {role_name: "trainee"}, transaction});
         return roleId.dataValues.role_id;
     }
 
-    async getAllRoles() {
-        const roles = await Role.findAll({attributes: ["role_name"], raw: true});
+    async getAllRoles(transaction) {
+        const roles = await Role.findAll({attributes: ["role_name"], raw: true, transaction});
         return roles.map(item => item.role_name);
     }
 
-    async getRoleId(role_name) {
-        const roleId = await Role.findOne({attributes: ["role_id"], where: {role_name}});
+    async getRoleId(role_name, transaction) {
+        const roleId = await Role.findOne({attributes: ["role_id"], where: {role_name}, transaction});
         return roleId.dataValues.role_id;
     }
 }

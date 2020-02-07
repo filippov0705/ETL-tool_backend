@@ -6,7 +6,6 @@ class CreateProcedureService {
     async createProcedure(userId, procedureName, procedureId) {
         let transaction;
         try {
-            console.log('!!!!!!!!!!!!!')
             transaction = await sequelize.transaction();
             await procedureRepository.create(procedureId, procedureName, transaction);
             await userProcedureRepository.create(userId, procedureId, transaction);
