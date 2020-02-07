@@ -53,6 +53,7 @@ class ScheduleRepository {
                     date,
                     hour: newSchedule.hour,
                     minute: newSchedule.minute,
+                    schedule_id: newSchedule.schedule_id,
                 },
                 {where: {schedule_id}, transaction}
             );
@@ -68,6 +69,7 @@ class ScheduleRepository {
                     sunday: newSchedule.sunday,
                     hour: newSchedule.hour,
                     minute: newSchedule.minute,
+                    schedule_id: newSchedule.schedule_id,
                 },
                 {where: {schedule_id}, transaction}
             );

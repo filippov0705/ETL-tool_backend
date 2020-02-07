@@ -2,10 +2,23 @@ const usersService = require("@services/usersService");
 const procedureService = require("@services/procedureService");
 const rolesService = require("@services/rolesService");
 const userMapper = require("@mappers/userMapper");
+const logsService = require("@services/logsService");
 
 const {ERROR, NAME, INVALID_USER_ACTION} = require("@constants/constants");
 
 class UsersController {
+    async getUserLogs(req, res) {
+        try {
+            const {page, logsNumber} = req.query;
+            const {id} = req.user;
+            const logs = await logsService.getUserLogs(id);
+            const pageLogs = await logsService.getpageLogs(page, logsNumber, logs);
+            res.status(200).send(pageLogs);
+        } catch (e) {
+            res.status(404).send({message: ERROR});
+        }
+    }
+
     async getUsers(req, res) {
         try {
             const allUsers = await usersService.getAllUsers();

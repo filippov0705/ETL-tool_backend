@@ -18,4 +18,6 @@ router
     .patch(userMiddleware.getUserParams, usersController.changeUserParameter)
     .delete(userMiddleware.getUserParams, usersController.deleteUser);
 
+router.route("/user/logs").get(userMiddleware.getUserParams, usersController.getUserLogs);
+
 module.exports = router;

@@ -65,6 +65,7 @@ class ScheduleService {
         let transaction;
         try {
             transaction = await sequelize.transaction();
+            console.log(schedule_id);
             const procedureId = await scheduleRepository.findProcedureId(schedule_id, transaction);
             await transaction.commit();
             return procedureId;

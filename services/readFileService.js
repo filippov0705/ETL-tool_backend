@@ -6,10 +6,13 @@ const {ERROR, USER_DATA_STORAGE, SUCCESS} = require("@constants/constants");
 class ReadFileService {
     async readExcel(task, data) {
         try {
+            console.log(task);
             const content = await xlsx.parse(`${USER_DATA_STORAGE}${task.settings.from}.xlsx`);
             data[task.settings.as] = content;
+            console.log(data);
             return {status: SUCCESS, runResult: data};
         } catch (e) {
+            console.log("!!!!!!!!");
             return {status: ERROR};
         }
     }

@@ -60,7 +60,7 @@ class ProcedureSchedulesController {
             const newSchedule = req.body;
             await schedules.deleteProcedureFromCron(scheduleId);
             await scheduleService.editSchedule(scheduleId, newSchedule);
-            const procedureId = await scheduleService.findScheduleProcedure(scheduleId);
+            const procedureId = await scheduleService.findScheduleProcedure(newSchedule.schedule_id);
             await schedules.addProcedureToCron(procedureId, newSchedule);
             res.status(200).send(200);
         } catch (e) {

@@ -14,14 +14,18 @@ const {
 } = require("@constants/constants");
 
 class RunProcedureService {
-    async procedureActionsChain(tasks, previousTaskRunResults) {
+    async procedureActionsChain(tasks, previousTaskRunResults, runLogs) {
         const nextTask = tasks.shift();
         if (nextTask) {
             const result = await this.switchToAppropriateTask(nextTask.name)(nextTask, previousTaskRunResults);
-            if (result.status === ERROR) return Promise.resolve();
-            await this.procedureActionsChain(tasks, result.runResult);
+            runLogs.push({status: result.status, task_log_name: nextTask.name, execution_time: new Date()});
+            if (result.status === ERROR) {
+                return Promise.resolve(runLogs);
+            }
+            const resultLogs = await this.procedureActionsChain(tasks, result.runResult, runLogs);
+            return resultLogs;
         } else {
-            return Promise.resolve();
+            return Promise.resolve(runLogs);
         }
     }
 
