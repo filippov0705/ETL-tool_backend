@@ -1,6 +1,15 @@
 const {Procedure} = require("@models/procedures");
 
 class ProcedureRepository {
+    async findProcedureName(procedure_id, transaction) {
+        const procedureName = await Procedure.findOne({
+            attributes: ["procedure_name"],
+            where: {procedure_id},
+            transaction,
+        });
+        return procedureName.dataValues.procedure_name;
+    }
+
     async findOne(procedure_id, transaction) {
         return await Procedure.findOne({where: {procedure_id}, transaction});
     }

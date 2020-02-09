@@ -14,7 +14,7 @@ const ProcedureLog = sequelize.define(
             allowNull: false,
         },
         execution_time: {
-            type: "TIMESTAMP",
+            type: Sequelize.DATE,
             allowNull: true,
         },
     },

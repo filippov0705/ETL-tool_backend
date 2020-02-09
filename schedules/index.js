@@ -12,11 +12,13 @@ class Schedules {
 
     async getSchedulesFromBD(minutes) {
         const date = new Date();
-        cron.schedule(`${date.getMinutes() + 1} * * * *`, async () => {
+        cron.schedule(`${date.getMinutes()} * * * *`, async () => {
             const date = new Date();
             const dayOfTheWeek = DAYS_OF_THE_WEEK[date.getDay() - 1];
             const schedules = await procedureController.getClosestExecutedProcedures(date, dayOfTheWeek);
             schedules.forEach(item => {
+                if (this.runingSchedules[item.schedule_id]) return;
+
                 const newFunction = (itemData => {
                     const data = itemData;
                     return () => {
@@ -28,7 +30,6 @@ class Schedules {
                     `${item.minute} ${item.hour} ${date.getDate()} ${date.getMonth() + 1} *`,
                     newFunction
                 );
-
                 this.runingSchedules[item.schedule_id] = task;
             });
         });
@@ -37,6 +38,7 @@ class Schedules {
     async deleteProcedureFromCron(schedule_id) {
         if (this.runingSchedules[schedule_id]) {
             this.runingSchedules[schedule_id].destroy();
+            delete this.runingSchedules[schedule_id];
         }
         return;
     }

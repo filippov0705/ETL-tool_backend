@@ -32,7 +32,10 @@ class ProcedureService {
             const user = await userRepository.findUser(id, transaction);
             if (!user) throw new Error(USER_NOT_FOUND);
             const procedures = await user.getProcedures({transaction});
-            if (!procedures.length) return [];
+            if (!procedures.length) {
+                await transaction.commit();
+                return [];
+            }
             await transaction.commit();
             return procedures.map(item => {
                 return {name: item.dataValues.procedure_name, id: item.dataValues.procedure_id};

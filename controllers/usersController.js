@@ -12,7 +12,7 @@ class UsersController {
             const {page, logsNumber} = req.query;
             const {id} = req.user;
             const logs = await logsService.getUserLogs(id);
-            const pageLogs = await logsService.getpageLogs(page, logsNumber, logs);
+            const pageLogs = await logsService.getPageLogs(page, logsNumber, logs);
             res.status(200).send(pageLogs);
         } catch (e) {
             res.status(404).send({message: ERROR});

@@ -1,5 +1,7 @@
 const randomInt = require("random-int");
+const moment = require("moment");
 const procedureLogsRepository = require("@repository/procedureLogsRepository");
+const procedureRepository = require("@repository/procedureRepository");
 const taskLogsRepository = require("@repository/taskLogsRepository");
 const constantsService = require("@services/constantsService");
 const userProcedure = require("@repository/userProcedureRepository");
@@ -7,21 +9,38 @@ const logsMapper = require("@mappers/logsMapper");
 const {sequelize} = require("@models/index");
 
 class LogsService {
-    async getpageLogs(page, logsNumber, logs) {
+    async getPageLogs(page, logsNumber, logs) {
         let transaction;
         try {
             transaction = await sequelize.transaction();
             const pageLogs = logs.slice((page - 1) * logsNumber, page * logsNumber);
-
+            const pageLogsWithNames = await Promise.all(
+                pageLogs.map(async item => {
+                    item.procedureName = await procedureRepository.findProcedureName(item.procedure_id, transaction);
+                    item.execution_time = moment(item.execution_time).format("MMMM Do YYYY, h:mm:ss a");
+                    return item;
+                })
+            );
             const taskLogs = await Promise.all(
                 pageLogs.map(async item => {
                     const taskLog = await taskLogsRepository.getLog(item.procedure_log_id, transaction);
                     return taskLog;
                 })
             );
+
             const taskLogsFiltered = logsMapper.filterLogs(taskLogs);
+
+            const taskLogsWithNames = await Promise.all(
+                taskLogsFiltered.map(async item => {
+                    item.task_log_name = await constantsService.getConstant(item.task_log_name, transaction);
+                    item.status = await constantsService.getConstant(item.status, transaction);
+                    item.execution_time = moment(item.execution_time).format("MMMM Do YYYY, h:mm:ss a");
+                    return item;
+                })
+            );
+
             await transaction.commit();
-            return {procedureLogs: pageLogs, taskLogs: taskLogsFiltered};
+            return {procedureLogs: pageLogsWithNames, taskLogs: taskLogsWithNames};
         } catch (e) {
             if (transaction) await transaction.rollback();
         }
