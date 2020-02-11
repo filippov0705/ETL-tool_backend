@@ -13,7 +13,7 @@ class ProcedureService {
             if (!user) {
                 throw new Error(USER_NOT_FOUND);
             }
-            const procedures = await user.getProcedures();
+            const procedures = await user.getProcedures({transaction});
             if (!procedures.length) {
                 throw new Error(NO_PROCEDURE_FOUND);
             }

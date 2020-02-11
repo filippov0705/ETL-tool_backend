@@ -4,8 +4,8 @@ class UserRepository {
     createUser(user_id, user_login, transaction) {
         return User.create(
             {
-                user_id: user_id,
-                user_login: user_login,
+                user_id,
+                user_login,
                 user_name: user_login,
                 is_active: false,
             },
@@ -37,8 +37,8 @@ class UserRepository {
         await User.update({is_active: state}, {where: {user_id}, transaction});
     }
 
-    async deleteUser(user_id) {
-        await User.destroy({where: {user_id}});
+    async deleteUser(user_id, transaction) {
+        await User.destroy({where: {user_id}, transaction});
     }
 
     async changeUserNames(user_id, user_name, transaction) {
