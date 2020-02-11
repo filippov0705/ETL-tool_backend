@@ -6,7 +6,7 @@ class CreateTaskService {
         let transaction;
         try {
             transaction = await sequelize.transaction();
-            await taskRepository.createTask(procedureId, task, i);
+            await taskRepository.createTask(procedureId, task, i, transaction);
             await transaction.commit();
         } catch (e) {
             if (transaction) await transaction.rollback();
