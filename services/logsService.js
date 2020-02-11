@@ -31,12 +31,13 @@ class LogsService {
     }
 
     formatLogs(logs, filterParams) {
-        const logsTotally = logs.length;
         const allProceduresNames = Array.from(new Set(logs.map(item => item.name)));
 
         const logsFilteredByName = filterParams.procedureName
             ? logsMapper.filterByName(logs, filterParams.procedureName)
             : logs;
+
+        const logsTotally = logsFilteredByName.length;
 
         const logsOrdered = logsMapper.orderLogs(filterParams.order, logsFilteredByName);
         const OnePageLogs = logsMapper.getPageLogs(logsOrdered, filterParams.page, filterParams.logsNumber);

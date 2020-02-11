@@ -12,7 +12,7 @@ class NodemailerService {
             },
         });
 
-        const mailOptions = { from, to, subject, text };
+        const mailOptions = {from, to, subject, text};
         let result = null;
         await transporter.sendMail(mailOptions, async function(error, info) {
             if (error) {
@@ -21,8 +21,6 @@ class NodemailerService {
                 result = `Email sent: ${info.response}`;
             }
         });
-
-        return result;
     }
 }
 

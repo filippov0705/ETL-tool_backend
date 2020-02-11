@@ -27,7 +27,7 @@ module.exports = {
         "y",
         "z",
     ],
-    ALLOWED_FOLDERS: ["userOne, userTwo"],
+    ALLOWED_FOLDERS: ["userOne", "userTwo"],
     DAYS_OF_THE_WEEK: ["monday", "tuesday", "wednsday", "thursday", "friday", "saturday", "sunday"],
     DAYS_OF_THE_WEEK_ABBREVIATED: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
     ADD_VARIABLE: "Add variable",
@@ -45,6 +45,7 @@ module.exports = {
     SINGLE: "Single",
     NUMBER: "number",
     NAME: "name",
+    NO_VALUE_IN_A_FIELD: "No value in field(s):",
     READ_FROM_FTP: "Read from FTP",
     TRAINEE: "trainee",
     INVALID_USER_ACTION: "Invalid user action",
@@ -54,4 +55,6 @@ module.exports = {
     NO_PROCEDURE_FOUND: "No procedures found",
     REGISTRATION_ERROR: "Registration error",
     FROM: "from",
+    FORBIDDEN_PATH: "Forbidden path",
+    WARNING: "Warning",
 };

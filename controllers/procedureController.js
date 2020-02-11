@@ -6,7 +6,9 @@ const sequelizeDataMapper = require("@mappers/sequelizeDataMapper");
 class ProcedureController {
     async getAllProcedures(req, res) {
         try {
-            const procedures = await procedureService.getUserProcedures(req.user.id);
+            const {filter} = req.query;
+
+            const procedures = await procedureService.getUserProcedures(req.user.id, filter);
             res.status(200).send(procedures);
         } catch (e) {
             res.status(400).send({message: e});

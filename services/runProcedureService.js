@@ -8,11 +8,13 @@ const {
     CHANGE_FIELD,
     ERROR,
     EMPTY_FIELD,
+    FROM,
     READ_EXCEL,
     COPY_EXCEL,
     READ_FROM_FTP,
     MAIL_EXCEL,
     MAIL_TEXT,
+    NO_VALUE_IN_A_FIELD,
 } = require("@constants/constants");
 
 class RunProcedureService {
@@ -26,6 +28,16 @@ class RunProcedureService {
                 runLogs.push({
                     status: ERROR,
                     description: [`${EMPTY_FIELD} ${stringOfEmptyFields}`],
+                    task_log_name: nextTask.name,
+                    execution_time: new Date(),
+                });
+                return Promise.resolve(runLogs);
+            }
+
+            if (FROM in nextTask.settings && !nextTask.settings.from) {
+                runLogs.push({
+                    status: ERROR,
+                    description: [`${NO_VALUE_IN_A_FIELD} ${FROM}`],
                     task_log_name: nextTask.name,
                     execution_time: new Date(),
                 });

@@ -8,10 +8,10 @@ class ReadFileService {
         try {
             const content = await xlsx.parse(`${USER_DATA_STORAGE}${task.settings.from}.xlsx`);
             data[task.settings.as] = content;
+
             return {
                 status: SUCCESS,
                 runResult: data,
-                description: [`Read excel file from: ${USER_DATA_STORAGE}${task.settings.from}.xlsx`],
             };
         } catch (e) {
             return {status: ERROR};
@@ -26,7 +26,6 @@ class ReadFileService {
             return {
                 status: SUCCESS,
                 runResult: data,
-                description: [`Read from ${task.settings.host}`, `File name: ${task.settings.name}`],
             };
         } catch (e) {
             return {status: ERROR, description: "Connection failure"};

@@ -4,7 +4,7 @@ const taskTypesRepository = require("@repository/taskTypesRepository");
 const taskRepository = require("@repository/taskRepository");
 const {sequelize} = require("@models/index");
 
-const {ALPHABET, SUCCESS, ERROR} = require("@constants/constants");
+const {ALPHABET, SUCCESS, ERROR, WARNING} = require("@constants/constants");
 
 class taskServeice {
     async createTasks(procedureId, task, i) {
@@ -72,7 +72,6 @@ class taskServeice {
             await transaction.commit();
             return taskTypes;
         } catch (e) {
-            console.log(e);
             if (transaction) await transaction.rollback();
         }
     }
@@ -94,10 +93,19 @@ class taskServeice {
     }
 
     createVariable(task, data) {
-        const col = ALPHABET.indexOf(task.settings.field[0].toLowerCase());
-        const row = task.settings.field[1] - 1;
-        data[task.settings.as] = data[task.settings.from][0].data[row][col];
-        return {status: SUCCESS, runResult: data};
+        try {
+            const isSameVariableExist = task.settings.as in data;
+            const col = ALPHABET.indexOf(task.settings.field[0].toLowerCase());
+            const row = task.settings.field[1] - 1;
+            data[task.settings.as] = data[task.settings.from][0].data[row][col];
+            if (isSameVariableExist) {
+                return {status: WARNING, runResult: data, description: [`Variable "${task.settings.as}" rewritten`]};
+            } else {
+                return {status: SUCCESS, runResult: data};
+            }
+        } catch (e) {
+            return {status: ERROR};
+        }
     }
 
     changeField(task, data) {

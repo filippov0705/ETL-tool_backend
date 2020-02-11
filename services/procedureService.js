@@ -25,7 +25,7 @@ class ProcedureService {
         }
     }
 
-    async getUserProcedures(id) {
+    async getUserProcedures(id, filter) {
         let transaction;
         try {
             transaction = await sequelize.transaction();
@@ -37,9 +37,12 @@ class ProcedureService {
                 return [];
             }
             await transaction.commit();
-            return procedures.map(item => {
+
+            const proceduresHeads = procedures.map(item => {
                 return {name: item.dataValues.procedure_name, id: item.dataValues.procedure_id};
             });
+            if (!filter) return proceduresHeads;
+            return proceduresHeads.filter(item => item.name.toLowerCase().includes(filter));
         } catch (err) {
             if (transaction) await transaction.rollback();
         }
