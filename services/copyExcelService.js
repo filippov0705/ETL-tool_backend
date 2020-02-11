@@ -1,11 +1,16 @@
 const xl = require("excel4node");
 
-const {ERROR, SUCCESS, USER_DATA_STORAGE} = require("@constants/constants");
+const {ERROR, SUCCESS, USER_DATA_STORAGE, ALLOWED_FOLDERS} = require("@constants/constants");
 
 class CopyExcelService {
     async copyExcel(task, data) {
         try {
             const wb = new xl.Workbook();
+            if (!ALLOWED_FOLDERS.includes(task.settings.to.split("/")[0]))
+                return {status: ERROR, description: "Forbidden path"};
+
+            if (!data[task.settings.from]) return {status: "Warning", runResult: data, description: ["No value"]};
+
             const ws = wb.addWorksheet(task.settings.from[0].name);
             const style = wb.createStyle({
                 font: {
@@ -14,6 +19,7 @@ class CopyExcelService {
                 },
                 numberFormat: "###; (###); -",
             });
+
             data[task.settings.from][0].data.forEach((item, row) => {
                 item.forEach((item, column) => {
                     return ws

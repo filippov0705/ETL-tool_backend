@@ -6,13 +6,14 @@ const {ERROR, USER_DATA_STORAGE, SUCCESS} = require("@constants/constants");
 class ReadFileService {
     async readExcel(task, data) {
         try {
-            console.log(task);
             const content = await xlsx.parse(`${USER_DATA_STORAGE}${task.settings.from}.xlsx`);
             data[task.settings.as] = content;
-            console.log(data);
-            return {status: SUCCESS, runResult: data};
+            return {
+                status: SUCCESS,
+                runResult: data,
+                description: [`Read excel file from: ${USER_DATA_STORAGE}${task.settings.from}.xlsx`],
+            };
         } catch (e) {
-            console.log("!!!!!!!!");
             return {status: ERROR};
         }
     }
@@ -20,10 +21,15 @@ class ReadFileService {
     async readCSV(task, data) {
         try {
             const result = await serverCalls.readFromFTP(task);
+            if (result.status === ERROR) throw new Error();
             data[task.settings.as] = result;
-            return {status: SUCCESS, runResult: data};
+            return {
+                status: SUCCESS,
+                runResult: data,
+                description: [`Read from ${task.settings.host}`, `File name: ${task.settings.name}`],
+            };
         } catch (e) {
-            return {status: ERROR};
+            return {status: ERROR, description: "Connection failure"};
         }
     }
 }

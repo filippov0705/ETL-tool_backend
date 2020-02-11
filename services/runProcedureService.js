@@ -1,11 +1,13 @@
 const readFileService = require("@services/readFileService");
 const copyExcelService = require("@services/copyExcelService");
 const taskService = require("@services/taskService");
+const taskMapper = require("@mappers/taskMapper");
 
 const {
     ADD_VARIABLE,
     CHANGE_FIELD,
     ERROR,
+    EMPTY_FIELD,
     READ_EXCEL,
     COPY_EXCEL,
     READ_FROM_FTP,
@@ -16,9 +18,27 @@ const {
 class RunProcedureService {
     async procedureActionsChain(tasks, previousTaskRunResults, runLogs) {
         const nextTask = tasks.shift();
+
         if (nextTask) {
+            const emptyFields = taskMapper.findEmptyFields(nextTask.settings);
+            if (emptyFields.length) {
+                const stringOfEmptyFields = emptyFields.reduce((sum, cur) => `${sum}, ${cur}`);
+                runLogs.push({
+                    status: ERROR,
+                    description: [`${EMPTY_FIELD} ${stringOfEmptyFields}`],
+                    task_log_name: nextTask.name,
+                    execution_time: new Date(),
+                });
+                return Promise.resolve(runLogs);
+            }
+
             const result = await this.switchToAppropriateTask(nextTask.name)(nextTask, previousTaskRunResults);
-            runLogs.push({status: result.status, task_log_name: nextTask.name, execution_time: new Date()});
+            runLogs.push({
+                status: result.status,
+                description: result.description,
+                task_log_name: nextTask.name,
+                execution_time: new Date(),
+            });
             if (result.status === ERROR) {
                 return Promise.resolve(runLogs);
             }

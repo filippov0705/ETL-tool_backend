@@ -11,9 +11,9 @@ class RunProcedureController {
         try {
             const {procedureId} = req.params;
             const log = await runProcedureService.procedureActionsChain(req.user.targetProcedureTasks, {}, []);
-            const procedureLogId = randomInt(10000000, 99999999);
-            await logsService.createLog(procedureLogId, procedureId);
-            await logsService.createTaskLog(log, procedureLogId);
+
+            logsService.createLog(log, procedureId);
+
             res.status(200).send({});
         } catch (e) {
             res.status(400).send(JSON.stringify({message: RUN_ERROR}));
@@ -27,9 +27,7 @@ class RunProcedureController {
         if (new Date(timeMark).getTime() === new Date().getTime()) return;
         await procedureService.makeRunMark(procedure_id);
         const log = await runProcedureService.procedureActionsChain(normalizedTasks, {}, []);
-        const procedureLogId = randomInt(10000000, 99999999);
-        await logsService.createLog(procedureLogId, procedure_id);
-        await logsService.createTaskLog(log, procedureLogId);
+        logsService.createLog(log, procedure_id);
     }
 }
 

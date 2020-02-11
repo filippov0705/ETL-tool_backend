@@ -8,6 +8,14 @@ class TaskMapper {
             };
         });
     }
+
+    findEmptyFields(settings) {
+        const emptyFields = [];
+        for (let key in settings) {
+            if (!settings[key]) emptyFields.push(key);
+        }
+        return emptyFields;
+    }
 }
 
 module.exports = new TaskMapper();

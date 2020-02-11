@@ -17,7 +17,8 @@
         "@repository": "./repository",
         "@middlewares": "./middlewares",
         "@schedules": "./schedules",
-        "@mappers": "./mappers"
+        "@mappers": "./mappers",
+        "@logs": "./logs"
     },
     "author": "",
     "license": "ISC",

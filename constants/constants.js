@@ -27,6 +27,7 @@ module.exports = {
         "y",
         "z",
     ],
+    ALLOWED_FOLDERS: ["userOne, userTwo"],
     DAYS_OF_THE_WEEK: ["monday", "tuesday", "wednsday", "thursday", "friday", "saturday", "sunday"],
     DAYS_OF_THE_WEEK_ABBREVIATED: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
     ADD_VARIABLE: "Add variable",
@@ -35,6 +36,7 @@ module.exports = {
     SUCCESS: "Success",
     USER_DATA_STORAGE: "./userDataStorage/",
     ERROR: "Error",
+    EMPTY_FIELD: "Empty field(s):",
     READ_EXCEL: "Read Excel",
     RUN_ERROR: "Error during procedure execution",
     Role_NOT_FOUND: "Roles not found",
@@ -51,4 +53,5 @@ module.exports = {
     USER_NOT_FOUND: "User not found",
     NO_PROCEDURE_FOUND: "No procedures found",
     REGISTRATION_ERROR: "Registration error",
+    FROM: "from",
 };
