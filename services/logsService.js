@@ -48,7 +48,7 @@ class LogsService {
 
     createLog(log, procedure_id) {
         const LogsContent = JSON.parse(fs.readFileSync(logsFile, "utf8"));
-        const procedureExecutionTime = log[0].execution_time;
+        const procedureExecutionTime = new Date();
         const formattedLog = logsMapper.formatTime(log);
 
         LogsContent.push({

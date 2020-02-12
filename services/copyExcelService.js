@@ -6,34 +6,39 @@ const {ERROR, SUCCESS, USER_DATA_STORAGE, ALLOWED_FOLDERS, FORBIDDEN_PATH, WARNI
 class CopyExcelService {
     async copyExcel(task, data) {
         try {
-            const wb = new xl.Workbook();
-            const description = [];
-            if (!ALLOWED_FOLDERS.includes(task.settings.to.split("/")[0])) {
+            const isExist = fs.existsSync(`${USER_DATA_STORAGE}${task.settings.to.split("/")[0]}`);
+            if (!isExist) {
                 return {status: ERROR, description: [FORBIDDEN_PATH]};
             }
 
-            let newFileName;
+            const wb = new xl.Workbook();
+            const description = [];
+
+            let newFileName = `${USER_DATA_STORAGE}${task.settings.to}.xlsx`;
             let i = 0;
             let status = SUCCESS;
 
-            while (true || i < 100) {
-                i++;
-                if (!fs.existsSync(`${USER_DATA_STORAGE}${task.settings.to}(${i}).xlsx`)) {
-                    newFileName = `${USER_DATA_STORAGE}${task.settings.to}(${i}).xlsx`;
-                    if (i) {
-                        status = WARNING;
-                        description.push(
-                            "File with such name already exist",
-                            `New name: ${task.settings.to.split("/")[1]}(${i})`
-                        );
+            const isFileExist = fs.existsSync(`${USER_DATA_STORAGE}${task.settings.to}.xlsx`);
+            if (isFileExist) {
+                while (true || i < 100) {
+                    i++;
+                    if (!fs.existsSync(`${USER_DATA_STORAGE}${task.settings.to}(${i}).xlsx`)) {
+                        newFileName = `${USER_DATA_STORAGE}${task.settings.to}(${i}).xlsx`;
+                        if (i) {
+                            status = WARNING;
+                            description.push(
+                                "File with such name already exist",
+                                `New name: ${task.settings.to.split("/")[1]}(${i})`
+                            );
+                        }
+                        break;
                     }
-                    break;
-                }
-                if (i === 99) {
-                    return {
-                        status: ERROR,
-                        description: ["To much files with name:", `${task.settings.to.split("/")[1]}`],
-                    };
+                    if (i === 99) {
+                        return {
+                            status: ERROR,
+                            description: ["To much files with name:", `${task.settings.to.split("/")[1]}`],
+                        };
+                    }
                 }
             }
 
@@ -57,7 +62,6 @@ class CopyExcelService {
             wb.write(newFileName);
             return {status, runResult: data, description};
         } catch (e) {
-            console.log(e);
             return {status: ERROR};
         }
     }

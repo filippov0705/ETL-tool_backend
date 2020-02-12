@@ -1,10 +1,7 @@
-const procedureService = require("@services/procedureService");
-const taskService = require("@services/taskService");
 const scheduleService = require("@services/scheduleService");
 const schedules = require("@schedules/index");
-const scheduleMapper = require("@mappers/scheduleMapper");
-const taskMapper = require("@mappers/taskMapper");
 const constantsService = require("@services/constantsService");
+const targetTaskService = require("@services/targetTaskService");
 
 const {ERROR} = require("@constants/constants");
 
@@ -12,19 +9,8 @@ class ProcedureSchedulesController {
     async getTargetProcedure(req, res) {
         try {
             const {procedureId} = req.params;
-
-            const procedureData = await procedureService.findProcedure(procedureId);
-            const tasksData = await taskService.findTasks(procedureData.dataValues.procedure_id);
-            const tasks = taskMapper.normalizeTasksForProcedure(tasksData);
-            const schedulesData = await scheduleService.getSchedules(procedureId);
-            const schedule = await scheduleMapper.transformScheduleData(schedulesData);
-            const procedure = {
-                name: procedureData.dataValues.procedure_name,
-                id: procedureData.dataValues.procedure_id,
-                schedule,
-                tasks,
-            };
-            res.status(200).send(procedure);
+            const targetProcedure = await targetTaskService.getTargetProcedure(procedureId);
+            res.status(200).send(targetProcedure);
         } catch (e) {
             res.status(400).send({message: e});
         }

@@ -82,7 +82,7 @@ class taskServeice {
                 nodemailerService.send(
                     "ETL-tool",
                     item[0],
-                    "Оценка за экзамен",
+                    task.settings.subject,
                     `${item[1]} ${item[2]}, ваша оценка ${item[4]}`
                 );
             });
@@ -122,7 +122,15 @@ class taskServeice {
         const mailAdress = Object.keys(data).includes(task.settings.Email)
             ? data[task.settings.Email]
             : task.settings.Email;
-        nodemailerService.send("ETL-tool", mailAdress, "info", data[task.settings.variable]);
+        const response = await nodemailerService.send(
+            "ETL-tool",
+            mailAdress,
+            task.settings.subject,
+            data[task.settings.variable]
+        );
+        if (response.status === ERROR) {
+            return {status: ERROR, description: ["No recipients defined"]};
+        }
         return {status: SUCCESS, runResult: data};
     }
 
