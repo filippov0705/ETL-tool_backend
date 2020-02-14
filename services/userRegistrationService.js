@@ -12,8 +12,10 @@ class UserRegistrationService {
 
     getUserParams(token) {
         return axios.get("https://api.github.com/user", {
+            headers: {
+                Authorization: `token ${token}`,
+            },
             params: {
-                access_token: token,
                 client_id: CLIENT_ID,
                 client_secret: CLIENT_SECRET,
             },

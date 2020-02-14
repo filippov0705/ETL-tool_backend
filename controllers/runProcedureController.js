@@ -11,9 +11,9 @@ class RunProcedureController {
             const {procedureId} = req.params;
             const log = await runProcedureService.procedureActionsChain(req.user.targetProcedureTasks, {}, []);
 
-            logsService.createLog(log, procedureId);
-
-            res.status(200).send({});
+            const procedureLogId = logsService.createLog(log, procedureId);
+            const responseMessage = await runProcedureService.createResponseMessage(log, procedureId, procedureLogId);
+            res.status(200).send(responseMessage);
         } catch (e) {
             res.status(400).send(JSON.stringify({message: RUN_ERROR}));
         }

@@ -12,6 +12,7 @@ class ReadFileService {
             return {
                 status: SUCCESS,
                 runResult: data,
+                description: ["Read excel", `from: ${task.settings.from}`, `as variable: ${task.settings.as}`],
             };
         } catch (e) {
             return {status: ERROR};
@@ -26,6 +27,7 @@ class ReadFileService {
             return {
                 status: SUCCESS,
                 runResult: data,
+                description: ["Read file:", `${task.settings.name}`, `from: ${task.settings.host}`],
             };
         } catch (e) {
             return {status: ERROR, description: "Connection failure"};

@@ -6,7 +6,9 @@ const {ERROR, SUCCESS, USER_DATA_STORAGE, ALLOWED_FOLDERS, FORBIDDEN_PATH, WARNI
 class CopyExcelService {
     async copyExcel(task, data) {
         try {
-            const isExist = fs.existsSync(`${USER_DATA_STORAGE}${task.settings.to.split("/")[0]}`);
+            const folder = task.settings.to.split("/")[0];
+            const fileName = task.settings.to.split("/")[1];
+            const isExist = fs.existsSync(`${USER_DATA_STORAGE}${folder}`);
             if (!isExist) {
                 return {status: ERROR, description: [FORBIDDEN_PATH]};
             }
@@ -27,6 +29,8 @@ class CopyExcelService {
                         if (i) {
                             status = WARNING;
                             description.push(
+                                `Attempt to create file: ${fileName}`,
+                                `from variable: ${task.settings.from}`,
                                 "File with such name already exist",
                                 `New name: ${task.settings.to.split("/")[1]}(${i})`
                             );
@@ -36,7 +40,7 @@ class CopyExcelService {
                     if (i === 99) {
                         return {
                             status: ERROR,
-                            description: ["To much files with name:", `${task.settings.to.split("/")[1]}`],
+                            description: ["To much files with name:", `${fileName}`],
                         };
                     }
                 }
@@ -60,6 +64,13 @@ class CopyExcelService {
                 });
             });
             wb.write(newFileName);
+            if (status === SUCCESS) {
+                return {
+                    status,
+                    runResult: data,
+                    description: ["Created file", `in folder: ${folder}`, `as: ${fileName}`],
+                };
+            }
             return {status, runResult: data, description};
         } catch (e) {
             return {status: ERROR};

@@ -86,7 +86,7 @@ class taskServeice {
                     `${item[1]} ${item[2]}, ваша оценка ${item[4]}`
                 );
             });
-            return {status: SUCCESS, runResult: data};
+            return {status: SUCCESS, runResult: data, description: [`From the variable: ${task.settings.from}`]};
         } catch (e) {
             return {status: ERROR};
         }
@@ -101,7 +101,11 @@ class taskServeice {
             if (isSameVariableExist) {
                 return {status: WARNING, runResult: data, description: [`Variable "${task.settings.as}" rewritten`]};
             } else {
-                return {status: SUCCESS, runResult: data};
+                return {
+                    status: SUCCESS,
+                    runResult: data,
+                    description: ["Created variable", "with name:", `${task.settings.as}`],
+                };
             }
         } catch (e) {
             return {status: ERROR};
@@ -115,7 +119,11 @@ class taskServeice {
         const col = ALPHABET.indexOf(task.settings.field[0].toLowerCase());
         const row = task.settings.field[1] - 1;
         data[task.settings.target][0].data[row][col] = newValue;
-        return {status: SUCCESS, runResult: data};
+        return {
+            status: SUCCESS,
+            runResult: data,
+            description: [`Change field: ${task.settings.field}`, "in a variable:", `${task.settings.target}`],
+        };
     }
 
     async mailText(task, data) {
@@ -131,7 +139,11 @@ class taskServeice {
         if (response.status === ERROR) {
             return {status: ERROR, description: ["No recipients defined"]};
         }
-        return {status: SUCCESS, runResult: data};
+        return {
+            status: SUCCESS,
+            runResult: data,
+            description: ["Successfully mailed text", `to ${task.settings.Email}`],
+        };
     }
 
     async getProcedureTasks(procedure_id) {

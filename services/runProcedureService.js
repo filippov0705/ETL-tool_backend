@@ -2,6 +2,8 @@ const readFileService = require("@services/readFileService");
 const copyExcelService = require("@services/copyExcelService");
 const taskService = require("@services/taskService");
 const taskMapper = require("@mappers/taskMapper");
+const logsMapper = require("@mappers/logsMapper");
+const procedureService = require("@services/procedureService");
 
 const {
     ADD_VARIABLE,
@@ -18,6 +20,13 @@ const {
 } = require("@constants/constants");
 
 class RunProcedureService {
+    async createResponseMessage(log, procedureId, procedureLogId) {
+        const status = logsMapper.getRunstatus(log);
+        const procedureData = await procedureService.findProcedure(procedureId);
+        const procedureName = procedureData.dataValues.procedure_name;
+        return {status, procedureLogId, procedureName};
+    }
+
     async procedureActionsChain(tasks, previousTaskRunResults, runLogs) {
         const nextTask = tasks.shift();
 

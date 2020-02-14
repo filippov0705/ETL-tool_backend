@@ -36,6 +36,11 @@ class LogsMapper {
             return item;
         });
     }
+
+    getRunstatus(logs) {
+        const logsStatuses = logs.map(item => item.status);
+        return logsStatuses.includes("Error") ? "Error" : logsStatuses.includes("Warning") ? "Warning" : "Success";
+    }
 }
 
 module.exports = new LogsMapper();

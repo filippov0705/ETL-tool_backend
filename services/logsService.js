@@ -38,11 +38,9 @@ class LogsService {
             : logs;
 
         const logsTotally = logsFilteredByName.length;
-
         const logsOrdered = logsMapper.orderLogs(filterParams.order, logsFilteredByName);
         const OnePageLogs = logsMapper.getPageLogs(logsOrdered, filterParams.page, filterParams.logsNumber);
         const logsWithFormatedDate = logsMapper.formatDate(OnePageLogs);
-
         return {logsTotally, logsForPage: logsWithFormatedDate, allProceduresNames};
     }
 
@@ -50,14 +48,16 @@ class LogsService {
         const LogsContent = JSON.parse(fs.readFileSync(logsFile, "utf8"));
         const procedureExecutionTime = new Date();
         const formattedLog = logsMapper.formatTime(log);
+        const procedure_log_id = randomInt(10000000, 99999999);
 
         LogsContent.push({
             procedure_id,
             execution_time: procedureExecutionTime,
             log: formattedLog,
-            procedure_log_id: randomInt(10000000, 99999999),
+            procedure_log_id,
         });
         fs.writeFileSync(logsFile, JSON.stringify(LogsContent));
+        return procedure_log_id;
     }
 }
 
