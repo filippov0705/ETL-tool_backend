@@ -1,10 +1,9 @@
-const {taskTypes} = require("@models/taskTypes");
+const {TaskTypes} = require("@models/taskTypes");
 
 class TaskTypesRepository {
-    getTaskTypes() {
-        return new Promise(resolve => {
-            taskTypes.findAll({raw: true}).then(taskTypes => resolve(taskTypes));
-        });
+    async getTaskTypes(transaction) {
+        const taskTypes = await TaskTypes.findAll({raw: true, transaction});
+        return taskTypes;
     }
 }
 

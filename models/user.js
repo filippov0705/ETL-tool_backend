@@ -18,8 +18,8 @@ const User = sequelize.define(
             type: Sequelize.STRING(30),
             allowNull: false,
         },
-        user_role: {
-            type: Sequelize.STRING(10),
+        is_active: {
+            type: Sequelize.BOOLEAN,
             allowNull: false,
         },
     },

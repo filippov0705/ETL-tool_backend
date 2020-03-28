@@ -6,9 +6,12 @@ class NewProcedureController {
         const {name, id, tasks} = req.body;
         try {
             await createProcedureService.createProcedure(req.user.id, name, id);
-            await tasks.forEach(async item => await createTaskService.createTasks(id, item));
-
-            res.status(200).send("200");
+            await Promise.all(
+                tasks.map((item, i) => {
+                    return createTaskService.createTasks(id, item, i);
+                })
+            );
+            res.status(200).send(200);
         } catch (e) {
             res.status(400).send({message: e});
         }

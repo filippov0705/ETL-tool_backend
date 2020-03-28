@@ -22,6 +22,10 @@ const Task = sequelize.define(
             type: Sequelize.JSON,
             allowNull: false,
         },
+        task_order: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+        }
     },
     {timestamps: false}
 );

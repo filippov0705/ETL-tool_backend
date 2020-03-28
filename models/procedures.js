@@ -13,6 +13,10 @@ const Procedure = sequelize.define(
             type: Sequelize.STRING(35),
             allowNull: false,
         },
+        last_execution: {
+            type: "TIMESTAMP",
+            allowNull: true,
+        },
     },
     {timestamps: false}
 );

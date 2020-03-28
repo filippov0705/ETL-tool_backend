@@ -1,52 +1,58 @@
 {
-  "name": "node-server",
-  "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
-  "scripts": {
-    "test": "",
-    "start": "nodemon server.js localhost 3001"
-  },
-  "_moduleAliases": {
-    "@root": ".",
-    "@routers": "./routers",
-    "@services": "./services",
-    "@controllers": "./controllers",
-    "@constants": "./constants",
-    "@models": "./models",
-    "@repository": "./repository",
-    "@middlewares": "./middlewares"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "axios": "^0.19.1",
-    "basic-ftp": "^4.5.3",
-    "body-parser": "^1.19.0",
-    "cookie-parser": "^1.4.4",
-    "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
-    "eslint-config-prettier": "^6.9.0",
-    "eslint-plugin-prettier": "^3.1.2",
-    "excel4node": "^1.7.2",
-    "express": "^4.17.1",
-    "file-system": "^2.2.2",
-    "ftp": "^0.3.10",
-    "hbs": "^4.1.0",
-    "module-alias": "^2.2.2",
-    "morgan": "^1.9.1",
-    "node-xlsx": "^0.15.0",
-    "nodemailer": "^6.4.2",
-    "nodemon": "^1.19.4",
-    "pg": "^7.17.1",
-    "pg-hstore": "^2.3.3",
-    "sequelize": "^5.21.3",
-    "shortid": "^2.2.15"
-  },
-  "devDependencies": {
-    "eslint": "^6.8.0",
-    "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-import": "^2.20.0",
-    "prettier": "1.19.1"
-  }
+    "name": "node-server",
+    "version": "1.0.0",
+    "description": "",
+    "main": "server.js",
+    "scripts": {
+        "test": "",
+        "start": "nodemon server.js localhost 3001"
+    },
+    "_moduleAliases": {
+        "@root": ".",
+        "@routers": "./routers",
+        "@services": "./services",
+        "@controllers": "./controllers",
+        "@constants": "./constants",
+        "@models": "./models",
+        "@repository": "./repository",
+        "@middlewares": "./middlewares",
+        "@schedules": "./schedules",
+        "@mappers": "./mappers",
+        "@logs": "./logs"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "axios": "^0.19.1",
+        "basic-ftp": "^4.5.3",
+        "body-parser": "^1.19.0",
+        "cookie-parser": "^1.4.4",
+        "cors": "^2.8.5",
+        "dotenv": "^8.2.0",
+        "eslint-config-prettier": "^6.9.0",
+        "eslint-plugin-prettier": "^3.1.2",
+        "excel4node": "^1.7.2",
+        "express": "^4.17.1",
+        "file-system": "^2.2.2",
+        "ftp": "^0.3.10",
+        "hbs": "^4.1.0",
+        "module-alias": "^2.2.2",
+        "moment": "^2.24.0",
+        "morgan": "^1.9.1",
+        "node-cron": "^2.0.3",
+        "node-xlsx": "^0.15.0",
+        "nodemailer": "^6.4.2",
+        "nodemon": "^1.19.4",
+        "pg": "^7.17.1",
+        "pg-hstore": "^2.3.3",
+        "random-int": "^2.0.1",
+        "sequelize": "^5.21.3",
+        "shortid": "^2.2.15"
+    },
+    "devDependencies": {
+        "eslint": "^6.8.0",
+        "eslint-config-airbnb-base": "^14.0.0",
+        "eslint-plugin-import": "^2.20.0",
+        "prettier": "1.19.1"
+    }
 }
