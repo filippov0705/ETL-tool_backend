@@ -1,16 +1,14 @@
 const taskRepository = require("@repository/taskRepository");
+const taskServeice = require("@services/taskService");
 const {sequelize} = require("@models/index");
 
 class CreateTaskService {
-    async createTasks(procedureId, task, i) {
-        let transaction;
-        try {
-            transaction = await sequelize.transaction();
-            await taskRepository.createTask(procedureId, task, i, transaction);
-            await transaction.commit();
-        } catch (e) {
-            if (transaction) await transaction.rollback();
-        }
+    async createTasks(tasks, id) {
+        await Promise.all(
+            tasks.map((item, i) => {
+                return taskServeice.createTasks(id, item, i);
+            })
+        );
     }
 
     async deleteTask(taskId) {

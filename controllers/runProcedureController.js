@@ -9,8 +9,8 @@ class RunProcedureController {
     async runProcedure(req, res) {
         try {
             const {procedureId} = req.params;
-            const log = await runProcedureService.procedureActionsChain(req.user.targetProcedureTasks, {}, []);
 
+            const log = await runProcedureService.procedureActionsChain(req.user.targetProcedureTasks, {}, []);
             const procedureLogId = logsService.createLog(log, procedureId);
             const responseMessage = await runProcedureService.createResponseMessage(log, procedureId, procedureLogId);
             res.status(200).send(responseMessage);

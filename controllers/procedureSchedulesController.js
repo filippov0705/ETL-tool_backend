@@ -10,6 +10,7 @@ class ProcedureSchedulesController {
         try {
             const {procedureId} = req.params;
             const targetProcedure = await targetTaskService.getTargetProcedure(procedureId);
+
             res.status(200).send(targetProcedure);
         } catch (e) {
             res.status(400).send({message: e});

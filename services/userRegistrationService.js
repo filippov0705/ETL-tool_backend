@@ -1,5 +1,5 @@
 const axios = require("axios");
-const {CLIENT_ID, CLIENT_SECRET} = require("@constants/environemtConstants");
+const {CLIENT_ID, CLIENT_SECRET} = require("@constants/enviromentConstants");
 
 class UserRegistrationService {
     getAccessToken(code) {

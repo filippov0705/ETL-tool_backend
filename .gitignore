@@ -1,4 +1,5 @@
 /node_modules
 .env
+.envS3
 /mockData
 /userDataStorage

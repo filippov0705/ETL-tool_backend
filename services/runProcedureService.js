@@ -4,10 +4,13 @@ const taskService = require("@services/taskService");
 const taskMapper = require("@mappers/taskMapper");
 const logsMapper = require("@mappers/logsMapper");
 const procedureService = require("@services/procedureService");
+const amazonS3Service = require("@services/amazonS3Service");
 
 const {
     ADD_VARIABLE,
     CHANGE_FIELD,
+    COPY_FROM_S3,
+    COPY_TO_S3,
     ERROR,
     EMPTY_FIELD,
     FROM,
@@ -90,8 +93,11 @@ class RunProcedureService {
             case ADD_VARIABLE:
                 return taskService.createVariable;
 
-            case CHANGE_FIELD:
-                return taskService.changeField;
+            case COPY_TO_S3:
+                return amazonS3Service.copyFileToS3;
+
+            case COPY_FROM_S3:
+                return copyExcelService.copyFileFromS3;
 
             default:
                 return null;

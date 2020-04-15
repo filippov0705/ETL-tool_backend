@@ -6,7 +6,7 @@ const {sequelize} = require("@models/index");
 
 const {ALPHABET, SUCCESS, ERROR, WARNING} = require("@constants/constants");
 
-class taskServeice {
+class TaskServeice {
     async createTasks(procedureId, task, i) {
         let transaction;
         try {
@@ -78,14 +78,8 @@ class taskServeice {
 
     mailExcel(task, data) {
         try {
-            data[task.settings.from][0].data.slice(1).forEach(item => {
-                nodemailerService.send(
-                    "ETL-tool",
-                    item[0],
-                    task.settings.subject,
-                    `${item[1]} ${item[2]}, ваша оценка ${item[4]}`
-                );
-            });
+            nodemailerService.send(data[task.settings.variable].buffer, task.settings.email, task.settings.subject, data[task.settings.variable].data.name);
+
             return {status: SUCCESS, runResult: data, description: [`From the variable: ${task.settings.from}`]};
         } catch (e) {
             return {status: ERROR};
@@ -95,9 +89,8 @@ class taskServeice {
     createVariable(task, data) {
         try {
             const isSameVariableExist = task.settings.as in data;
-            const col = ALPHABET.indexOf(task.settings.field[0].toLowerCase());
-            const row = task.settings.field[1] - 1;
-            data[task.settings.as] = data[task.settings.from][0].data[row][col];
+            data[task.settings.as] = data[task.settings.from].data[task.settings.field.toUpperCase()];
+
             if (isSameVariableExist) {
                 return {status: WARNING, runResult: data, description: [`Variable "${task.settings.as}" rewritten`]};
             } else {
@@ -110,20 +103,6 @@ class taskServeice {
         } catch (e) {
             return {status: ERROR};
         }
-    }
-
-    changeField(task, data) {
-        const newValue = Object.keys(data).includes(task.settings.value)
-            ? data[task.settings.value]
-            : task.settings.value;
-        const col = ALPHABET.indexOf(task.settings.field[0].toLowerCase());
-        const row = task.settings.field[1] - 1;
-        data[task.settings.target][0].data[row][col] = newValue;
-        return {
-            status: SUCCESS,
-            runResult: data,
-            description: [`Change field: ${task.settings.field}`, "in a variable:", `${task.settings.target}`],
-        };
     }
 
     async mailText(task, data) {
@@ -159,4 +138,4 @@ class taskServeice {
     }
 }
 
-module.exports = new taskServeice();
+module.exports = new TaskServeice();

@@ -1,18 +1,21 @@
-const xlsx = require("node-xlsx");
 const serverCalls = require("@services/serverCalls");
+const streamService = require("@services/streamService");
+const excelService = require("@services/excelService");
 
 const {ERROR, USER_DATA_STORAGE, SUCCESS} = require("@constants/constants");
 
 class ReadFileService {
     async readExcel(task, data) {
         try {
-            const content = await xlsx.parse(`${USER_DATA_STORAGE}${task.settings.from}.xlsx`);
-            data[task.settings.as] = content;
-
+            const buffer = await streamService.readStream(`${USER_DATA_STORAGE}${task.settings.from}.xlsx`);
+            const name = task.settings.from.split('/')[task.settings.from.split('/').length - 1];
+            data[task.settings.as] = {buffer};
+            data[task.settings.as].data = excelService.getExcelDataFromBuffer(buffer);
+            data[task.settings.as].data.name = `${name}.xlsx`;
             return {
                 status: SUCCESS,
                 runResult: data,
-                description: ["Read excel", `from: ${task.settings.from}`, `as variable: ${task.settings.as}`],
+                description: ["Read file:", `${USER_DATA_STORAGE}`],
             };
         } catch (e) {
             return {status: ERROR};

@@ -1,5 +1,5 @@
 const Sequelize = require("sequelize");
-const {DIALECT, DATA_BASE_NAME, USER_NAME, PASSWORD, HOST} = require("@constants/environemtConstants");
+const {DIALECT, DATA_BASE_NAME, USER_NAME, PASSWORD, HOST} = require("@constants/enviromentConstants");
 
 const sequelize = new Sequelize(DATA_BASE_NAME, USER_NAME, PASSWORD, {
     dialect: DIALECT,

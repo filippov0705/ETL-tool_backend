@@ -10,6 +10,7 @@ const tasksRouter = require("@routers/tasksRouter");
 const usersRouter = require("@routers//usersRouter");
 const authenticationRouter = require("@routers/authenticationRouter");
 const schedules = require("@schedules/index");
+const cookieParser = require('cookie-parser')
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(morgan("common"));
+app.use(cookieParser());
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "http://localhost:3000");

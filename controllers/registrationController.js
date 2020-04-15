@@ -2,12 +2,11 @@ const userRegistrationService = require("@services/userRegistrationService");
 const rolesService = require("@services/rolesService");
 const userRolesService = require("@services/userRolesService");
 const userService = require("@services/usersService");
-const querystring = require("querystring");
 
-class RegistratinController {
+class RegistrationController {
     async newUserCreation(req, response) {
         try {
-            const tokenValue = querystring.parse(req.user.access_token).access_token;
+            const tokenValue = req.cookies.access_token;
             const userData = await userRegistrationService.getUserParams(tokenValue);
             const user = await userService.findUser(userData.data.id);
             if (!user) {
@@ -27,13 +26,11 @@ class RegistratinController {
 
     async testCookie(req, res) {
         try {
-            const accessToken = querystring.parse(req.headers.cookie).access_token;
-            if (!req.headers.cookie || !accessToken) {
+            const accessToken = req.cookies.access_token;
+            if (!req.cookies || !accessToken) {
                 res.status(403).send({auth: false});
             }
-            const result = await userRegistrationService.getUserParams(
-                querystring.parse(req.headers.cookie).access_token
-            );
+            const result = await userRegistrationService.getUserParams(req.cookies.access_token);
             if (result) {
                 const isActive = await userService.getUserActiveness(result.data.id);
                 const role = await rolesService.getUserRoles(result.data.id);
@@ -51,4 +48,4 @@ class RegistratinController {
     }
 }
 
-module.exports = new RegistratinController();
+module.exports = new RegistrationController();

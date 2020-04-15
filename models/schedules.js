@@ -21,7 +21,7 @@ const Schedule = sequelize.define(
             type: Sequelize.BOOLEAN,
             allowNull: true,
         },
-        wednsday: {
+        wednesday: {
             type: Sequelize.BOOLEAN,
             allowNull: true,
         },

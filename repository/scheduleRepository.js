@@ -1,6 +1,5 @@
 const {Schedule} = require("@models/schedules");
 const {Op} = require("sequelize");
-const {DAYS_OF_THE_WEEK, DAYS_OF_THE_WEEK_ABBREVIATED} = require("@constants/constants");
 
 class ScheduleRepository {
     async createSchedule(procedure_id, newSchedule, transaction) {
@@ -62,7 +61,7 @@ class ScheduleRepository {
                 {
                     monday: newSchedule.monday,
                     tuesday: newSchedule.tuesday,
-                    wednsday: newSchedule.wednsday,
+                    wednesday: newSchedule.wednesday,
                     thursday: newSchedule.thursday,
                     friday: newSchedule.friday,
                     saturday: newSchedule.saturday,

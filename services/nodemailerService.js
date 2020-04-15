@@ -1,9 +1,9 @@
 const nodemailer = require("nodemailer");
-
-const {ROUTING_MAIL, ROUTING_MAIL_PASSWORD, ERROR, SUCCESS} = require("@constants/environemtConstants");
+var fs = require('fs');
+const {ROUTING_MAIL, ROUTING_MAIL_PASSWORD, ERROR, SUCCESS} = require("@constants/enviromentConstants");
 
 class NodemailerService {
-    async send(from, to, subject, text) {
+    async send(data, email, subject, name) {
         return new Promise(function(resolve, reject) {
             const transporter = nodemailer.createTransport({
                 service: "gmail",
@@ -13,10 +13,18 @@ class NodemailerService {
                 },
             });
 
-            const mailOptions = {from, to, subject, text};
+            const mailOptions = {
+                from: 'ETL-tool',
+                to: email,
+                subject: subject,
+                attachments: [{
+                    filename: name,
+                    content: data
+                }]};
 
             transporter.sendMail(mailOptions, function(error, info) {
                 if (error) {
+                    console.log(error)
                     resolve({status: "Error"});
                 } else {
                     resolve({status: "Success"});
